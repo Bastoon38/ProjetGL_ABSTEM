@@ -28,7 +28,7 @@ import java.awt.Dimension;
 import javax.swing.JList;
 
 /**
- * Created by Thomas on 09/12/2014.
+ * Created by Thomas on 09/12/2014. permi
  */
 
 public class Interface_cuisson extends JFrame {
