@@ -16,7 +16,7 @@ public class Gestion_BDD {
 			//Class.forName("com.mysql.jdbc.Driver");
 
 			Connection con = DriverManager.getConnection(url,login,password);
-
+//test
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT `QUANTITE` FROM Stocks WHERE `PRODUIT`='" + nom + "'");
 
