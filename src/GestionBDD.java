@@ -1,7 +1,7 @@
 
 import java.sql.*;
 
-public class Gestion_BDD {
+public class GestionBDD {
 
 	public void verifVitrine(String nom_prod) {
 
@@ -16,7 +16,6 @@ public class Gestion_BDD {
 			//Class.forName("com.mysql.jdbc.Driver");
 
 			Connection con = DriverManager.getConnection(url,login,password);
-//test
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT `QUANTITE` FROM Stocks WHERE `PRODUIT`='" + nom + "'");
 
