@@ -28,8 +28,7 @@ import java.awt.Dimension;
 import javax.swing.JList;
 
 /**
- * Created by Thomas on 09/12/2014. permi
- */
+ * Created by Thomas on 09/12/2014. permi */
 
 public class Interface_cuisson extends JFrame {
 
@@ -55,7 +54,7 @@ public class Interface_cuisson extends JFrame {
 
     public Interface_cuisson() {
 
-        JButton btn_Deconnecter = new JButton("D\u00E9connecter");
+        JButton btn_Deconnecter = new JButton("Déconnecter");
         btn_Deconnecter.setBounds(809, 11, 109, 23);
         contentPane.add(btn_Deconnecter);
 
