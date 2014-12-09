@@ -5,12 +5,13 @@ public class Main {
 
     public static void main(String[] args) {
         // IL FAUT COMMENTER LES IHM QUE VOUS NE VOULEZ PAS AFFICHER ET TESTER
-     // Interface_manager ihm = new Interface_manager();
+ 
+       // Interface_manager ihm = new Interface_manager();
        //ihm.setVisible(true);
        //Interface_vendeur frame = new Interface_vendeur();
-        //frame.setVisible(true);
-        Connexion frame1 = new Connexion();
-        frame1.setVisible(true);
+       //frame.setVisible(true);
+       Connexion frame1 = new Connexion();
+       frame1.setVisible(true);
 
 
     }
