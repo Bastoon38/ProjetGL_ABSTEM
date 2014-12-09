@@ -1,15 +1,15 @@
 
 import java.sql.*;
+import java.util.Date;
 
-public class Gestion_BDD {
+public class GestionBDD {
 
-	public Gestion_BDD(){
+	public void verifVitrine(String nom_prod) {
 
 	}
 
-	//verifie la péremption des produits en vitrine
-	public void verifVitrine(String nom_prod) {
-			System.out.println("test");
+	public void ajouterStock (String nom, int quantité, Date datePeremption) {	// Ajoute tjrs à la fin de la BDD
+
 	}
 
 	//mise en cuisson du produit, suppression du stock
@@ -71,4 +71,52 @@ public class Gestion_BDD {
 	public void ajouterStock(String nom, int quantite) {
 
 	}
+
+
+	public void ajouterVitrine (String nom, int quantite) {
+
+	}
+
+	public void supprimerVitrine (String nom, int quantite) {
+		boolean fini = false;
+		do{
+		//	fini = Vendeur.supprimerProduit (nom, quantite);           // enlever le commentaire quand vendeur sera ajouté
+		} while (fini != true);
+	}
+
+	public void ajouterBilan (String nom, int quantite) {	// Ajouter un produit vendu dans le bilan du manager
+
+	}
+
+	public void majPrix (String nom, float nouveauPrix) {
+
+	}
+
+	public void majProductionDefaut () {	// Valeurs des fournées remplacées par celles par défaut
+
+	}
+
+	public void majProduction () {	// Valeurs des fournées modifiées
+
+	}
+
+	public void ajouterCommandeFournisseur (String nom) {
+		int quantite = getQuantiteParametree(nom);
+		// Ajouter nom et quantite à la commande fournisseur
+	}
+
+	private int getQuantiteParametree(String nom) {
+		int quantite = 0;
+		return quantite;
+	}
+
+	public void ajouterCuisson (String nom) {
+
+	}
+
+	public void supprimerCuisson (String nom) {
+
+	}
+
+
 }
