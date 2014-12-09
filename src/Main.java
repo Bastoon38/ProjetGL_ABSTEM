@@ -9,6 +9,7 @@ public class Main {
        //ihm.setVisible(true);
        //Interface_vendeur frame = new Interface_vendeur();
         //frame.setVisible(true);
+        //test
         Connexion frame1 = new Connexion();
         frame1.setVisible(true);
 
