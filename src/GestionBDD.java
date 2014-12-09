@@ -1,7 +1,7 @@
 
 import java.sql.*;
 
-public class Gestion_BDD {
+public class GestionBDD {
 
 	public void verifVitrine(String nom_prod) {
 
