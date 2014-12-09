@@ -1,7 +1,6 @@
 /**
  * Created by Angèle on 09/12/2014.
  */
-package ablm_abstem;
 import java.util.Date;
 //import java.lang.Object;
 //import java.util.Timer;
@@ -51,7 +50,7 @@ public class Timer {
         // Produit devenu périmé
         int idProdPerime = getId();
         if (idProdPerime.lieu == "Stock"){		// id.lieu ou id.getLieu ??
-            Gestion_BDD.supprimerStock (idProdPerime);
+            GestionBDD.supprimerStock (idProdPerime);
         }
         if (idProdPerime.lieu == "Cuisson"){
             Gestion_BDD.supprimerCuisson (idProdPerime);

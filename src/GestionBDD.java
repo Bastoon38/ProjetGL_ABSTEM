@@ -1,5 +1,6 @@
 
 import java.sql.*;
+import java.util.Date;
 
 public class GestionBDD {
 
@@ -7,7 +8,11 @@ public class GestionBDD {
 
 	}
 
-	public void supprimerStock(String nom, int quantite) {
+	public void ajouterStock (String nom, int quantité, Date datePeremption) {	// Ajoute tjrs à la fin de la BDD
+
+	}
+
+	public void supprimerStock(String nom, int quantite) {	// Prend toujours ceux au début de la BDD (les + vieux)
 		String url = "localhost";
 		String login = "root";
 		String password = "root";
@@ -44,4 +49,52 @@ public class GestionBDD {
 	public void ajouterStock(String nom, int quantite) {
 
 	}
+
+
+	public void ajouterVitrine (String nom, int quantite) {
+
+	}
+
+	public void supprimerVitrine (String nom, int quantite) {
+		boolean fini = false;
+		do{
+			fini = Vendeur.supprimerProduit (nom, quantite);
+		} while (fini != true);
+	}
+
+	public void ajouterBilan (String nom, int quantite) {	// Ajouter un produit vendu dans le bilan du manager
+
+	}
+
+	public void majPrix (String nom, float nouveauPrix) {
+
+	}
+
+	public void majProductionDefaut () {	// Valeurs des fournées remplacées par celles par défaut
+
+	}
+
+	public void majProduction () {	// Valeurs des fournées modifiées
+
+	}
+
+	public void ajouterCommandeFournisseur (String nom) {
+		int quantite = getQuantiteParametree(nom);
+		// Ajouter nom et quantite à la commande fournisseur
+	}
+
+	private int getQuantiteParametree(String nom) {
+		int quantite = 0;
+		return quantite;
+	}
+
+	public void ajouterCuisson (String nom) {
+
+	}
+
+	public void supprimerCuisson (String nom) {
+
+	}
+
+
 }
