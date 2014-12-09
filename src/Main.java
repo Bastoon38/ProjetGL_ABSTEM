@@ -5,6 +5,7 @@ public class Main {
 
     public static void main(String[] args) {
         // IL FAUT COMMENTER LES IHM QUE VOUS NE VOULEZ PAS AFFICHER ET TESTER
+        // le coq fait caca !
        // Interface_manager ihm = new Interface_manager();
        //ihm.setVisible(true);
        //Interface_vendeur frame = new Interface_vendeur();
