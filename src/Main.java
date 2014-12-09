@@ -10,9 +10,10 @@ public class Main {
        //ihm.setVisible(true);
        //Interface_vendeur frame = new Interface_vendeur();
        //frame.setVisible(true);
-       Connexion frame1 = new Connexion();
-       frame1.setVisible(true);
-
+       //Connexion frame1 = new Connexion();
+       //frame1.setVisible(true);
+        Interface_cuisson Test = new Interface_cuisson();
+        Test.setVisible(true);
 
     }
 }

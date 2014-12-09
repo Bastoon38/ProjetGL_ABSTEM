@@ -58,7 +58,7 @@ public class GestionBDD {
 	public void supprimerVitrine (String nom, int quantite) {
 		boolean fini = false;
 		do{
-			fini = Vendeur.supprimerProduit (nom, quantite);
+		//	fini = Vendeur.supprimerProduit (nom, quantite);           // enlever le commentaire quand vendeur sera ajouté
 		} while (fini != true);
 	}
 

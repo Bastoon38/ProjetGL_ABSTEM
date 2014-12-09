@@ -1,7 +1,7 @@
 /**
  * Created by Angèle on 09/12/2014.
  */
-import java.util.Date;
+/*import java.util.Date;
 //import java.lang.Object;
 //import java.util.Timer;
 import java.util.TimerTask;
@@ -61,3 +61,4 @@ public class Timer {
     }
 
 }
+*/
