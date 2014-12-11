@@ -53,7 +53,8 @@ public class Timer {
             GestionBDD.supprimerStock (idProdPerime);
         }
         if (idProdPerime.lieu == "Cuisson"){
-            Gestion_BDD.supprimerCuisson (idProdPerime);
+            String produit;
+            GestionBDD.supprimerCuisson(produit);
         }
         if (idProdPerime.lieu == "Stock"){
             Vendeur.supprimerProduit (idProdPerime);
