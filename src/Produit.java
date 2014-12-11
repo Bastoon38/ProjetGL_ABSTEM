@@ -21,5 +21,9 @@ public class Produit {
     {
         return this.prix;
     }
+    public int getQuantite()
+    {
+        return this.quantite;
+    }
 
 }

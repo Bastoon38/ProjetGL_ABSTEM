@@ -102,6 +102,7 @@ public class Interface_vendeur extends JFrame {
         //Vector<Produit> vecProduit = new Vector<Produit>();
         //vecProduit=bdd.recupStockVitrine();
 
+
         final JLabel lab_prix = new JLabel("");
         JPanel pan_pain = new JPanel();
 
@@ -515,6 +516,17 @@ public class Interface_vendeur extends JFrame {
         JButton btn_payer = new JButton("PAYER");
         btn_payer.setBounds(73, 724, 251, 89);
         pan_commande.add(btn_payer);
+
+        btn_payer.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                Interface_paiement paiement=new Interface_paiement();
+                paiement.setVisible(true);
+
+            }
+        });
+
+
 
         JLabel lblTotal = new JLabel("TOTAL");
         lblTotal.setFont(new Font("Tahoma", Font.PLAIN, 18));
