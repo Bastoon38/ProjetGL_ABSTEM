@@ -522,6 +522,7 @@ public class Interface_vendeur extends JFrame {
 
                 Interface_paiement paiement=new Interface_paiement();
                 paiement.setVisible(true);
+                paiement.setLocationRelativeTo(null);
 
             }
         });

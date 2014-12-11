@@ -116,6 +116,7 @@ public class Interface_paiement extends JFrame {
                 {
                     //Supprimer les produits de la commande dans la base de donnès
                     JOptionPane.showMessageDialog(null, "Paiement accepté", "Paiement accepté", JOptionPane.WARNING_MESSAGE);
+                    dispose();
                 }
                 else
                 {
@@ -125,6 +126,11 @@ public class Interface_paiement extends JFrame {
         });
 
         JButton btnAnnuler = new JButton("annuler");
+        btnAnnuler.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+        });
         GroupLayout gl_pan_vienn = new GroupLayout(pan_vienn);
         gl_pan_vienn.setHorizontalGroup(
                 gl_pan_vienn.createParallelGroup(Alignment.TRAILING)
