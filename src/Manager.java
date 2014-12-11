@@ -28,6 +28,7 @@ public class Manager {
         }
 
         public void init() {
+
             JFrame f = new JFrame("ma fenêtre");
             f.setSize(300, 100);
             JPanel pannel = new JPanel();

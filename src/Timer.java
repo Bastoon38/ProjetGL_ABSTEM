@@ -7,6 +7,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 //import java.util.*;
 
+/*
 public class Timer {
 
     public static void main (int annee, int mois, int jour, int heure, int minutes) {
@@ -55,9 +56,6 @@ public class Timer {
         if (Produit.lieu == "Vitrine"){
             GestionBDD.supprimerPerime ("Vitrine");
         }
-        if (idProdPerime.lieu == "Stock"){
-            Vendeur.supprimerProduit (idProdPerime);
-        }
     }
 
-}
+}*/
