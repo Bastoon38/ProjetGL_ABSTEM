@@ -1,9 +1,9 @@
 /**
  * Created by Angèle on 09/12/2014.
  */
-/*import java.util.Date;
-//import java.lang.Object;
-//import java.util.Timer;
+import java.util.Date;
+import java.lang.Object;
+import java.util.Timer;
 import java.util.TimerTask;
 //import java.util.*;
 
@@ -43,22 +43,18 @@ public class Timer {
         timer.schedule(new TimerTask() {
             public void run()
             {
-                // System.out.printf ("tache lancee\n");
+                 System.out.printf ("tâche lancée\n");
             }
         }, dateFin);
 
         // Produit devenu périmé
-        int idProdPerime = getId();
-        if (idProdPerime.lieu == "Stock"){		// id.lieu ou id.getLieu ??
-            GestionBDD.supprimerStock (idProdPerime);
+        if (Produit.lieu == "Stock"){
+            GestionBDD.supprimerPerime ("Stock");
         }
-        if (idProdPerime.lieu == "Cuisson"){
-            Gestion_BDD.supprimerCuisson (idProdPerime);
-        }
-        if (idProdPerime.lieu == "Stock"){
-            Vendeur.supprimerProduit (idProdPerime);
+
+        if (Produit.lieu == "Vitrine"){
+            GestionBDD.supprimerPerime ("Vitrine");
         }
     }
 
 }
-*/

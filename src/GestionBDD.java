@@ -118,5 +118,8 @@ public class GestionBDD {
 
 	}
 
+	public void supprimerPerime (String lieu) {	// Le timer a détecté au moins un produit périmé, donc vérifie peremption de tous les produits de la BDD concernée
+												// lieu = "Stock" ou "Vitrine"
+	}
 
 }

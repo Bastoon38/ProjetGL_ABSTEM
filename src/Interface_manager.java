@@ -79,8 +79,6 @@ public class Interface_manager extends JFrame {
 
 
 
-
-
         add(tbp_prinCat);
         setVisible(true);
 
@@ -192,8 +190,6 @@ public class Interface_manager extends JFrame {
         // TODO: place custom component creation code here
     //}
     }
-
-
 
 
 
