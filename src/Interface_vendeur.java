@@ -43,6 +43,7 @@ public class Interface_vendeur extends JFrame {
     private JTable tab_commande;
     private JTable tab_jeter;
     private float total_prix;
+    GestionBDD bdd =new GestionBDD();
 
     public static float round(float d, int decimalPlace) {
         BigDecimal bd = new BigDecimal(Float.toString(d));
@@ -96,6 +97,11 @@ public class Interface_vendeur extends JFrame {
         setTitle("Vendeur");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 1446, 879);
+
+        //Connection avec la BDD
+        //Vector<Produit> vecProduit = new Vector<Produit>();
+        //vecProduit=bdd.recupStockVitrine();
+
         final JLabel lab_prix = new JLabel("");
         JPanel pan_pain = new JPanel();
 
@@ -109,9 +115,10 @@ public class Interface_vendeur extends JFrame {
         JButton btn_raisin = new JButton("Raisiin");
         btn_raisin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                boolean base_de_datos=false;
+                boolean bases_donnees=true;
                 // S'il y a des produits dans la base de donnes
-                if(base_de_datos)
+
+                if(bases_donnees)
                 {
                     JOptionPane.showMessageDialog(null, "Il n'a pas de minute maid raisin", "minute maid raisin", JOptionPane.WARNING_MESSAGE);
                 }

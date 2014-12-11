@@ -55,6 +55,9 @@ public class Timer {
         if (Produit.lieu == "Vitrine"){
             GestionBDD.supprimerPerime ("Vitrine");
         }
+        if (idProdPerime.lieu == "Stock"){
+            Vendeur.supprimerProduit (idProdPerime);
+        }
     }
 
 }

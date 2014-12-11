@@ -1,11 +1,7 @@
 /**
  * Created by Bastien on 29/11/2014.
  */
-
-import javax.swing.*;
-import java.awt.*;
-
-class Main {
+public class Main {
 
     public static void main(String[] args) {
         // IL FAUT COMMENTER LES IHM QUE VOUS NE VOULEZ PAS AFFICHER ET TESTER
@@ -17,7 +13,6 @@ class Main {
        //Connexion frame1 = new Connexion();
        //frame1.setVisible(true);
        //Interface_cuisson Test = new Interface_cuisson();
-       //Manager.JPasswordField2 Test = new Manager.JPasswordField2();    //Test du mot de passe pour la connexion du manager
        //Test.setVisible(true);
 
     }
