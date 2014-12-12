@@ -1,6 +1,6 @@
 
 import java.sql.*;
-import java.util.Date;
+import java.sql.Date;
 import java.util.*;
 
 public class GestionBDD {
@@ -26,28 +26,40 @@ public class GestionBDD {
 
 	}
 
-	public void recupStockVitrine() {
+	public Produit[] recupStockVitrine() {
 
 
 		Connection con = connexion();
 
-		String[][] tab = new String[][]{};
-
+		Produit[] vitrine = null;
+		int rows = 0;
 
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM `vitrine`");
-
-			ResultSetMetaData rsmd = rs.getMetaData();
-			System.out.println("querying SELECT * FROM XXX");
-			int columnsNumber = rsmd.getColumnCount();
+			while (rs.next()) {
+				if (rs.last()) {
+					rows = rs.getRow();
+					// Move to beginning
+					rs.beforeFirst();
+					break;
+				}
+			}
+			vitrine = new Produit[rows];
 			int j = 0;
 			while (rs.next()) {
-				for (int i = 2; i <= columnsNumber; i++) {
-					String columnValue = rs.getString(i);
-					hs.put("ok","ok"); //rsmd.getColumnName(i));
-				}
-				System.out.println("");
+				String nom = rs.getString("PRODUIT");
+				vitrine[j].setNom(nom);
+				int quantite = rs.getInt("QUANTITE");
+				vitrine[j].setQuantite(quantite);
+				Date date = rs.getDate("DATE");
+				vitrine[j].setDate(date);
+				int perime = rs.getInt("PERIME");
+				vitrine[j].setPerime(perime);
+
+				Statement stmt2 = con.createStatement();
+				ResultSet rs2 = stmt2.executeQuery("SELECT `PRIX` FROM `produit`");
+				vitrine[j].setPrix(rs2.getInt("PRIX"));
 			}
 
 		}
@@ -55,6 +67,8 @@ public class GestionBDD {
 			sqle.printStackTrace();
 			System.out.println(sqle.getMessage());
 		}
+
+		return vitrine;
 	}
 
 	public void ajouterStock (String nom, int quantité, Date datePeremption) {	// Ajoute tjrs à la fin de la BDD
