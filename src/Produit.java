@@ -48,7 +48,7 @@ public class Produit {
     }
 
 
-    public void setPrix(int prix)
+    public void setPrix(float prix)
     {
         this.prix=prix;
     }

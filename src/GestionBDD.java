@@ -45,21 +45,24 @@ public class GestionBDD {
 					break;
 				}
 			}
+			System.out.println(rows);
 			vitrine = new Produit[rows];
 			int j = 0;
+			float prix = 0;
 			while (rs.next()) {
 				String nom = rs.getString("PRODUIT");
-				vitrine[j].setNom(nom);
 				int quantite = rs.getInt("QUANTITE");
-				vitrine[j].setQuantite(quantite);
-				Date date = rs.getDate("DATE");
-				vitrine[j].setDate(date);
+				Date date = rs.getDate("DATE_PEREMPTION");
 				int perime = rs.getInt("PERIME");
-				vitrine[j].setPerime(perime);
 
 				Statement stmt2 = con.createStatement();
 				ResultSet rs2 = stmt2.executeQuery("SELECT `PRIX` FROM `produit`");
-				vitrine[j].setPrix(rs2.getInt("PRIX"));
+				if (rs2.next()) {
+					prix = rs2.getFloat("PRIX");
+				}
+
+				vitrine[j] = new Produit(nom,prix,quantite,perime,date);
+				j++;
 			}
 
 		}
