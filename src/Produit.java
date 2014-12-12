@@ -17,6 +17,15 @@ public class Produit {
         this.nom=nom;
     }
 
+
+    public Produit(String obj_name,  float credit, int quant, Date dateperempt) {
+
+        this.nom = obj_name;
+        this.prix= credit;
+        this.quantite = quant;
+        this.dateperempt = dateperempt;
+    }
+
     public Produit(String obj_name,  float credit, int quant, int perime, Date dateperempt) {
 
         this.nom = obj_name;

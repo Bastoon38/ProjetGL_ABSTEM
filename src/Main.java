@@ -14,12 +14,7 @@ public class Main {
         //frame.setVisible(true);
         //Connexion frame1 = new Connexion();
         //frame1.setVisible(true);
-        /*GestionBDD bdd = new GestionBDD();
-        Produit[] test = bdd.recupStockVitrine();
-        int i;
-        for (i=0;i<6;i++){
-            System.out.println("Valeur pour Produit : " + test[i].getNom() + " avec comme quantité : " + test[i].getQuantite());
-        }*/
-
+        GestionBDD bdd = new GestionBDD();
+        bdd.ajouterBilan("Baguette",20);
     }
 }

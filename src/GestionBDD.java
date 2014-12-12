@@ -1,4 +1,5 @@
 
+import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 import java.sql.Date;
 import java.util.*;
@@ -26,7 +27,7 @@ public class GestionBDD {
 
 	}
 
-	public Produit[] recupStockVitrine() {
+	public Produit[] getVitrine() {
 
 
 		Connection con = connexion();
@@ -63,7 +64,13 @@ public class GestionBDD {
 
 				vitrine[j] = new Produit(nom,prix,quantite,perime,date);
 				j++;
+				rs2.close();
+				stmt2.close();
 			}
+
+			rs.close();
+			stmt.close();
+			con.close();
 
 		}
 		catch(SQLException sqle){
@@ -144,6 +151,21 @@ public class GestionBDD {
 	}
 
 	public void ajouterBilan (String nom, int quantite) {	// Ajouter un produit vendu dans le bilan du manager
+		Connection con = connexion();
+		int qte=0;
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT `VENDU` FROM `bilan` WHERE `PRODUIT`='" + nom + "'");
+			if (rs.next()) {
+				qte=rs.getInt("VENDU");
+			}
+			Statement stmt2 = con.createStatement();
+			int qteFinale=qte+quantite;
+			stmt2.executeUpdate("UPDATE `bilan` SET `VENDU`=" + qteFinale + " WHERE `PRODUIT`='" + nom + "'");
+		}
+		catch(SQLException sqle) {
+			sqle.printStackTrace();
+		}
 
 	}
 
@@ -206,5 +228,65 @@ public class GestionBDD {
 	}
 
 	// Rajouter les méthodes pour gérer l'affichage du bilan du manager
+
+
+
+
+	public Produit[] getStock() {
+
+
+		Connection con = connexion();
+
+		Produit[] stock = null;
+		int rows = 0;
+
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM `stock`");
+			while (rs.next()) {
+				if (rs.last()) {
+					rows = rs.getRow();
+					// Move to beginning
+					rs.beforeFirst();
+					break;
+				}
+			}
+			System.out.println(rows);
+			stock = new Produit[rows];
+			int j = 0;
+			float prix = 0;
+			while (rs.next()) {
+				String nom = rs.getString("PRODUIT");
+				int quantite = rs.getInt("QUANTITE");
+				Date date = rs.getDate("DATE_PEREMPTION");
+
+				Statement stmt2 = con.createStatement();
+				ResultSet rs2 = stmt2.executeQuery("SELECT `PRIX` FROM `produit`");
+				if (rs2.next()) {
+					prix = rs2.getFloat("PRIX");
+				}
+
+				stock[j] = new Produit(nom,prix,quantite,date);
+				j++;
+				rs.close();
+				stmt.close();
+			}
+
+			rs.close();
+			stmt.close();
+			con.close();
+
+		}
+		catch(SQLException sqle){
+			sqle.printStackTrace();
+			System.out.println(sqle.getMessage());
+		}
+
+		return stock;
+	}
+
+
+
+
 
 }
