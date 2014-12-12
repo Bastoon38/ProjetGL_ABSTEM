@@ -14,12 +14,13 @@ public class Main {
        //frame.setVisible(true);
        //Connexion frame1 = new Connexion();
        //frame1.setVisible(true);
-        GestionBDD bdd = new GestionBDD();
-        Hashtable hs = bdd.recupStockVitrine();
+        /*GestionBDD bdd = new GestionBDD();
+        bdd.recupStockVitrine();
         int i;
         for (i=0;i<6;i++){
             Object hs2 = hs.get(i);
             System.out.println("Valeur pour Produit : " + hs2.("Produit"));
-        }
+        }*/
+
     }
 }

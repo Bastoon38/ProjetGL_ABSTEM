@@ -3,9 +3,13 @@
  */
 
 import javax.swing.*;
-
 import java.awt.Dimension;
 import java.awt.event.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+
 //import java.util.Comparator;
 
 
@@ -24,7 +28,8 @@ public class Manager {
         }
 
         public void init() {
-            JFrame f = new JFrame("ma fenetre");
+
+            JFrame f = new JFrame("ma fenêtre");
             f.setSize(300, 100);
             JPanel pannel = new JPanel();
 
@@ -41,14 +46,14 @@ public class Manager {
         }
 
         public void actionPerformed(ActionEvent e) {
-            int comparaison = String.copyValueOf(passwordField1.getPassword()).compareToIgnoreCase(String.valueOf(motDePasse));
-            if(comparaison == 0) {	// Si le mot de passe est le bon
-
+            int compare = String.copyValueOf(passwordField1.getPassword()).compareToIgnoreCase(String.valueOf(motDePasse));
+            if(compare == 0) {    // Si le mot de passe est le bon
+                System.out.println("Mot de passe bon");
             }
-            // System.out.println("texte saisie = " + String.copyValueOf(passwordField1.getPassword()));
             else{
-
+                System.out.println("Mot de passe mauvais");
             }
+            System.out.println("texte saisie = " + String.copyValueOf(passwordField1.getPassword()));
         }
 
     }
