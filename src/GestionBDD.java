@@ -1,6 +1,7 @@
 
 import java.sql.*;
 import java.util.Date;
+import java.util.*;
 
 public class GestionBDD {
 
@@ -27,6 +28,33 @@ public class GestionBDD {
 
 	public void recupStockVitrine() {
 
+
+		Connection con = connexion();
+
+		String[][] tab = new String[][]{};
+
+
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM `vitrine`");
+
+			ResultSetMetaData rsmd = rs.getMetaData();
+			System.out.println("querying SELECT * FROM XXX");
+			int columnsNumber = rsmd.getColumnCount();
+			int j = 0;
+			while (rs.next()) {
+				for (int i = 2; i <= columnsNumber; i++) {
+					String columnValue = rs.getString(i);
+					hs.put("ok","ok"); //rsmd.getColumnName(i));
+				}
+				System.out.println("");
+			}
+
+		}
+		catch(SQLException sqle){
+			sqle.printStackTrace();
+			System.out.println(sqle.getMessage());
+		}
 	}
 
 	public void ajouterStock (String nom, int quantité, Date datePeremption) {	// Ajoute tjrs à la fin de la BDD
