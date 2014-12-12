@@ -1,3 +1,5 @@
+import java.util.Hashtable;
+
 /**
  * Created by Bastien on 29/11/2014.
  */
@@ -12,8 +14,12 @@ public class Main {
        //frame.setVisible(true);
        //Connexion frame1 = new Connexion();
        //frame1.setVisible(true);
-        Interface_cuisson Test = new Interface_cuisson();
-        Test.setVisible(true);
-
+        GestionBDD bdd = new GestionBDD();
+        Hashtable hs = bdd.recupStockVitrine();
+        int i;
+        for (i=0;i<6;i++){
+            Object hs2 = hs.get(i);
+            System.out.println("Valeur pour Produit : " + hs2.("Produit"));
+        }
     }
 }
