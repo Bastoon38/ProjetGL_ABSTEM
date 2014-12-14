@@ -46,7 +46,6 @@ public class GestionBDD {
 					break;
 				}
 			}
-			System.out.println(rows);
 			vitrine = new Produit[rows];
 			int j = 0;
 			float prix = 0;
@@ -80,6 +79,59 @@ public class GestionBDD {
 
 		return vitrine;
 	}
+
+	public Produit[] getStock() {
+
+
+		Connection con = connexion();
+
+		Produit[] stock = null;
+		int rows = 0;
+
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM `stock`");
+			while (rs.next()) {
+				if (rs.last()) {
+					rows = rs.getRow();
+					// Move to beginning
+					rs.beforeFirst();
+					break;
+				}
+			}
+			stock = new Produit[rows];
+			int j = 0;
+			float prix = 0;
+			while (rs.next()) {
+				String nom = rs.getString("PRODUIT");
+				int quantite = rs.getInt("QUANTITE");
+				Date date = rs.getDate("DATE_PEREMPTION");
+
+				Statement stmt2 = con.createStatement();
+				ResultSet rs2 = stmt2.executeQuery("SELECT `PRIX` FROM `produit`");
+				if (rs2.next()) {
+					prix = rs2.getFloat("PRIX");
+				}
+
+				stock[j] = new Produit(nom,prix,quantite,date);
+				j++;
+				rs2.close();
+				stmt2.close();
+			}
+
+			rs.close();
+			stmt.close();
+			con.close();
+
+		}
+		catch(SQLException sqle){
+			sqle.printStackTrace();
+			System.out.println(sqle.getMessage());
+		}
+
+		return stock;
+	}
+
 
 	public void ajouterStock (String nom, int quantité, Date datePeremption) {	// Ajoute tjrs à la fin de la BDD
 
@@ -232,58 +284,7 @@ public class GestionBDD {
 
 
 
-	public Produit[] getStock() {
 
-
-		Connection con = connexion();
-
-		Produit[] stock = null;
-		int rows = 0;
-
-		try {
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM `stock`");
-			while (rs.next()) {
-				if (rs.last()) {
-					rows = rs.getRow();
-					// Move to beginning
-					rs.beforeFirst();
-					break;
-				}
-			}
-			System.out.println(rows);
-			stock = new Produit[rows];
-			int j = 0;
-			float prix = 0;
-			while (rs.next()) {
-				String nom = rs.getString("PRODUIT");
-				int quantite = rs.getInt("QUANTITE");
-				Date date = rs.getDate("DATE_PEREMPTION");
-
-				Statement stmt2 = con.createStatement();
-				ResultSet rs2 = stmt2.executeQuery("SELECT `PRIX` FROM `produit`");
-				if (rs2.next()) {
-					prix = rs2.getFloat("PRIX");
-				}
-
-				stock[j] = new Produit(nom,prix,quantite,date);
-				j++;
-				rs.close();
-				stmt.close();
-			}
-
-			rs.close();
-			stmt.close();
-			con.close();
-
-		}
-		catch(SQLException sqle){
-			sqle.printStackTrace();
-			System.out.println(sqle.getMessage());
-		}
-
-		return stock;
-	}
 
 
 
