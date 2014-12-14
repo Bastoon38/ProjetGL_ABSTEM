@@ -351,5 +351,14 @@ public class Interface_cuisson extends JFrame {
         btn_fini5.setBackground(SystemColor.activeCaptionBorder);
         pan_5.add(btn_fini5, gbc5);
 
+        btn_Deconnecter.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+                Connexion connexion = new Connexion();
+                connexion.setVisible(true);
+            }
+        });
+
     }
 }

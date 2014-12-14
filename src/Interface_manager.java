@@ -56,6 +56,9 @@ public class Interface_manager extends JFrame {
     private JPasswordField psw_confirmeChgt;
     private JButton btn_okChangementMotDePasse;
     private JPasswordField psw_ancienMDP;
+    private JPanel pan_panelDeco;
+    private JPanel pan_panel1;
+    private JButton btn_managerDeco;
 
 
     private String motDePasse = "Manager";
@@ -102,8 +105,7 @@ public class Interface_manager extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setMinimumSize(new Dimension(1200,900));
 
-        add(tbp_prinCat);
-        setVisible(true);
+        add(pan_panel1);
 
         ClassLoader classLoader = getClass().getClassLoader();
         URL file = classLoader.getResource("images/param64.png");
@@ -214,6 +216,15 @@ public class Interface_manager extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(null, "bouton param defaut cliqué", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
+        btn_managerDeco.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+                Connexion connexion = new Connexion();
+                connexion.setVisible(true);
             }
         });
 
@@ -350,13 +361,20 @@ public class Interface_manager extends JFrame {
         // TODO: mettre les actions à effectuer quand on clique sur l'onglet ci-dessus
         //JOptionPane.showMessageDialog(null, "Vitrine selectionné", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
 
+        Produit[] tabVitrine = null;
+
+        GestionBDD baseDonnee =  new GestionBDD();
+        tabVitrine = baseDonnee.getVitrine();
+
         //Les données du tableau
         Object[][] data = {
-                {"BAGUETTE", "28"},
-                {"FLUTE", "28"},
-                {"CROISSANT", "24"},
-                {"PAIN AU CHOCOLAT", "32"}
+                {tabVitrine[0].getNom(), tabVitrine[0].getQuantite()},
+                {tabVitrine[1].getNom(), tabVitrine[1].getQuantite()},
+                {tabVitrine[2].getNom(), tabVitrine[2].getQuantite()},
+                {tabVitrine[3].getNom(), tabVitrine[3].getQuantite()},
+                {tabVitrine[4].getNom(), tabVitrine[4].getQuantite()},
         };
+
 
         //Les titres des colonnes
         String  title[] = {"PRODUIT", "NOMBRE EN VITRINE"};
@@ -364,6 +382,7 @@ public class Interface_manager extends JFrame {
         tab_vitrine.setFont(new Font("Serif", Font.PLAIN, 30));
         tab_vitrine.getTableHeader().setFont(new Font("Serif", Font.BOLD, 23));
         updateRowHeights(tab_vitrine);
+        tab_vitrine.setEnabled(false);
         //Nous ajoutons notre tableau à notre contentPane dans un scroll
         //Sinon les titres des colonnes ne s'afficheront pas !
         JScrollPane tbc_vitrine = new JScrollPane(tab_vitrine);
@@ -374,19 +393,18 @@ public class Interface_manager extends JFrame {
         // TODO: mettre les actions à effectuer quand on clique sur l'onglet ci-dessus
         //JOptionPane.showMessageDialog(null, "Stock selectionné", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
 
-        GestionBDD baseDonnee =  new GestionBDD();
         Produit[] tabStock = null;
 
+        GestionBDD baseDonnee =  new GestionBDD();
         tabStock = baseDonnee.getStock();
-
-        System.out.print(tabStock[0].getQuantite());
 
         //Les données du tableau
         Object[][] data = {
                 {tabStock[0].getNom(), tabStock[0].getQuantite()},
-                {"FLUTE", "28"},
-                {"CROISSANT", "24"},
-                {"PAIN AU CHOCOLAT", "32"}
+                {tabStock[1].getNom(), tabStock[1].getQuantite()},
+                {tabStock[2].getNom(), tabStock[2].getQuantite()},
+                {tabStock[3].getNom(), tabStock[3].getQuantite()},
+                {tabStock[4].getNom(), tabStock[4].getQuantite()},
         };
 
         //Les titres des colonnes
@@ -395,6 +413,7 @@ public class Interface_manager extends JFrame {
         tab_stock.setFont(new Font("Serif", Font.PLAIN, 30));
         tab_stock.getTableHeader().setFont(new Font("Serif", Font.BOLD, 23));
         updateRowHeights(tab_stock);
+        tab_stock.setEnabled(false);
         //Nous ajoutons notre tableau à notre contentPane dans un scroll
         //Sinon les titres des colonnes ne s'afficheront pas !
         JScrollPane tbc_stock = new JScrollPane(tab_stock);
