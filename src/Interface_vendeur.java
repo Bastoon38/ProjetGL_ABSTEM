@@ -1206,5 +1206,15 @@ public class Interface_vendeur extends JFrame {
 
         getContentPane().setLayout(groupLayout);
         this.setExtendedState(MAXIMIZED_BOTH);
+
+
+        btn_decon.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+                Connexion connexion = new Connexion();
+                connexion.setVisible(true);
+            }
+        });
     }
 }
