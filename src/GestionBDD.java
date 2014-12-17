@@ -173,37 +173,41 @@ public class GestionBDD {
 
 		try{
 
-			//Class.forName("com.mysql.jdbc.Driver");
-
 			Connection con = connexion();
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT `QUANTITE` FROM `stock` WHERE `PRODUIT`='" + nom + "' ORDER BY `DATE_PEREMPTION`");
 
-			rs.next();
-			int qteStock = rs.getInt("QUANTITE");
+			if (rs.next()) {
+				int qteStock = rs.getInt("QUANTITE");
 
-			if (qteStock > quantite) {
+				if (qteStock > quantite) {
 
-				int val = qteStock - quantite;
-				int res = stmt.executeUpdate("UPDATE `stock` SET `QUANTITE`=" + String.valueOf(val) +" WHERE `PRODUIT`='" + nom + "' ORDER BY `DATE_PEREMPTION`");
+					int val = qteStock - quantite;
+					stmt.executeUpdate("UPDATE `stock` SET `QUANTITE`=" + val + " WHERE `PRODUIT`='" + nom + "' ORDER BY `DATE_PEREMPTION` LIMIT 1");
 
-			}
-			else if (qteStock == quantite) {
-				int res = stmt.executeUpdate("DELETE FROM `stock` WHERE `PRODUIT`='" + nom + "'");
-			}
-			else { // qteStock < quantite
-				Statement stmt2 = con.createStatement();
-				int res = stmt2.executeUpdate("DELETE FROM `stock` WHERE `PRODUIT`='" + nom + "' AND `QUANTITE`=" + qteStock);
-				int qte1 = quantite-qteStock; //on récupère la différence, en positif
-				if (rs.next()) {
-					int val = rs.getInt("QUANTITE") - qte1;
-					res = stmt.executeUpdate("UPDATE `stock` SET `QUANTITE`=" + String.valueOf(val) +" WHERE `PRODUIT`='" + nom + "' ORDER BY `DATE_PEREMPTION`");
-				} else {
-					ret = "Il manque " + qte1 + " " + nom + " au stock";
+				} else if (qteStock == quantite) {
+					stmt.executeUpdate("DELETE FROM `stock` WHERE `PRODUIT`='" + nom + "' ORDER BY `DATE_PEREMPTION` LIMIT 1");
+				} else { // qteStock < quantite
+					Statement stmt2 = con.createStatement();
+					stmt2.executeUpdate("DELETE FROM `stock` WHERE `PRODUIT`='" + nom + "' AND `QUANTITE`=" + qteStock + " ORDER BY `DATE_PEREMPTION` LIMIT 1");
+					int qteDiff = quantite - qteStock; //on récupère la différence, en positif
+					/* Ancienne version avant le récursif, à garder au cas ou
+					if (rs.next()) {
+						int val = rs.getInt("QUANTITE") - qte1;
+						stmt.executeUpdate("UPDATE `stock` SET `QUANTITE`=" + String.valueOf(val) + " WHERE `PRODUIT`='" + nom + "' ORDER BY `DATE_PEREMPTION` LIMIT 1");
+					} else {
+						ret = "Il manque " + qte1 + " " + nom + " au stock";
+					}
+					*/
+					stmt2.close();
+					ret = supprimerStock(nom,qteDiff);
 				}
+			} else {
 
+				ret = "Il manque " + quantite + " " + nom + " au stock";
 			}
 
+			rs.close();
 			stmt.close();
 			con.close();
 
@@ -225,7 +229,7 @@ public class GestionBDD {
 			Connection con = connexion();
 			Statement stmt = con.createStatement();
 
-			int res = stmt.executeUpdate("INSERT INTO `four`(`PRODUIT`,`QUANTITE`,`CUISSON`) VALUES ('" + nom +"'," + String.valueOf(quantite) + ",0)");
+			stmt.executeUpdate("INSERT INTO `four`(`PRODUIT`,`QUANTITE`,`CUISSON`) VALUES ('" + nom +"'," + String.valueOf(quantite) + ",0)");
 
 			stmt.close();
 			con.close();
@@ -239,13 +243,14 @@ public class GestionBDD {
 		return ret;
 	}
 
+	//pour le psg en vitrine
 	public void supprimerCuisson(String nom, int qte) {
 		try{
 
 			Connection con = connexion();
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("DELETE FROM `four` WHERE `PRODUIT`='" + nom + "' AND `QUANTITE`=" + qte);
+			stmt.executeUpdate("DELETE FROM `four` WHERE `PRODUIT`='" + nom + "' AND `QUANTITE`=" + qte + "AND `CUISSON`=1 LIMIT 1");
 
 			stmt.close();
 			con.close();
@@ -264,7 +269,7 @@ public class GestionBDD {
 			Connection con = connexion();
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("UPDATE `four` SET `CUISSON`=1 WHERE `PRODUIT`='" + nom + "' AND `QUANTITE`=" + qte);
+			stmt.executeUpdate("UPDATE `four` SET `CUISSON`=1 WHERE `PRODUIT`='" + nom + "' AND `QUANTITE`=" + qte + " LIMIT 1");
 
 			stmt.close();
 			con.close();
@@ -299,11 +304,50 @@ public class GestionBDD {
 		}
 	}
 
-	public void supprimerVitrine(String nom, int quantite) {
-		boolean fini = false;
-		do{
-		//	fini = Vendeur.supprimerProduit (nom, quantite);           // enlever le commentaire quand vendeur sera ajouté
-		} while (fini != true);
+	public String supprimerVitrine(String nom, int quantite) {
+		String ret = "Suppression vitrine finie";
+
+		try{
+
+			//Class.forName("com.mysql.jdbc.Driver");
+
+			Connection con = connexion();
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT `QUANTITE` FROM `vitrine` WHERE `PRODUIT`='" + nom + "' ORDER BY `DATE_PEREMPTION`");
+
+			if (rs.next()) {
+				int qteVit = rs.getInt("QUANTITE");
+
+				if (qteVit > quantite) {
+
+					int val = qteVit - quantite;
+					stmt.executeUpdate("UPDATE `vitrine` SET `QUANTITE`=" + val + " WHERE `PRODUIT`='" + nom + "' ORDER BY `DATE_PEREMPTION` LIMIT 1");
+
+				} else if (qteVit == quantite) {
+					stmt.executeUpdate("DELETE FROM `vitrine` WHERE `PRODUIT`='" + nom + "' ORDER BY `DATE_PEREMPTION` LIMIT 1");
+				} else { // qteStock < quantite
+					Statement stmt2 = con.createStatement();
+					stmt2.executeUpdate("DELETE FROM `vitrine` WHERE `PRODUIT`='" + nom + "' AND `QUANTITE`=" + qteVit + " LIMIT 1");
+					int qteDiff = quantite - qteVit; //on récupère la différence, en positif, du reste à enlever
+					stmt2.close();
+					ret=supprimerVitrine(nom, qteDiff);
+				}
+			} else {
+
+				ret = "Il manque " + quantite + " " + nom + " dans la vitrine";
+			}
+
+			rs.close();
+			stmt.close();
+			con.close();
+
+
+		}
+		catch(SQLException sqle){
+			sqle.printStackTrace();
+			return sqle.getMessage();
+		}
+		return ret;
 	}
 
 	// Ajouter un produit vendu dans le bilan du manager

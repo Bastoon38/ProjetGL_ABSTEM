@@ -15,6 +15,6 @@ public class Main {
         //Connexion frame1 = new Connexion();
         //frame1.setVisible(true);
         GestionBDD bdd = new GestionBDD();
-        bdd.supprimerCuisson("Baguette",100);
+        System.out.println(bdd.supprimerStock("Baguette",500));
     }
 }
