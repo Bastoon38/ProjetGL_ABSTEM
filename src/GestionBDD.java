@@ -157,8 +157,6 @@ public class GestionBDD {
 			stmt.close();
 			con.close();
 
-
-
 		}
 		catch(SQLException sqle){
 			sqle.printStackTrace();
@@ -191,7 +189,7 @@ public class GestionBDD {
 
 			}
 			else if (qteStock == quantite) {
-				int res = stmt.executeUpdate("DELETE FROM `stock` WHERE `PRODUIT`='" + nom + "' ORDER BY `DATE_PEREMPTION`");
+				int res = stmt.executeUpdate("DELETE FROM `stock` WHERE `PRODUIT`='" + nom + "'");
 			}
 			else { // qteStock < quantite
 				Statement stmt2 = con.createStatement();
@@ -209,8 +207,6 @@ public class GestionBDD {
 			stmt.close();
 			con.close();
 
-
-
 		}
 		catch(SQLException sqle){
 			sqle.printStackTrace();
@@ -226,19 +222,13 @@ public class GestionBDD {
 
 		try{
 
-			//Class.forName("com.mysql.jdbc.Driver");
-
 			Connection con = connexion();
 			Statement stmt = con.createStatement();
 
 			int res = stmt.executeUpdate("INSERT INTO `four`(`PRODUIT`,`QUANTITE`,`CUISSON`) VALUES ('" + nom +"'," + String.valueOf(quantite) + ",0)");
 
-
-
 			stmt.close();
 			con.close();
-
-
 
 		}
 		catch(SQLException sqle){
@@ -249,8 +239,21 @@ public class GestionBDD {
 		return ret;
 	}
 
-	public void supprimerCuisson(String nom) {
+	public void supprimerCuisson(String nom, int qte) {
+		try{
 
+			Connection con = connexion();
+			Statement stmt = con.createStatement();
+
+			stmt.executeUpdate("DELETE FROM `four` WHERE `PRODUIT`='" + nom + "' AND `QUANTITE`=" + qte);
+
+			stmt.close();
+			con.close();
+
+		}
+		catch(SQLException sqle){
+			sqle.printStackTrace();
+		}
 	}
 
 	//mise à jour d'un produit en "attente de cuisson" à "en cuisson"

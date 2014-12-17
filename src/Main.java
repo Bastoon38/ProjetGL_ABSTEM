@@ -15,6 +15,6 @@ public class Main {
         //Connexion frame1 = new Connexion();
         //frame1.setVisible(true);
         GestionBDD bdd = new GestionBDD();
-        bdd.majCuisson("Brioche sucre",10);
+        bdd.supprimerCuisson("Baguette",100);
     }
 }
