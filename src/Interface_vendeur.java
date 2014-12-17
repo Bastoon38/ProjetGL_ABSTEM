@@ -3,47 +3,51 @@
  */
 import java.awt.EventQueue;
 
-        import javax.swing.ImageIcon;
-        import javax.swing.JFrame;
-        import javax.swing.JPanel;
-        import javax.swing.border.EmptyBorder;
-        import javax.swing.table.DefaultTableModel;
-        import javax.swing.JButton;
-        import javax.swing.JLabel;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 
-        import java.awt.Font;
-        import java.awt.GridBagLayout;
-        import java.awt.GridBagConstraints;
-        import java.awt.Insets;
+import java.awt.Font;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 
-        import javax.swing.GroupLayout;
-        import javax.swing.GroupLayout.Alignment;
-        import javax.swing.JOptionPane;
-        import javax.swing.JScrollPane;
-        import javax.swing.SwingConstants;
-        import javax.swing.JEditorPane;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
+import javax.swing.JEditorPane;
 
-        import java.awt.event.ActionListener;
-        import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
-        import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
-        import java.awt.GridLayout;
-        import java.math.BigDecimal;
-        import java.text.DecimalFormat;
+import java.awt.GridLayout;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 
-        import javax.swing.JList;
-        import javax.swing.JSplitPane;
-        import javax.swing.JTextField;
-        import javax.swing.JTable;
+import javax.swing.JList;
+import javax.swing.JSplitPane;
+import javax.swing.JTextField;
+import javax.swing.JTable;
 
 
 
 public class Interface_vendeur extends JFrame {
     private JTable tab_commande;
     private JTable tab_jeter;
-    private float total_prix;
-    GestionBDD bdd =new GestionBDD();
+    private float total_prix=0;
+    ArrayList<Produit> vitrine =new ArrayList <Produit>();
+    ArrayList<Produit> commande =new ArrayList <Produit>();
+    ArrayList<Produit> jeter =new ArrayList <Produit>();
+    // GestionBDD bdd =new GestionBDD();
 
     public static float round(float d, int decimalPlace) {
         BigDecimal bd = new BigDecimal(Float.toString(d));
@@ -94,6 +98,7 @@ public class Interface_vendeur extends JFrame {
      * Create the frame.
      */
     public Interface_vendeur() {
+
         setTitle("Vendeur");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 1446, 879);
@@ -116,7 +121,7 @@ public class Interface_vendeur extends JFrame {
         JButton btn_raisin = new JButton("Raisiin");
         btn_raisin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                boolean bases_donnees=true;
+                boolean bases_donnees=false;
                 // S'il y a des produits dans la base de donnes
 
                 if(bases_donnees)
@@ -444,43 +449,43 @@ public class Interface_vendeur extends JFrame {
         });
         GroupLayout gl_pan_boisson = new GroupLayout(pan_boisson);
         gl_pan_boisson.setHorizontalGroup(
-                gl_pan_boisson.createParallelGroup(Alignment.TRAILING)
+                gl_pan_boisson.createParallelGroup(Alignment.LEADING)
                         .addGroup(gl_pan_boisson.createSequentialGroup()
-                                .addContainerGap(45, Short.MAX_VALUE)
-                                .addGroup(gl_pan_boisson.createParallelGroup(Alignment.TRAILING)
-                                        .addComponent(btn_raisin, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE)
+                                .addGap(120)
+                                .addComponent(lblBoisson)
+                                .addContainerGap(124, Short.MAX_VALUE))
+                        .addGroup(Alignment.TRAILING, gl_pan_boisson.createSequentialGroup()
+                                .addContainerGap(97, Short.MAX_VALUE)
+                                .addGroup(gl_pan_boisson.createParallelGroup(Alignment.LEADING)
                                         .addComponent(btn_pomme, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE)
                                         .addComponent(btn_orange, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE)
                                         .addComponent(btn_oasis, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE)
                                         .addComponent(btn_sprite, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE)
                                         .addComponent(btn_fanta, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(btn_coca, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE))
-                                .addGap(24))
-                        .addGroup(Alignment.LEADING, gl_pan_boisson.createSequentialGroup()
-                                .addGap(120)
-                                .addComponent(lblBoisson)
-                                .addContainerGap(124, Short.MAX_VALUE))
+                                        .addComponent(btn_coca, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(btn_raisin, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE))
+                                .addGap(79))
         );
         gl_pan_boisson.setVerticalGroup(
                 gl_pan_boisson.createParallelGroup(Alignment.LEADING)
                         .addGroup(gl_pan_boisson.createSequentialGroup()
                                 .addGap(23)
                                 .addComponent(lblBoisson)
-                                .addGap(18)
+                                .addGap(27)
                                 .addComponent(btn_coca, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
-                                .addGap(18)
+                                .addGap(41)
                                 .addComponent(btn_fanta, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
-                                .addGap(18)
+                                .addGap(42)
                                 .addComponent(btn_sprite, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
-                                .addGap(18)
+                                .addGap(38)
                                 .addComponent(btn_oasis, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
-                                .addGap(18)
+                                .addGap(42)
                                 .addComponent(btn_orange, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
-                                .addGap(18)
+                                .addPreferredGap(ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                                 .addComponent(btn_pomme, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
-                                .addGap(18)
+                                .addGap(37)
                                 .addComponent(btn_raisin, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(54, Short.MAX_VALUE))
+                                .addGap(36))
         );
         this.setExtendedState(MAXIMIZED_BOTH);
         pan_boisson.setLayout(gl_pan_boisson);
@@ -520,9 +525,16 @@ public class Interface_vendeur extends JFrame {
         btn_payer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                Interface_paiement paiement=new Interface_paiement();
-                paiement.setVisible(true);
-                paiement.setLocationRelativeTo(null);
+                if(total_prix>0)
+                {
+                    Interface_paiement paiement=new Interface_paiement(total_prix);
+                    paiement.setVisible(true);
+                    paiement.setLocationRelativeTo(null);
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "Merci d'ajouter des produits", "Commande Vide", JOptionPane.WARNING_MESSAGE);
+                }
 
             }
         });
@@ -832,11 +844,11 @@ public class Interface_vendeur extends JFrame {
                                                 .addGroup(gl_pan_vienn.createParallelGroup(Alignment.LEADING)
                                                         .addComponent(btn_crois, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(btn_tartepra, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(btn_tartecitron, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(btn_painaulait, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(btn_painauchoc, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(btn_sucre, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE))))
-                                .addContainerGap(101, Short.MAX_VALUE))
+                                                        .addComponent(btn_sucre, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(btn_painaulait, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(btn_tartecitron, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE))))
+                                .addContainerGap(40, Short.MAX_VALUE))
         );
         gl_pan_vienn.setVerticalGroup(
                 gl_pan_vienn.createParallelGroup(Alignment.LEADING)
@@ -845,15 +857,15 @@ public class Interface_vendeur extends JFrame {
                                 .addComponent(lblVie)
                                 .addGap(18)
                                 .addComponent(btn_crois, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                                .addGap(59)
                                 .addComponent(btn_painauchoc, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE)
-                                .addGap(41)
+                                .addGap(59)
                                 .addComponent(btn_sucre, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE)
-                                .addGap(36)
+                                .addGap(62)
                                 .addComponent(btn_painaulait, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE)
-                                .addGap(36)
+                                .addPreferredGap(ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
                                 .addComponent(btn_tartecitron, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE)
-                                .addGap(31)
+                                .addGap(59)
                                 .addComponent(btn_tartepra, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE)
                                 .addGap(31))
         );
@@ -1041,22 +1053,25 @@ public class Interface_vendeur extends JFrame {
                 groupLayout.createParallelGroup(Alignment.LEADING)
                         .addGroup(groupLayout.createSequentialGroup()
                                 .addComponent(pan_pain, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addGap(10)
-                                .addComponent(pan_vienn, GroupLayout.PREFERRED_SIZE, 337, GroupLayout.PREFERRED_SIZE)
-                                .addGap(18)
-                                .addComponent(pan_boisson, GroupLayout.PREFERRED_SIZE, 320, GroupLayout.PREFERRED_SIZE)
-                                .addGap(18)
-                                .addComponent(pan_commande, GroupLayout.PREFERRED_SIZE, 389, GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
+                                .addComponent(pan_vienn, GroupLayout.PREFERRED_SIZE, 440, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(ComponentPlacement.RELATED)
+                                .addComponent(pan_boisson, GroupLayout.PREFERRED_SIZE, 427, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(ComponentPlacement.RELATED)
+                                .addComponent(pan_commande, GroupLayout.PREFERRED_SIZE, 577, GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())
         );
         groupLayout.setVerticalGroup(
                 groupLayout.createParallelGroup(Alignment.LEADING)
-                        .addComponent(pan_vienn, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(pan_boisson, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                         .addGroup(groupLayout.createSequentialGroup()
                                 .addGap(11)
-                                .addComponent(pan_commande, GroupLayout.PREFERRED_SIZE, 837, GroupLayout.PREFERRED_SIZE))
-                        .addGroup(groupLayout.createSequentialGroup()
-                                .addComponent(pan_pain, GroupLayout.DEFAULT_SIZE, 837, Short.MAX_VALUE)
+                                .addComponent(pan_commande, GroupLayout.PREFERRED_SIZE, 837, GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(142, Short.MAX_VALUE))
+                        .addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+                                .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+                                        .addComponent(pan_vienn, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 974, Short.MAX_VALUE)
+                                        .addComponent(pan_boisson, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 974, Short.MAX_VALUE)
+                                        .addComponent(pan_pain, GroupLayout.DEFAULT_SIZE, 974, Short.MAX_VALUE))
                                 .addContainerGap())
         );
 
@@ -1206,15 +1221,9 @@ public class Interface_vendeur extends JFrame {
 
         getContentPane().setLayout(groupLayout);
         this.setExtendedState(MAXIMIZED_BOTH);
-
-
-        btn_decon.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-                Connexion connexion = new Connexion();
-                connexion.setVisible(true);
-            }
-        });
     }
+
 }
+
+
+

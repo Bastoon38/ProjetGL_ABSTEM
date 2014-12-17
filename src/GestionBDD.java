@@ -70,7 +70,7 @@ public class GestionBDD {
 					prix = rs2.getFloat("PRIX");
 				}
 
-				vitrine[j] = new Produit(nom,prix,quantite,perime,date);
+				vitrine[j] = new Produit(nom,prix,quantite,date,perime);
 				j++;
 				rs2.close();
 				stmt2.close();

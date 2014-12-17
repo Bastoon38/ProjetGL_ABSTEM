@@ -4,37 +4,37 @@
 import java.text.DecimalFormat;
 import  java.sql.Date;
 
+import java.text.DecimalFormat;
+
 public class Produit {
 
 
-    private String nom;
-    private float prix;
-    private int quantite=0; //utile pour le panier
-    private int perime=0;
-    private Date dateperempt = getDate();
+    public String nom;
+    public float prix=0;
+    public int quantite=0; //utile pour le panier
+    public Date date;
+    public int perime;
 
-    public Produit (String nom) {
-        this.nom=nom;
-    }
-
-
-    public Produit(String obj_name,  float credit, int quant, Date dateperempt) {
+    public Produit(String obj_name,  float credit, int quant, Date date) {
 
         this.nom = obj_name;
         this.prix= credit;
-        this.quantite = quant;
-        this.dateperempt = dateperempt;
+        this.quantite = 0;
+        this.date=date;
     }
-
-    public Produit(String obj_name,  float credit, int quant, int perime, Date dateperempt) {
+    public Produit(String obj_name,  float credit, int quant, Date date, int perime) {
 
         this.nom = obj_name;
         this.prix= credit;
-        this.quantite = quant;
+        this.quantite = 0;
+        this.date=date;
         this.perime=perime;
-        this.dateperempt = dateperempt;
     }
-
+    //get Methods
+    public String getNom()
+    {
+        return this.nom;
+    }
     public float getPrix()
     {
         return this.prix;
@@ -43,40 +43,26 @@ public class Produit {
     {
         return this.quantite;
     }
-    
-    public String getNom() {
-        return this.nom;
-    }
-
-    public int getPerime() {
+    public int getPerime()
+    {
         return this.perime;
     }
-
-    public Date getDate() {
-        return this.dateperempt;
+    // set Methods
+    public void setNom(String nom)
+    {
+        this.nom=nom;
     }
-
-
     public void setPrix(float prix)
     {
         this.prix=prix;
     }
-    public void setQuantite(int quantite)
+    public void setQuantite(int quant)
     {
-        this.quantite=quantite;
+        this.quantite=quant;
     }
-
-    public void setNom(String nom) {
-        this.nom=nom;
-    }
-
-    public void setPerime(int perime) {
+    public void setPerime(int perime)
+    {
         this.perime=perime;
     }
-
-    public void setDate(Date date) {
-        this.dateperempt=date;
-    }
-
 
 }

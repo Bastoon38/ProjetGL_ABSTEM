@@ -1,7 +1,4 @@
 /**
- * Created by Elio on 11/12/2014.
- */
-/**
  * Created by Elio on 29/11/2014.
  */
 import java.awt.EventQueue;
@@ -15,6 +12,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -39,6 +38,7 @@ import javax.swing.JList;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 
 
 
@@ -46,7 +46,10 @@ public class Interface_paiement extends JFrame {
 
     private float total_prix=0;
     private boolean paye=false;
+    private boolean billet=false;
     private JTextField textField;
+
+
     public static float round(float d, int decimalPlace) {
         BigDecimal bd = new BigDecimal(Float.toString(d));
         bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
@@ -57,9 +60,11 @@ public class Interface_paiement extends JFrame {
     /**
      * Create the frame.
      */
-    public Interface_paiement() {
+    public Interface_paiement(float total_ihm_vendeur) {
+        this.total_prix=total_ihm_vendeur;
+        //System.out.println(total_ihm_vendeur);
         setTitle("Paiement");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 1446, 879);
         JPanel pan_pain = new JPanel();
 
@@ -67,16 +72,17 @@ public class Interface_paiement extends JFrame {
 
         JPanel pan_boisson = new JPanel();
         final JButton btnBillet = new JButton("Billet");
-        final JButton btn_cheque = new JButton("Cheque");
+        final JButton btnCheque = new JButton("Cheque");
         final JButton btnCb = new JButton("CB");
         btnCb.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
                 paye=true;
+                billet=false;
                 btnCb.setBorderPainted(true);
                 btnCb.setBorder(BorderFactory.createLineBorder(Color.green,12));
                 btnBillet.setBorderPainted(false);
-                btn_cheque.setBorderPainted(false);
+                btnCheque.setBorderPainted(false);
             }
         });
         GroupLayout gl_pan_boisson = new GroupLayout(pan_boisson);
@@ -101,10 +107,11 @@ public class Interface_paiement extends JFrame {
         btnBillet.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 paye=true;
+                billet=true;
                 btnBillet.setBorderPainted(true);
                 btnBillet.setBorder(BorderFactory.createLineBorder(Color.green,12));
                 btnCb.setBorderPainted(false);
-                btn_cheque.setBorderPainted(false);
+                btnCheque.setBorderPainted(false);
             }
         });
 
@@ -114,9 +121,34 @@ public class Interface_paiement extends JFrame {
 
                 if(paye)
                 {
-                    //Supprimer les produits de la commande dans la base de donnès
-                    JOptionPane.showMessageDialog(null, "Paiement accepté", "Paiement accepté", JOptionPane.WARNING_MESSAGE);
-                    dispose();
+                    if(billet)
+                    {
+                        Interface_billet ibillet=new Interface_billet(total_prix);
+                        ibillet.setVisible(true);
+                        ibillet.setLocationRelativeTo(null);
+                        setVisible(false);
+                    }
+                    else
+                    {
+                        //JOptionPane.showMessageDialog(null, "Paiement accepté", "Paiement accepté", JOptionPane.WARNING_MESSAGE);
+                        int result = JOptionPane.showConfirmDialog((Component) null, "Voulez vous confirmer le paiement ?",
+                                "Confirmer paiement ?", JOptionPane.OK_CANCEL_OPTION);
+                        if (result == JOptionPane.YES_OPTION)
+                        {
+
+                            //Supprimer les produits de la commande dans la base de donnès
+
+                            JOptionPane.showMessageDialog(null, "Paiement accepté", "Paiement accepté", JOptionPane.WARNING_MESSAGE);
+                            //Aller à la page principal du vendeur
+                            dispose();
+                            // Il faut mettre à zero l'interface vendeur (supprimer les produits dans la base de données et vider la liste des commandes)
+
+                        }
+                        else
+                        {
+
+                        }
+                    }
                 }
                 else
                 {
@@ -156,25 +188,29 @@ public class Interface_paiement extends JFrame {
         pan_vienn.setLayout(gl_pan_vienn);
 
 
-        btn_cheque.addActionListener(new ActionListener() {
+        btnCheque.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
 
                 paye=true;
-
+                billet=false;
                 btnCb.setBorderPainted(false);
                 btnBillet.setBorderPainted(false);
-                btn_cheque.setBorderPainted(true);
-                btn_cheque.setBorder(BorderFactory.createLineBorder(Color.green,12));
+                btnCheque.setBorderPainted(true);
+                btnCheque.setBorder(BorderFactory.createLineBorder(Color.green,12));
             }
         });
 
-        JLabel label = new JLabel("\u20AC");
+        JLabel label = new JLabel();
         label.setFont(new Font("Tahoma", Font.PLAIN, 44));
 
-        textField = new JTextField();
+        textField = new JTextField(100);
+        textField.setHorizontalAlignment(SwingConstants.LEFT);
         textField.setFont(new Font("Tahoma", Font.PLAIN, 40));
         textField.setColumns(10);
         textField.setText(Float.toString(total_prix));
+
+        JLabel lab_payer = new JLabel("TOTAL PAYER");
+        lab_payer.setFont(new Font("Tahoma", Font.PLAIN, 28));
 
         GroupLayout gl_pan_pain = new GroupLayout(pan_pain);
         gl_pan_pain.setHorizontalGroup(
@@ -182,26 +218,29 @@ public class Interface_paiement extends JFrame {
                         .addGroup(gl_pan_pain.createSequentialGroup()
                                 .addGap(61)
                                 .addGroup(gl_pan_pain.createParallelGroup(Alignment.TRAILING)
+                                        .addComponent(btnCheque, GroupLayout.PREFERRED_SIZE, 473, GroupLayout.PREFERRED_SIZE)
                                         .addGroup(gl_pan_pain.createSequentialGroup()
-                                                .addComponent(textField, GroupLayout.PREFERRED_SIZE, 216, GroupLayout.PREFERRED_SIZE)
+                                                .addGroup(gl_pan_pain.createParallelGroup(Alignment.TRAILING, false)
+                                                        .addComponent(lab_payer, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(textField, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE))
                                                 .addGap(28)
                                                 .addComponent(label, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)
-                                                .addGap(48))
-                                        .addComponent(btn_cheque, GroupLayout.PREFERRED_SIZE, 473, GroupLayout.PREFERRED_SIZE))
+                                                .addGap(48)))
                                 .addContainerGap(52, Short.MAX_VALUE))
         );
         gl_pan_pain.setVerticalGroup(
                 gl_pan_pain.createParallelGroup(Alignment.LEADING)
                         .addGroup(gl_pan_pain.createSequentialGroup()
                                 .addGap(67)
-                                .addComponent(btn_cheque, GroupLayout.PREFERRED_SIZE, 319, GroupLayout.PREFERRED_SIZE)
-                                .addGroup(gl_pan_pain.createParallelGroup(Alignment.LEADING)
+                                .addComponent(btnCheque, GroupLayout.PREFERRED_SIZE, 319, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(ComponentPlacement.RELATED, 265, Short.MAX_VALUE)
+                                .addGroup(gl_pan_pain.createParallelGroup(Alignment.TRAILING)
                                         .addGroup(gl_pan_pain.createSequentialGroup()
-                                                .addGap(279)
+                                                .addComponent(lab_payer, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(ComponentPlacement.UNRELATED)
                                                 .addComponent(textField, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
                                                 .addContainerGap())
-                                        .addGroup(Alignment.TRAILING, gl_pan_pain.createSequentialGroup()
-                                                .addPreferredGap(ComponentPlacement.RELATED, 265, Short.MAX_VALUE)
+                                        .addGroup(gl_pan_pain.createSequentialGroup()
                                                 .addComponent(label, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE)
                                                 .addGap(209))))
         );
