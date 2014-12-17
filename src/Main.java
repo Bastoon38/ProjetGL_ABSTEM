@@ -15,10 +15,7 @@ public class Main {
         //Connexion frame1 = new Connexion();
         //frame1.setVisible(true);
         GestionBDD bdd = new GestionBDD();
-        Produit[] prod = bdd.getStock();
-        int i;
-        for (i = 0; i<5 ; i++) {
-            System.out.println(prod[i].getNom() + ", " + prod[i].getQuantite() + ", " + prod[i].getPrix() + ", " + prod[i].getDate());
-        }
+        System.out.println(bdd.ajouterStock("Baguette",255, "2015-12-15 19:30:30"));
+
     }
 }

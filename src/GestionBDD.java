@@ -133,8 +133,28 @@ public class GestionBDD {
 	}
 
 
-	public void ajouterStock (String nom, int quantité, Date datePeremption) {	// Ajoute tjrs à la fin de la BDD
+	public String ajouterStock (String nom, int quantite, String datePeremption) {	// Ajoute tjrs à la fin de la BDD
+		String ret = "Ajout du stock finie";
 
+		try{
+
+			Connection con = connexion();
+			Statement stmt = con.createStatement();
+
+			stmt.executeUpdate("INSERT INTO `Stock`(`PRODUIT`,`QUANTITE`,`DATE_PEREMPTION`) VALUES ('" + nom + "'," + quantite + ",'" + datePeremption + "')");
+
+			stmt.close();
+			con.close();
+
+
+
+		}
+		catch(SQLException sqle){
+			sqle.printStackTrace();
+			return sqle.getMessage();
+		}
+
+		return ret;
 	}
 
 	//mise en cuisson du produit, suppression du stock
@@ -148,7 +168,7 @@ public class GestionBDD {
 
 			Connection con = connexion();
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT `QUANTITE` FROM Stock WHERE `PRODUIT`='" + nom + "'");
+			ResultSet rs = stmt.executeQuery("SELECT `QUANTITE` FROM `Stock` WHERE `PRODUIT`='" + nom + "' ORDER BY `DATE_PEREMPTION`");
 
 			rs.next();
 			int qteStock = rs.getInt("QUANTITE");
@@ -156,11 +176,11 @@ public class GestionBDD {
 			if (qteStock > quantite) {
 
 				int val = qteStock - quantite;
-				int res = stmt.executeUpdate("UPDATE `Stock` SET `QUANTITE`=" + String.valueOf(val) +" WHERE `PRODUIT`='" + nom + "'");
+				int res = stmt.executeUpdate("UPDATE `Stock` SET `QUANTITE`=" + String.valueOf(val) +" WHERE `PRODUIT`='" + nom + "' ORDER BY `DATE_PEREMPTION`");
 
 			}
 			else if (qteStock == quantite) {
-				int res = stmt.executeUpdate("DELETE FROM `Stock` WHERE `PRODUIT`='" + nom + "'");
+				int res = stmt.executeUpdate("DELETE FROM `Stock` WHERE `PRODUIT`='" + nom + "' ORDER BY `DATE_PEREMPTION`");
 			}
 			else { // qteStock < quantite
 				Statement stmt2 = con.createStatement();
@@ -168,7 +188,7 @@ public class GestionBDD {
 				int qte1 = quantite-qteStock; //on récupère la différence, en positif
 				if (rs.next()) {
 					int val = rs.getInt("QUANTITE") - qte1;
-					res = stmt.executeUpdate("UPDATE `Stock` SET `QUANTITE`=" + String.valueOf(val) +" WHERE `PRODUIT`='" + nom + "'");
+					res = stmt.executeUpdate("UPDATE `Stock` SET `QUANTITE`=" + String.valueOf(val) +" WHERE `PRODUIT`='" + nom + "' ORDER BY `DATE_PEREMPTION`");
 				} else {
 					ret = "Il manque " + qte1 + " " + nom + " au stock";
 				}
