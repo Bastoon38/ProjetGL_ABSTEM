@@ -144,7 +144,7 @@ public class GestionBDD {
 
 	//AJOUT & SUPPR ****************************************
 	//STOCK ****************************************
-	public String ajouterStock (String nom, int quantite, String datePeremption) {	// Ajoute tjrs à la fin de la BDD
+	public String ajouterStock(String nom, int quantite, String datePeremption) {	// Ajoute tjrs à la fin de la BDD
 		String ret = "Ajout du stock finie";
 
 		try{
@@ -220,8 +220,8 @@ public class GestionBDD {
 		return ret;
 	}
 
-	//AJOUT & SUPPR CUISSON ****************************************
-	public String ajouterCuisson (String nom, int quantite) {
+	//AJOUT & SUPPR & MAJ CUISSON ****************************************
+	public String ajouterCuisson(String nom, int quantite) {
 		String ret = "Ajout de la cuissie complétée";
 
 		try{
@@ -249,14 +249,34 @@ public class GestionBDD {
 		return ret;
 	}
 
-	public void supprimerCuisson (String nom) {
+	public void supprimerCuisson(String nom) {
 
+	}
+
+	//mise à jour d'un produit en "attente de cuisson" à "en cuisson"
+	public void majCuisson(String nom, int qte) {
+
+		try{
+
+			Connection con = connexion();
+			Statement stmt = con.createStatement();
+
+			stmt.executeUpdate("UPDATE `four` SET `CUISSON`=1 WHERE `PRODUIT`='" + nom + "' AND `QUANTITE`=" + qte);
+
+			stmt.close();
+			con.close();
+
+
+
+		}
+		catch(SQLException sqle){
+			sqle.printStackTrace();
+		}
 	}
 
 	//AJOUT & SUPPR VITRINE ****************************************
 	//Ajout d'un produit cuisson finie en vitrine
-	public String ajouterVitrine (String nom, int quantite, String datePerempt) {
-		String ret = "Ajout en vitrine finie";
+	public void ajouterVitrine (String nom, int quantite, String datePerempt) {
 
 		try{
 
@@ -273,13 +293,10 @@ public class GestionBDD {
 		}
 		catch(SQLException sqle){
 			sqle.printStackTrace();
-			return sqle.getMessage();
 		}
-
-		return ret;
 	}
 
-	public void supprimerVitrine (String nom, int quantite) {
+	public void supprimerVitrine(String nom, int quantite) {
 		boolean fini = false;
 		do{
 		//	fini = Vendeur.supprimerProduit (nom, quantite);           // enlever le commentaire quand vendeur sera ajouté
@@ -287,7 +304,7 @@ public class GestionBDD {
 	}
 
 	// Ajouter un produit vendu dans le bilan du manager
-	public void ajouterBilan (String nom, int quantite) {
+	public void ajouterBilan(String nom, int quantite) {
 		Connection con = connexion();
 		int qte=0;
 		try {
@@ -306,7 +323,7 @@ public class GestionBDD {
 
 	}
 
-	public void majPrix (String nom, float nouveauPrix) {
+	public void majPrix(String nom, float nouveauPrix) {
 		Connection con = connexion();
 		try {
 			Statement stmt = con.createStatement();
@@ -325,7 +342,7 @@ public class GestionBDD {
 
 	}
 
-	public void ajouterCommandeFournisseur (String nom) {
+	public void ajouterCommandeFournisseur(String nom) {
 		int quantite = getQuantiteParametree(nom);
 		// Ajouter nom et quantite à la commande fournisseur
 	}
