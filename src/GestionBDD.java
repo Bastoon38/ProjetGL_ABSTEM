@@ -11,7 +11,7 @@ public class GestionBDD {
 		try {
 			String url = "jdbc:mysql://localhost/albm_dev";
 			String login = "root";
-			String password = "root";
+			String password = "";
 			Connection con = DriverManager.getConnection(url,login,password);
 			return con;
 		}
@@ -36,6 +36,7 @@ public class GestionBDD {
 
 
 	//GETTER ****************************************
+	//GETTER ****************************************
 	public Produit[] getVitrine() {
 
 
@@ -46,7 +47,7 @@ public class GestionBDD {
 
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM `vitrine`");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM vitrine,produit WHERE vitrine.produit = produit.produit ");
 			while (rs.next()) {
 				if (rs.last()) {
 					rows = rs.getRow();
@@ -57,23 +58,19 @@ public class GestionBDD {
 			}
 			vitrine = new Produit[rows];
 			int j = 0;
-			float prix = 0;
+
 			while (rs.next()) {
 				String nom = rs.getString("PRODUIT");
 				int quantite = rs.getInt("QUANTITE");
 				Date date = rs.getDate("DATE_PEREMPTION");
+				Time time =rs.getTime("DATE_PEREMPTION");
 				int perime = rs.getInt("PERIME");
+				float prix = rs.getFloat("PRIX");
 
-				Statement stmt2 = con.createStatement();
-				ResultSet rs2 = stmt2.executeQuery("SELECT `PRIX` FROM `produit`");
-				if (rs2.next()) {
-					prix = rs2.getFloat("PRIX");
-				}
 
-				vitrine[j] = new Produit(nom,prix,quantite,date,perime);
+				vitrine[j] = new Produit(nom,prix,quantite,date,time,perime);
 				j++;
-				rs2.close();
-				stmt2.close();
+
 			}
 
 			rs.close();

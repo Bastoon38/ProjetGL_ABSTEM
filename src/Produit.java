@@ -3,7 +3,7 @@
  */
 import java.text.DecimalFormat;
 import  java.sql.Date;
-
+import java.sql.Time;
 import java.text.DecimalFormat;
 
 public class Produit {
@@ -13,21 +13,24 @@ public class Produit {
     public float prix=0;
     public int quantite=0; //utile pour le panier
     public Date date;
+    public Time time;
     public int perime;
 
     public Produit(String obj_name,  float credit, int quant, Date date) {
 
         this.nom = obj_name;
         this.prix= credit;
-        this.quantite = 0;
+        this.quantite =quant;
         this.date=date;
+        //  this.time=time;
     }
-    public Produit(String obj_name,  float credit, int quant, Date date, int perime) {
+    public Produit(String obj_name,  float credit, int quant, Date date,Time time, int perime) {
 
         this.nom = obj_name;
         this.prix= credit;
-        this.quantite = 0;
+        this.quantite =quant;
         this.date=date;
+        this.time=time;
         this.perime=perime;
     }
     //get Methods
@@ -42,6 +45,14 @@ public class Produit {
     public int getQuantite()
     {
         return this.quantite;
+    }
+    public Date getDate()
+    {
+        return this.date;
+    }
+    public Time getTime()
+    {
+        return this.time;
     }
     public int getPerime()
     {
@@ -59,6 +70,14 @@ public class Produit {
     public void setQuantite(int quant)
     {
         this.quantite=quant;
+    }
+    public void setDate(Date date)
+    {
+        this.date=date;
+    }
+    public void setTime(Time time)
+    {
+        this.time=time;;
     }
     public void setPerime(int perime)
     {

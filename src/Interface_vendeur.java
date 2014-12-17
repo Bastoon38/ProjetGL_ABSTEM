@@ -44,10 +44,12 @@ public class Interface_vendeur extends JFrame {
     private JTable tab_commande;
     private JTable tab_jeter;
     private float total_prix=0;
-    ArrayList<Produit> vitrine =new ArrayList <Produit>();
-    ArrayList<Produit> commande =new ArrayList <Produit>();
-    ArrayList<Produit> jeter =new ArrayList <Produit>();
-    // GestionBDD bdd =new GestionBDD();
+    //vector produits
+    Produit[] vitrine = null;
+    Produit[] commande =null;
+    Produit[] jeter =null;
+
+
 
     public static float round(float d, int decimalPlace) {
         BigDecimal bd = new BigDecimal(Float.toString(d));
@@ -104,8 +106,17 @@ public class Interface_vendeur extends JFrame {
         setBounds(100, 100, 1446, 879);
 
         //Connection avec la BDD
-        //Vector<Produit> vecProduit = new Vector<Produit>();
-        //vecProduit=bdd.recupStockVitrine();
+        GestionBDD base= new GestionBDD();
+        vitrine=base.getVitrine();
+        for(int i=0 ; i<vitrine.length; i++)
+        {
+            System.out.println (vitrine[i].getNom());
+            System.out.println (vitrine[i].getQuantite());
+            System.out.println (vitrine[i].getPrix());
+            System.out.println (vitrine[i].getPerime());
+            System.out.println (vitrine[i].getDate());
+            System.out.println (vitrine[i].getTime());
+        }
 
 
         final JLabel lab_prix = new JLabel("");
