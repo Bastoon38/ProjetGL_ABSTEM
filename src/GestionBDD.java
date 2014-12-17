@@ -22,11 +22,20 @@ public class GestionBDD {
 		}
 	}
 
+
+	//GESTION PERIME VITRINE ****************************************
 	//verif les produits périmés en vitrine
 	public void verifVitrine(String nom_prod) {
 
 	}
 
+	public static void supprimerPerime (String lieu) {	// Le timer a détecté au moins un produit périmé, donc vérifie peremption de tous les produits de la BDD concernée
+		// lieu = "Stock" ou "Vitrine"  Cuisson n'est pas concerné par la péremption
+	}
+
+
+
+	//GETTER ****************************************
 	public Produit[] getVitrine() {
 
 
@@ -133,6 +142,8 @@ public class GestionBDD {
 	}
 
 
+	//AJOUT & SUPPR ****************************************
+	//STOCK ****************************************
 	public String ajouterStock (String nom, int quantite, String datePeremption) {	// Ajoute tjrs à la fin de la BDD
 		String ret = "Ajout du stock finie";
 
@@ -141,7 +152,7 @@ public class GestionBDD {
 			Connection con = connexion();
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("INSERT INTO `Stock`(`PRODUIT`,`QUANTITE`,`DATE_PEREMPTION`) VALUES ('" + nom + "'," + quantite + ",'" + datePeremption + "')");
+			stmt.executeUpdate("INSERT INTO `stock`(`PRODUIT`,`QUANTITE`,`DATE_PEREMPTION`) VALUES ('" + nom + "'," + quantite + ",'" + datePeremption + "')");
 
 			stmt.close();
 			con.close();
@@ -168,7 +179,7 @@ public class GestionBDD {
 
 			Connection con = connexion();
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT `QUANTITE` FROM `Stock` WHERE `PRODUIT`='" + nom + "' ORDER BY `DATE_PEREMPTION`");
+			ResultSet rs = stmt.executeQuery("SELECT `QUANTITE` FROM `stock` WHERE `PRODUIT`='" + nom + "' ORDER BY `DATE_PEREMPTION`");
 
 			rs.next();
 			int qteStock = rs.getInt("QUANTITE");
@@ -176,19 +187,19 @@ public class GestionBDD {
 			if (qteStock > quantite) {
 
 				int val = qteStock - quantite;
-				int res = stmt.executeUpdate("UPDATE `Stock` SET `QUANTITE`=" + String.valueOf(val) +" WHERE `PRODUIT`='" + nom + "' ORDER BY `DATE_PEREMPTION`");
+				int res = stmt.executeUpdate("UPDATE `stock` SET `QUANTITE`=" + String.valueOf(val) +" WHERE `PRODUIT`='" + nom + "' ORDER BY `DATE_PEREMPTION`");
 
 			}
 			else if (qteStock == quantite) {
-				int res = stmt.executeUpdate("DELETE FROM `Stock` WHERE `PRODUIT`='" + nom + "' ORDER BY `DATE_PEREMPTION`");
+				int res = stmt.executeUpdate("DELETE FROM `stock` WHERE `PRODUIT`='" + nom + "' ORDER BY `DATE_PEREMPTION`");
 			}
 			else { // qteStock < quantite
 				Statement stmt2 = con.createStatement();
-				int res = stmt2.executeUpdate("DELETE FROM `Stock` WHERE `PRODUIT`='" + nom + "' AND `QUANTITE`=" + qteStock);
+				int res = stmt2.executeUpdate("DELETE FROM `stock` WHERE `PRODUIT`='" + nom + "' AND `QUANTITE`=" + qteStock);
 				int qte1 = quantite-qteStock; //on récupère la différence, en positif
 				if (rs.next()) {
 					int val = rs.getInt("QUANTITE") - qte1;
-					res = stmt.executeUpdate("UPDATE `Stock` SET `QUANTITE`=" + String.valueOf(val) +" WHERE `PRODUIT`='" + nom + "' ORDER BY `DATE_PEREMPTION`");
+					res = stmt.executeUpdate("UPDATE `stock` SET `QUANTITE`=" + String.valueOf(val) +" WHERE `PRODUIT`='" + nom + "' ORDER BY `DATE_PEREMPTION`");
 				} else {
 					ret = "Il manque " + qte1 + " " + nom + " au stock";
 				}
@@ -209,66 +220,9 @@ public class GestionBDD {
 		return ret;
 	}
 
-
-
-	public void ajouterVitrine (String nom, int quantite) {
-
-	}
-
-	public void supprimerVitrine (String nom, int quantite) {
-		boolean fini = false;
-		do{
-		//	fini = Vendeur.supprimerProduit (nom, quantite);           // enlever le commentaire quand vendeur sera ajouté
-		} while (fini != true);
-	}
-
-	public void ajouterBilan (String nom, int quantite) {	// Ajouter un produit vendu dans le bilan du manager
-		Connection con = connexion();
-		int qte=0;
-		try {
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT `VENDU` FROM `bilan` WHERE `PRODUIT`='" + nom + "'");
-			if (rs.next()) {
-				qte=rs.getInt("VENDU");
-			}
-			Statement stmt2 = con.createStatement();
-			int qteFinale=qte+quantite;
-			stmt2.executeUpdate("UPDATE `bilan` SET `VENDU`=" + qteFinale + " WHERE `PRODUIT`='" + nom + "'");
-		}
-		catch(SQLException sqle) {
-			sqle.printStackTrace();
-		}
-
-	}
-
-	public void majPrix (String nom, float nouveauPrix) {
-
-	}
-
-	public void majProductionDefaut () {	// Valeurs des fournées remplacées par celles par défaut
-
-	}
-
-	public void majProduction () {	// Valeurs des fournées modifiées
-
-	}
-
-	public void ajouterCommandeFournisseur (String nom) {
-		int quantite = getQuantiteParametree(nom);
-		// Ajouter nom et quantite à la commande fournisseur
-	}
-
-	private int getQuantiteParametree(String nom) {
-		int quantite = 0;
-		return quantite;
-	}
-
-	public void supprimerCuisson (String nom) {
-
-	}
-
+	//AJOUT & SUPPR CUISSON ****************************************
 	public String ajouterCuisson (String nom, int quantite) {
-	String ret = "Ajout de la cuissie complétée";
+		String ret = "Ajout de la cuissie complétée";
 
 		try{
 
@@ -295,9 +249,95 @@ public class GestionBDD {
 		return ret;
 	}
 
-	public static void supprimerPerime (String lieu) {	// Le timer a détecté au moins un produit périmé, donc vérifie peremption de tous les produits de la BDD concernée
-												// lieu = "Stock" ou "Vitrine"  Cuisson n'est pas concerné par la péremption
+	public void supprimerCuisson (String nom) {
+
 	}
+
+	//AJOUT & SUPPR VITRINE ****************************************
+	//Ajout d'un produit cuisson finie en vitrine
+	public String ajouterVitrine (String nom, int quantite, String datePerempt) {
+		String ret = "Ajout en vitrine finie";
+
+		try{
+
+			Connection con = connexion();
+			Statement stmt = con.createStatement();
+
+			stmt.executeUpdate("INSERT INTO `vitrine`(`PRODUIT`,`QUANTITE`,`DATE_PEREMPTION`) VALUES ('" + nom + "'," + quantite + ",'" + datePerempt + "')");
+
+			stmt.close();
+			con.close();
+
+
+
+		}
+		catch(SQLException sqle){
+			sqle.printStackTrace();
+			return sqle.getMessage();
+		}
+
+		return ret;
+	}
+
+	public void supprimerVitrine (String nom, int quantite) {
+		boolean fini = false;
+		do{
+		//	fini = Vendeur.supprimerProduit (nom, quantite);           // enlever le commentaire quand vendeur sera ajouté
+		} while (fini != true);
+	}
+
+	// Ajouter un produit vendu dans le bilan du manager
+	public void ajouterBilan (String nom, int quantite) {
+		Connection con = connexion();
+		int qte=0;
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT `VENDU` FROM `bilan` WHERE `PRODUIT`='" + nom + "'");
+			if (rs.next()) {
+				qte=rs.getInt("VENDU");
+			}
+			Statement stmt2 = con.createStatement();
+			int qteFinale=qte+quantite;
+			stmt2.executeUpdate("UPDATE `bilan` SET `VENDU`=" + qteFinale + " WHERE `PRODUIT`='" + nom + "'");
+		}
+		catch(SQLException sqle) {
+			sqle.printStackTrace();
+		}
+
+	}
+
+	public void majPrix (String nom, float nouveauPrix) {
+		Connection con = connexion();
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("UPDATE `produit` SET `PRIX`=" + nouveauPrix + " WHERE `PRODUIT`='" + nom + "'");
+		}
+		catch(SQLException sqle) {
+			sqle.printStackTrace();
+		}
+	}
+
+	public void majProductionDefaut () {	// Valeurs des fournées remplacées par celles par défaut
+
+	}
+
+	public void majProduction () {	// Valeurs des fournées modifiées
+
+	}
+
+	public void ajouterCommandeFournisseur (String nom) {
+		int quantite = getQuantiteParametree(nom);
+		// Ajouter nom et quantite à la commande fournisseur
+	}
+
+	private int getQuantiteParametree(String nom) {
+		return 0;
+	}
+
+
+
+
+
 
 	// Rajouter les méthodes pour gérer l'affichage du bilan du manager
 

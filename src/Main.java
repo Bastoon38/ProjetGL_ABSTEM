@@ -15,7 +15,6 @@ public class Main {
         //Connexion frame1 = new Connexion();
         //frame1.setVisible(true);
         GestionBDD bdd = new GestionBDD();
-        System.out.println(bdd.ajouterStock("Baguette",255, "2015-12-15 19:30:30"));
-
+        bdd.majPrix("Brioche sucre",1.1f);
     }
 }
