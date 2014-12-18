@@ -12,11 +12,10 @@ public class Produit {
     public String nom;
     public float prix=0;
     public int quantite=0; //utile pour le panier
-    public Date date;
-    public Time time;
+    public String date;
     public int perime;
 
-    public Produit(String obj_name,  float credit, int quant, Date date) {
+    public Produit(String obj_name,  float credit, int quant, String date) {
 
         this.nom = obj_name;
         this.prix= credit;
@@ -24,13 +23,12 @@ public class Produit {
         this.date=date;
         //  this.time=time;
     }
-    public Produit(String obj_name,  float credit, int quant, Date date,Time time, int perime) {
+    public Produit(String obj_name,  float credit, int quant, String date, int perime) {
 
         this.nom = obj_name;
         this.prix= credit;
         this.quantite =quant;
         this.date=date;
-        this.time=time;
         this.perime=perime;
     }
     //get Methods
@@ -46,13 +44,9 @@ public class Produit {
     {
         return this.quantite;
     }
-    public Date getDate()
+    public String getDate()
     {
         return this.date;
-    }
-    public Time getTime()
-    {
-        return this.time;
     }
     public int getPerime()
     {
@@ -71,13 +65,9 @@ public class Produit {
     {
         this.quantite=quant;
     }
-    public void setDate(Date date)
+    public void setDate(String date)
     {
         this.date=date;
-    }
-    public void setTime(Time time)
-    {
-        this.time=time;;
     }
     public void setPerime(int perime)
     {

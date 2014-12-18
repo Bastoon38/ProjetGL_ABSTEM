@@ -115,7 +115,6 @@ public class Interface_vendeur extends JFrame {
             System.out.println (vitrine[i].getPrix());
             System.out.println (vitrine[i].getPerime());
             System.out.println (vitrine[i].getDate());
-            System.out.println (vitrine[i].getTime());
         }
 
 

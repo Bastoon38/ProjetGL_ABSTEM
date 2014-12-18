@@ -62,13 +62,13 @@ public class GestionBDD {
 			while (rs.next()) {
 				String nom = rs.getString("PRODUIT");
 				int quantite = rs.getInt("QUANTITE");
-				Date date = rs.getDate("DATE_PEREMPTION");
-				Time time =rs.getTime("DATE_PEREMPTION");
+				Timestamp timestamp = rs.getTimestamp("DATE_PEREMPTION");
 				int perime = rs.getInt("PERIME");
 				float prix = rs.getFloat("PRIX");
 
+				String date = String.format("%1$TD %1$TT", timestamp);
 
-				vitrine[j] = new Produit(nom,prix,quantite,date,time,perime);
+				vitrine[j] = new Produit(nom,prix,quantite,date,perime);
 				j++;
 
 			}
@@ -111,8 +111,8 @@ public class GestionBDD {
 			while (rs.next()) {
 				String nom = rs.getString("PRODUIT");
 				int quantite = rs.getInt("QUANTITE");
-				Date date = rs.getDate("DATE_PEREMPTION");
-
+				Timestamp timestamp = rs.getTimestamp("DATE_PEREMPTION");
+				String date = String.format("%1$TD %1$TT", timestamp);
 				Statement stmt2 = con.createStatement();
 				ResultSet rs2 = stmt2.executeQuery("SELECT `PRIX` FROM `produit`");
 				if (rs2.next()) {
