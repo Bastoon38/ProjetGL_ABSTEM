@@ -86,6 +86,8 @@ public class Interface_cuisson extends JFrame {
         btn_Deconnecter = new JButton("Déconnecter");
         contentPane.add(btn_Deconnecter,  gbc);
 
+
+
         ////////Premier panel de commande ////////////////
 
         gbc.gridx = 0;
@@ -107,7 +109,7 @@ public class Interface_cuisson extends JFrame {
         gbc1.weighty = 1;
         gbc1.anchor = GridBagConstraints.CENTER;
 
-        commande1 = new JLabel("Zone texte commande 1");
+        commande1 = new JLabel("Zone texte commande 1");  // à remplacer par les commandes
         pan_1.add(commande1, gbc1);
 
         gbc1.gridx = 1;
@@ -125,6 +127,7 @@ public class Interface_cuisson extends JFrame {
         btn_debut1.setFont(new Font("Tahoma", Font.BOLD, 13));
         btn_debut1.setBorderPainted(false);
         btn_debut1.setBackground(new Color(0, 204, 0));
+        btn_debut1.setPreferredSize(new Dimension(150, 80));
         pan_1.add(btn_debut1, gbc1);
 
         gbc1.gridx = 3;
@@ -137,6 +140,7 @@ public class Interface_cuisson extends JFrame {
         btn_fini1.setFont(new Font("Tahoma", Font.BOLD, 13));
         btn_fini1.setBorderPainted(false);
         btn_fini1.setBackground(SystemColor.activeCaptionBorder);
+        btn_fini1.setPreferredSize(new Dimension(150, 80));
         pan_1.add(btn_fini1, gbc1);
 
         ////////Deuxième panel de commande ////////////////
@@ -160,7 +164,7 @@ public class Interface_cuisson extends JFrame {
         gbc2.weighty = 1;
         gbc2.anchor = GridBagConstraints.CENTER;
 
-        commande2 = new JLabel("Zone texte commande 2");
+        commande2 = new JLabel("Zone texte commande 2");  // à remplacer par les commandes
         pan_2.add(commande2, gbc2);
 
         gbc2.gridx = 1;
@@ -178,6 +182,7 @@ public class Interface_cuisson extends JFrame {
         btn_debut2.setFont(new Font("Tahoma", Font.BOLD, 13));
         btn_debut2.setBorderPainted(false);
         btn_debut2.setBackground(new Color(0, 204, 0));
+        btn_debut2.setPreferredSize(new Dimension(150, 80));
         pan_2.add(btn_debut2, gbc2);
 
         gbc2.gridx = 3;
@@ -190,6 +195,7 @@ public class Interface_cuisson extends JFrame {
         btn_fini2.setFont(new Font("Tahoma", Font.BOLD, 13));
         btn_fini2.setBorderPainted(false);
         btn_fini2.setBackground(SystemColor.activeCaptionBorder);
+        btn_fini2.setPreferredSize(new Dimension(150, 80));
         pan_2.add(btn_fini2, gbc2);
 
         ////////Troisième panel de commande ////////////////
@@ -213,7 +219,7 @@ public class Interface_cuisson extends JFrame {
         gbc3.weighty = 1;
         gbc3.anchor = GridBagConstraints.CENTER;
 
-        commande3 = new JLabel("Zone texte commande 3");
+        commande3 = new JLabel("Zone texte commande 3");  // à remplacer par les commandes
         pan_3.add(commande3, gbc3);
 
         gbc3.gridx = 1;
@@ -231,6 +237,7 @@ public class Interface_cuisson extends JFrame {
         btn_debut3.setFont(new Font("Tahoma", Font.BOLD, 13));
         btn_debut3.setBorderPainted(false);
         btn_debut3.setBackground(new Color(0, 204, 0));
+        btn_debut3.setPreferredSize(new Dimension(150, 80));
         pan_3.add(btn_debut3, gbc3);
 
         gbc3.gridx = 3;
@@ -243,6 +250,7 @@ public class Interface_cuisson extends JFrame {
         btn_fini3.setFont(new Font("Tahoma", Font.BOLD, 13));
         btn_fini3.setBorderPainted(false);
         btn_fini3.setBackground(SystemColor.activeCaptionBorder);
+        btn_fini3.setPreferredSize(new Dimension(150, 80));
         pan_3.add(btn_fini3, gbc3);
 
         ////////Quatrième panel de commande ////////////////
@@ -266,7 +274,7 @@ public class Interface_cuisson extends JFrame {
         gbc4.weighty = 1;
         gbc4.anchor = GridBagConstraints.CENTER;
 
-        commande4 = new JLabel("Zone texte commande 4");
+        commande4 = new JLabel("Zone texte commande 4");  // à remplacer par les commandes
         pan_4.add(commande4, gbc4);
 
         gbc4.gridx = 1;
@@ -284,6 +292,7 @@ public class Interface_cuisson extends JFrame {
         btn_debut4.setFont(new Font("Tahoma", Font.BOLD, 13));
         btn_debut4.setBorderPainted(false);
         btn_debut4.setBackground(new Color(0, 204, 0));
+        btn_debut4.setPreferredSize(new Dimension(150, 80));
         pan_4.add(btn_debut4, gbc4);
 
         gbc4.gridx = 3;
@@ -296,6 +305,7 @@ public class Interface_cuisson extends JFrame {
         btn_fini4.setFont(new Font("Tahoma", Font.BOLD, 13));
         btn_fini4.setBorderPainted(false);
         btn_fini4.setBackground(SystemColor.activeCaptionBorder);
+        btn_fini4.setPreferredSize(new Dimension(150, 80));
         pan_4.add(btn_fini4, gbc4);
 
         ////////Cinquième panel de commande ////////////////
@@ -319,7 +329,7 @@ public class Interface_cuisson extends JFrame {
         gbc5.weighty = 1;
         gbc5.anchor = GridBagConstraints.CENTER;
 
-        commande5 = new JLabel("Zone texte commande 5");
+        commande5 = new JLabel("Zone texte commande 5");  // à remplacer par les commandes
         pan_5.add(commande5, gbc5);
 
         gbc5.gridx = 1;
@@ -337,6 +347,7 @@ public class Interface_cuisson extends JFrame {
         btn_debut5.setFont(new Font("Tahoma", Font.BOLD, 13));
         btn_debut5.setBorderPainted(false);
         btn_debut5.setBackground(new Color(0, 204, 0));
+        btn_debut5.setPreferredSize(new Dimension(150, 80));
         pan_5.add(btn_debut5, gbc5);
 
         gbc5.gridx = 3;
@@ -349,6 +360,7 @@ public class Interface_cuisson extends JFrame {
         btn_fini5.setFont(new Font("Tahoma", Font.BOLD, 13));
         btn_fini5.setBorderPainted(false);
         btn_fini5.setBackground(SystemColor.activeCaptionBorder);
+        btn_fini5.setPreferredSize(new Dimension(150, 80));
         pan_5.add(btn_fini5, gbc5);
 
         btn_Deconnecter.addActionListener(new ActionListener() {
