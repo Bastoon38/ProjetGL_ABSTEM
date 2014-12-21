@@ -30,8 +30,13 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import java.awt.GridLayout;
 import java.math.BigDecimal;
+import java.sql.Date;
+import java.sql.Time;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Vector;
 
 import javax.swing.JList;
 import javax.swing.JSplitPane;
@@ -45,9 +50,256 @@ public class Interface_vendeur extends JFrame {
     private JTable tab_jeter;
     private float total_prix=0;
     //vector produits
-    Produit[] vitrine = null;
-    Produit[] commande =null;
-    Produit[] jeter =null;
+    // Produit vitrine[] = null;
+    Vector<Produit> vitrine = new Vector<Produit>();
+    Vector<Produit> commandes= new Vector<Produit>();
+    Vector<Produit> jeter= new Vector<Produit>();
+
+    final JLabel lab_prix = new JLabel("");
+    ///////////////////////////PARTIE TIMER////////////////////////////////////////////////////////////////
+    /*
+
+
+
+
+	*/
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    void timer_refresh_produits_jeter()
+    {
+        for(int i=0 ; i<vitrine.size(); i++)
+        {
+
+            //System.out.println (vitrine.elementAt(i).getNom()+" "+vitrine.elementAt(i).getQuantite()+" "+vitrine.elementAt(i).getPrix()+" "+vitrine.elementAt(i).getPerime()+ " "+vitrine.elementAt(i).getDate()+" "+vitrine.elementAt(i).getTime());
+            if(vitrine.elementAt(i).getPerime()== 1)
+            {
+
+                JOptionPane.showMessageDialog(null, vitrine.elementAt(i).getNom()+" perimè", "Perimè "+ vitrine.elementAt(i).getNom(), JOptionPane.WARNING_MESSAGE);
+                Produit aux = new Produit(vitrine.elementAt(i).getNom(),vitrine.elementAt(i).getPrix(),vitrine.elementAt(i).getQuantite(),vitrine.elementAt(i).getDate(),vitrine.elementAt(i).getTime(),vitrine.elementAt(i).getPerime());
+                vitrine.remove(i);
+                ajouter_produit_a_jeter(aux);
+            }
+        }
+    }
+
+
+
+    void ajouter_produit_a_jtable(Produit prod_baguette, String nom)
+    {
+        Produit aux = new Produit(prod_baguette.getNom(),prod_baguette.getPrix(),1,prod_baguette.getDate(),prod_baguette.getTime(),prod_baguette.getPerime());
+
+
+        int ver=verifier(nom);
+        if(ver!=20)
+        {
+
+            //System.out.println(rowSelected);
+            String ex = tab_commande.getModel().getValueAt(ver, 1).toString();
+            int quant=Integer.parseInt(ex);
+            quant++;
+            String prix_unit=Float.toString(aux.getPrix());
+            float prix_unitaire=Float.parseFloat(prix_unit);
+            float prix_total=prix_unitaire*quant;
+            //prix_total = (float)(Math.floor(prix_total * 100) / 100);
+            round(prix_total,1);
+            prix_total = (float)(Math.floor(prix_total * 10) / 10);
+            //Increment of the price
+            tab_commande.setValueAt(String.valueOf(prix_total), ver, 2);
+            //Increment of the quantity
+            tab_commande.setValueAt(Integer.toString(quant), ver, 1);
+            //refresh
+            tab_commande.repaint();
+            mis_a_jour_total();
+            lab_prix.setText(String.valueOf(total_prix));
+        }
+        else
+        {
+            DefaultTableModel model = (DefaultTableModel) tab_commande.getModel();
+            model.addRow(new Object[]{nom, "1", Float.toString(aux.getPrix()),Float.toString(aux.getPrix())});
+            mis_a_jour_total();
+            lab_prix.setText(String.valueOf(total_prix));
+        }
+    }
+
+    void ajouter_produit_a_jeter(Produit prod_baguette)
+    {
+        Produit aux = new Produit(prod_baguette.getNom(),prod_baguette.getPrix(),prod_baguette.getQuantite(),prod_baguette.getDate(),prod_baguette.getTime(),prod_baguette.getPerime());
+
+
+        DefaultTableModel model = (DefaultTableModel) tab_jeter.getModel();
+        model.addRow(new Object[]{aux.getNom(),Float.toString(aux.getQuantite())});
+        jeter.add(aux);
+
+        System.out.println("\n");
+        System.out.println("JETER");
+        for(int i=0 ; i<jeter.size(); i++)
+        {
+
+            System.out.println (jeter.elementAt(i).getNom()+" "+jeter.elementAt(i).getQuantite()+" "+jeter.elementAt(i).getPrix()+" "+jeter.elementAt(i).getPerime()+ " "+jeter.elementAt(i).getDate()+" "+jeter.elementAt(i).getTime());
+
+        }
+        System.out.println("\n");
+
+    }
+
+
+    void ajouter_produit_a_commande(Produit prod_baguette, String nom)
+    {
+        System.out.println("\n");
+
+        Produit aux = new Produit(prod_baguette.getNom(),prod_baguette.getPrix(),1,prod_baguette.getDate(),prod_baguette.getTime(),prod_baguette.getPerime());
+        //System.out.println ("	"+aux.getNom()+"	"+aux.getQuantite()+"	"+aux.getDate()+"	"+aux.getTime()+"	"+aux.getPerime());
+
+        aux.setNom(nom);
+        //System.out.println ("	"+aux.getNom()+"	"+aux.getQuantite()+"	"+aux.getDate()+"	"+aux.getTime()+"	"+aux.getPerime());
+
+        commandes.add(aux);
+
+        for (int i=0; i<commandes.size();i++)
+        {
+
+            System.out.println ("COMMANDES	"+commandes.elementAt(i).getNom()+" "+commandes.elementAt(i).getDate()+" "+commandes.elementAt(i).getTime());
+
+        }
+        System.out.println("\n");
+    }
+
+
+    void gerer_produit_selectione(String nom)
+    {
+
+        Produit prod_baguette=null;
+        Date date_baguette=null;
+        Time time_baguette=null;
+        int quant_baguette=0;
+        int pos_produit_en_vitrine=-1;
+
+        Time aux_time_baguette=null;
+        Date aux_date_baguette=null;
+
+//TODO      hacer una funcion con el codigo de abajo
+
+        for(int i=0 ; i<vitrine.size(); i++)
+        {
+
+
+            //System.out.println("nombres "+nom  +" "+vitrine.elementAt(i).getNom()+"  "+vitrine.elementAt(i).getPerime());
+            if(nom.equals(vitrine.elementAt(i).getNom()) && vitrine.elementAt(i).getPerime()==0)
+            {
+
+
+                //System.out.println("aceptados "+nom  +" "+vitrine.elementAt(i).getNom()+"  "+vitrine.elementAt(i).getPerime());
+                if(date_baguette==null)
+                {
+                    pos_produit_en_vitrine=i;
+                    prod_baguette=vitrine.elementAt(i);
+                    date_baguette=prod_baguette.getDate();
+                    time_baguette=prod_baguette.getTime();
+                    quant_baguette=prod_baguette.getQuantite();
+                    //System.out.println("primera "+prod_baguette.getNom()+ " "+prod_baguette.getDate()+ " " + prod_baguette.getTime() );
+
+                }
+                else
+                {
+                    //aux_date_baguette est la date du produit qu'on essaye à verifier
+
+                    aux_date_baguette=vitrine.elementAt(i).getDate();
+
+                    //System.out.println("fechas "+aux_date_baguette+ " "+prod_baguette.getDate());
+
+                    //Si la date est avant que la date de notre produit dejà pris
+                    if(aux_date_baguette.before(date_baguette))
+                    {
+                        pos_produit_en_vitrine=i;
+                        prod_baguette=vitrine.elementAt(i);
+                        date_baguette=prod_baguette.getDate();
+                        time_baguette=prod_baguette.getTime();
+                        quant_baguette=prod_baguette.getQuantite();
+                    }
+                    else
+                    {
+                        if(date_baguette.before(aux_date_baguette))
+                        {
+
+                        }
+                        else //Les dates sont les mêmes pour les deux produits à comparer
+                        {
+
+                            //aux_date_baguette est la date du produit qu'on essaye à verifier
+
+                            aux_time_baguette=vitrine.elementAt(i).getTime();
+                            //System.out.println("fechas identicas" + aux_time_baguette +" "+time_baguette);
+                            if(aux_time_baguette.before(time_baguette))
+                            {
+                                //System.out.println("Fecha del producto de vitrina anterior al producto que ya tenia");
+                                pos_produit_en_vitrine=i;
+                                prod_baguette=vitrine.elementAt(i);
+                                date_baguette=prod_baguette.getDate();
+                                time_baguette=prod_baguette.getTime();
+                                quant_baguette=prod_baguette.getQuantite();
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+        if(prod_baguette==null)
+        {
+            JOptionPane.showMessageDialog(null, "Il n'a pas "+nom+" en vitrine", "Warning "+ nom, JOptionPane.WARNING_MESSAGE);
+        }
+        else
+        {
+            int quantity=vitrine.elementAt(pos_produit_en_vitrine).getQuantite();
+            // SI ON A PLUSIERS ELEMENTS DE CET PRODUIT
+            if(quantity>1)
+            {
+                //System.out.println("CANTIDADDDDD "+ quantity);
+                int quantity_final=quantity-1;
+                vitrine.elementAt(pos_produit_en_vitrine).setQuantite(quantity_final);
+                //System.out.println("CANTIDADDDDD FINAL "+ quantity_final);
+                //System.out.println("test para las dates!=1 "+prod_baguette.getNom()+ " "+prod_baguette.getDate()+ " " + prod_baguette.getTime() );
+
+
+                for(int l=0 ; l<vitrine.size(); l++)
+                {
+                    System.out.println ("VITRINE "+vitrine.elementAt(l).getNom()+"	"+vitrine.elementAt(l).getQuantite()+"	"+vitrine.elementAt(l).getPrix()+"	"+vitrine.elementAt(l).getPerime()+"	"+vitrine.elementAt(l).getDate()+"	"+vitrine.elementAt(l).getTime());
+                }
+                System.out.println("\n");
+
+
+                //System.out.println("ANADIR A PRODUIT !=1 "+ nom+" "+prod_baguette.getQuantite());
+                ajouter_produit_a_commande(prod_baguette,nom);
+                ajouter_produit_a_jtable(prod_baguette,nom);
+            }
+            // SI ON A SEULEMENT 1 PRODUIT, on doit le supprimer
+            else
+            {
+                //System.out.println("test para las dates=1 "+prod_baguette.getNom()+ " "+prod_baguette.getDate()+ " " + prod_baguette.getTime() );
+                //ajouter au vector de la commande
+                //	System.out.println("ANADIR A PRODUIT =1 "+ nom+" "+prod_baguette.getQuantite());
+                ajouter_produit_a_commande(prod_baguette,nom);
+                ajouter_produit_a_jtable(prod_baguette,nom);
+                // TODO supprimer le produit du vector vitrine et de la BDD
+                //pour le supprimer, je vais modifier le nom et après il faut justement faire la suppresion par une requete de la BDD
+                //System.out.println("indice del producto a suprimir = "+pos_produit_en_vitrine);
+                vitrine.elementAt(pos_produit_en_vitrine).setNom("null");
+                vitrine.elementAt(pos_produit_en_vitrine).setQuantite(quantity-1);
+
+                for(int i=0 ; i<vitrine.size(); i++)
+                {
+                    System.out.println ("VITRINE "+vitrine.elementAt(i).getNom()+"	"+vitrine.elementAt(i).getQuantite()+"	"+vitrine.elementAt(i).getPrix()+"	"+vitrine.elementAt(i).getPerime()+"	"+vitrine.elementAt(i).getDate()+"	"+vitrine.elementAt(i).getTime());
+
+                }
+                System.out.println("\n");
+
+            }
+        }
+    }
+
+
+
 
 
 
@@ -106,382 +358,109 @@ public class Interface_vendeur extends JFrame {
         setBounds(100, 100, 1446, 879);
 
         //Connection avec la BDD
-        GestionBDD base= new GestionBDD();
-        vitrine=base.getVitrine();
-        for(int i=0 ; i<vitrine.length; i++)
+        final GestionBDD base= new GestionBDD();
+        vitrine=base.getVitrine(vitrine);
+        for(int i=0 ; i<vitrine.size(); i++)
         {
-            System.out.println (vitrine[i].getNom());
-            System.out.println (vitrine[i].getQuantite());
-            System.out.println (vitrine[i].getPrix());
-            System.out.println (vitrine[i].getPerime());
-            System.out.println (vitrine[i].getDate());
+
+            System.out.println (vitrine.elementAt(i).getNom()+" "+vitrine.elementAt(i).getQuantite()+" "+vitrine.elementAt(i).getPrix()+" "+vitrine.elementAt(i).getPerime()+ " "+vitrine.elementAt(i).getDate()+" "+vitrine.elementAt(i).getTime());
+
         }
+        System.out.println("\n");
 
 
-        final JLabel lab_prix = new JLabel("");
         JPanel pan_pain = new JPanel();
 
         JPanel pan_vienn = new JPanel();
 
         JPanel pan_boisson = new JPanel();
 
+
+
         JLabel lblBoisson = new JLabel("BOISSON");
         lblBoisson.setFont(new Font("Tahoma", Font.PLAIN, 18));
 
-        JButton btn_raisin = new JButton("Raisiin");
+        JButton btn_raisin = new JButton("Raisin");
         btn_raisin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                boolean bases_donnees=false;
-                // S'il y a des produits dans la base de donnes
 
-                if(bases_donnees)
-                {
-                    JOptionPane.showMessageDialog(null, "Il n'a pas de minute maid raisin", "minute maid raisin", JOptionPane.WARNING_MESSAGE);
-                }
-                else
-                {
-                    //parcourir la liste des produits dans la commande
-                    int ver=verifier("Raisin");
-                    if(ver!=20)
-                    {
-
-                        //System.out.println(rowSelected);
-                        String ex = tab_commande.getModel().getValueAt(ver, 1).toString();
-                        int quant=Integer.parseInt(ex);
-                        quant++;
-                        String prix_unit=tab_commande.getModel().getValueAt(ver, 3).toString();
-                        float prix_unitaire=Float.parseFloat(prix_unit);
-                        float prix_total=prix_unitaire*quant;
-                        //prix_total = (float)(Math.floor(prix_total * 100) / 100);
-                        round(prix_total,1);
-                        prix_total = (float)(Math.floor(prix_total * 10) / 10);
-                        //Increment of the price
-                        tab_commande.setValueAt(String.valueOf(prix_total), ver, 2);
-                        //Increment of the quantity
-                        tab_commande.setValueAt(Integer.toString(quant), ver, 1);
-                        //refresh
-                        tab_commande.repaint();
-                        mis_a_jour_total();
-                        lab_prix.setText(String.valueOf(total_prix));
-                    }
-                    else
-                    {
-                        DefaultTableModel model = (DefaultTableModel) tab_commande.getModel();
-                        model.addRow(new Object[]{"Raisin", "1", "2","2"});
-                        mis_a_jour_total();
-                        lab_prix.setText(String.valueOf(total_prix));
-
-                    }
-                }
+                gerer_produit_selectione("Raisin");
             }
         });
 
         JButton btn_pomme = new JButton("Pomme");
         btn_pomme.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                boolean base_de_datos=false;
-                // S'il y a des produits dans la base de donnes
-                if(base_de_datos)
-                {
-                    JOptionPane.showMessageDialog(null, "Il n'a pas de minute maid pomme", "minute maid pomme", JOptionPane.WARNING_MESSAGE);
-                }
-                else
-                {
-                    //parcourir la liste des produits dans la commande
-                    int ver=verifier("Pomme");
-                    if(ver!=20)
-                    {
 
-                        //System.out.println(rowSelected);
-                        String ex = tab_commande.getModel().getValueAt(ver, 1).toString();
-                        int quant=Integer.parseInt(ex);
-                        quant++;
-                        String prix_unit=tab_commande.getModel().getValueAt(ver, 3).toString();
-                        float prix_unitaire=Float.parseFloat(prix_unit);
-                        float prix_total=prix_unitaire*quant;
-                        //prix_total = (float)(Math.floor(prix_total * 100) / 100);
-                        round(prix_total,1);
-                        prix_total = (float)(Math.floor(prix_total * 10) / 10);
-                        //Increment of the price
-                        tab_commande.setValueAt(String.valueOf(prix_total), ver, 2);
-                        //Increment of the quantity
-                        tab_commande.setValueAt(Integer.toString(quant), ver, 1);
-                        //refresh
-                        tab_commande.repaint();
-                        mis_a_jour_total();
-                        lab_prix.setText(String.valueOf(total_prix));
-                    }
-                    else
-                    {
-                        DefaultTableModel model = (DefaultTableModel) tab_commande.getModel();
-                        model.addRow(new Object[]{"Pomme", "1", "2","2"});
-                        mis_a_jour_total();
-                        lab_prix.setText(String.valueOf(total_prix));
-
-                    }
-                }
+                gerer_produit_selectione("Pomme");
             }
         });
 
         JButton btn_orange = new JButton("Orange");
         btn_orange.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                boolean base_de_datos=false;
-                // S'il y a des produits dans la base de donnes
-                if(base_de_datos)
-                {
-                    JOptionPane.showMessageDialog(null, "Il n'a pas de minute maid Orange", "minute maid orange", JOptionPane.WARNING_MESSAGE);
-                }
-                else
-                {
-                    //parcourir la liste des produits dans la commande
-                    int ver=verifier("Orange");
-                    if(ver!=20)
-                    {
 
-                        //System.out.println(rowSelected);
-                        String ex = tab_commande.getModel().getValueAt(ver, 1).toString();
-                        int quant=Integer.parseInt(ex);
-                        quant++;
-                        String prix_unit=tab_commande.getModel().getValueAt(ver, 3).toString();
-                        float prix_unitaire=Float.parseFloat(prix_unit);
-                        float prix_total=prix_unitaire*quant;
-                        //prix_total = (float)(Math.floor(prix_total * 100) / 100);
-                        round(prix_total,1);
-                        prix_total = (float)(Math.floor(prix_total * 10) / 10);
-                        //Increment of the price
-                        tab_commande.setValueAt(String.valueOf(prix_total), ver, 2);
-                        //Increment of the quantity
-                        tab_commande.setValueAt(Integer.toString(quant), ver, 1);
-                        //refresh
-                        tab_commande.repaint();
-                        mis_a_jour_total();
-                        lab_prix.setText(String.valueOf(total_prix));
-                    }
-                    else
-                    {
-                        DefaultTableModel model = (DefaultTableModel) tab_commande.getModel();
-                        model.addRow(new Object[]{"Orange", "1", "2","2"});
-                        mis_a_jour_total();
-                        lab_prix.setText(String.valueOf(total_prix));
-
-                    }
-                }
+                gerer_produit_selectione("Orange");
             }
         });
 
         JButton btn_oasis = new JButton("Oasis");
         btn_oasis.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                boolean base_de_datos=false;
-                // S'il y a des produits dans la base de donnes
-                if(base_de_datos)
-                {
-                    JOptionPane.showMessageDialog(null, "Il n'a pas Oasis", "Oasis", JOptionPane.WARNING_MESSAGE);
-                }
-                else
-                {
-                    //parcourir la liste des produits dans la commande
-                    int ver=verifier("Oasis");
-                    if(ver!=20)
-                    {
 
-                        //System.out.println(rowSelected);
-                        String ex = tab_commande.getModel().getValueAt(ver, 1).toString();
-                        int quant=Integer.parseInt(ex);
-                        quant++;
-                        String prix_unit=tab_commande.getModel().getValueAt(ver, 3).toString();
-                        float prix_unitaire=Float.parseFloat(prix_unit);
-                        float prix_total=prix_unitaire*quant;
-                        //prix_total = (float)(Math.floor(prix_total * 100) / 100);
-                        round(prix_total,1);
-                        prix_total = (float)(Math.floor(prix_total * 10) / 10);
-                        //Increment of the price
-                        tab_commande.setValueAt(String.valueOf(prix_total), ver, 2);
-                        //Increment of the quantity
-                        tab_commande.setValueAt(Integer.toString(quant), ver, 1);
-                        //refresh
-                        tab_commande.repaint();
-                        mis_a_jour_total();
-                        lab_prix.setText(String.valueOf(total_prix));
-                    }
-                    else
-                    {
-                        DefaultTableModel model = (DefaultTableModel) tab_commande.getModel();
-                        model.addRow(new Object[]{"Oasis", "1", "2","2"});
-                        mis_a_jour_total();
-                        lab_prix.setText(String.valueOf(total_prix));
-
-                    }
-                }
+                gerer_produit_selectione("Oasis");
             }
         });
 
         JButton btn_sprite = new JButton("Sprite");
         btn_sprite.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                boolean base_de_datos=false;
-                // S'il y a des produits dans la base de donnes
-                if(base_de_datos)
-                {
-                    JOptionPane.showMessageDialog(null, "Il n'a pas de Sprite", "Sprite", JOptionPane.WARNING_MESSAGE);
-                }
-                else
-                {
-                    //parcourir la liste des produits dans la commande
-                    int ver=verifier("Sprite");
-                    if(ver!=20)
-                    {
 
-                        //System.out.println(rowSelected);
-                        String ex = tab_commande.getModel().getValueAt(ver, 1).toString();
-                        int quant=Integer.parseInt(ex);
-                        quant++;
-                        String prix_unit=tab_commande.getModel().getValueAt(ver, 3).toString();
-                        float prix_unitaire=Float.parseFloat(prix_unit);
-                        float prix_total=prix_unitaire*quant;
-                        //prix_total = (float)(Math.floor(prix_total * 100) / 100);
-                        round(prix_total,1);
-                        prix_total = (float)(Math.floor(prix_total * 10) / 10);
-                        //Increment of the price
-                        tab_commande.setValueAt(String.valueOf(prix_total), ver, 2);
-                        //Increment of the quantity
-                        tab_commande.setValueAt(Integer.toString(quant), ver, 1);
-                        //refresh
-                        tab_commande.repaint();
-                        mis_a_jour_total();
-                        lab_prix.setText(String.valueOf(total_prix));
-                    }
-                    else
-                    {
-                        DefaultTableModel model = (DefaultTableModel) tab_commande.getModel();
-                        model.addRow(new Object[]{"Sprite", "1", "2","2"});
-                        mis_a_jour_total();
-                        lab_prix.setText(String.valueOf(total_prix));
-
-                    }
-                }
+                gerer_produit_selectione("Sprite");
             }
         });
 
         JButton btn_fanta = new JButton("Fanta");
         btn_fanta.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                boolean base_de_datos=false;
-                // S'il y a des produits dans la base de donnes
-                if(base_de_datos)
-                {
-                    JOptionPane.showMessageDialog(null, "Il n'a pas de Fanta", "Fanta", JOptionPane.WARNING_MESSAGE);
-                }
-                else
-                {
-                    //parcourir la liste des produits dans la commande
-                    int ver=verifier("Fanta");
-                    if(ver!=20)
-                    {
 
-                        //System.out.println(rowSelected);
-                        String ex = tab_commande.getModel().getValueAt(ver, 1).toString();
-                        int quant=Integer.parseInt(ex);
-                        quant++;
-                        String prix_unit=tab_commande.getModel().getValueAt(ver, 3).toString();
-                        float prix_unitaire=Float.parseFloat(prix_unit);
-                        float prix_total=prix_unitaire*quant;
-                        //prix_total = (float)(Math.floor(prix_total * 100) / 100);
-                        round(prix_total,1);
-                        prix_total = (float)(Math.floor(prix_total * 10) / 10);
-                        //Increment of the price
-                        tab_commande.setValueAt(String.valueOf(prix_total), ver, 2);
-                        //Increment of the quantity
-                        tab_commande.setValueAt(Integer.toString(quant), ver, 1);
-                        //refresh
-                        tab_commande.repaint();
-                        mis_a_jour_total();
-                        lab_prix.setText(String.valueOf(total_prix));
-                    }
-                    else
-                    {
-                        DefaultTableModel model = (DefaultTableModel) tab_commande.getModel();
-                        model.addRow(new Object[]{"Fanta", "1", "2","2"});
-                        mis_a_jour_total();
-                        lab_prix.setText(String.valueOf(total_prix));
-
-                    }
-                }
+                gerer_produit_selectione("Fanta");
             }
         });
 
         JButton btn_coca = new JButton("Coca_cola");
         btn_coca.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                boolean base_de_datos=false;
-                // S'il y a des produits dans la base de donnes
-                if(base_de_datos)
-                {
-                    JOptionPane.showMessageDialog(null, "Il n'a pas de Coca cola", "Coca cola", JOptionPane.WARNING_MESSAGE);
-                }
-                else
-                {
-                    //parcourir la liste des produits dans la commande
-                    int ver=verifier("Coca_cola");
-                    if(ver!=20)
-                    {
 
-                        //System.out.println(rowSelected);
-                        String ex = tab_commande.getModel().getValueAt(ver, 1).toString();
-                        int quant=Integer.parseInt(ex);
-                        quant++;
-                        String prix_unit=tab_commande.getModel().getValueAt(ver, 3).toString();
-                        float prix_unitaire=Float.parseFloat(prix_unit);
-                        float prix_total=prix_unitaire*quant;
-                        //prix_total = (float)(Math.floor(prix_total * 100) / 100);
-                        round(prix_total,1);
-                        prix_total = (float)(Math.floor(prix_total * 10) / 10);
-                        //Increment of the price
-                        tab_commande.setValueAt(String.valueOf(prix_total), ver, 2);
-                        //Increment of the quantity
-                        tab_commande.setValueAt(Integer.toString(quant), ver, 1);
-                        //refresh
-                        tab_commande.repaint();
-                        mis_a_jour_total();
-                        lab_prix.setText(String.valueOf(total_prix));
-                    }
-                    else
-                    {
-                        DefaultTableModel model = (DefaultTableModel) tab_commande.getModel();
-                        model.addRow(new Object[]{"Coca_cola", "1", "2","2"});
-                        mis_a_jour_total();
-                        lab_prix.setText(String.valueOf(total_prix));
-
-                    }
-                }
+                gerer_produit_selectione("Coca cola");
             }
         });
         GroupLayout gl_pan_boisson = new GroupLayout(pan_boisson);
         gl_pan_boisson.setHorizontalGroup(
-                gl_pan_boisson.createParallelGroup(Alignment.LEADING)
+                gl_pan_boisson.createParallelGroup(Alignment.TRAILING)
                         .addGroup(gl_pan_boisson.createSequentialGroup()
-                                .addGap(120)
-                                .addComponent(lblBoisson)
-                                .addContainerGap(124, Short.MAX_VALUE))
-                        .addGroup(Alignment.TRAILING, gl_pan_boisson.createSequentialGroup()
                                 .addContainerGap(97, Short.MAX_VALUE)
                                 .addGroup(gl_pan_boisson.createParallelGroup(Alignment.LEADING)
-                                        .addComponent(btn_pomme, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(btn_orange, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(btn_oasis, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(btn_sprite, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(btn_fanta, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(btn_coca, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(btn_raisin, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE))
-                                .addGap(79))
+                                        .addGroup(gl_pan_boisson.createSequentialGroup()
+                                                .addGroup(gl_pan_boisson.createParallelGroup(Alignment.LEADING)
+                                                        .addComponent(btn_pomme, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(btn_orange, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(btn_oasis, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(btn_sprite, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(btn_fanta, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(btn_coca, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(btn_raisin, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE))
+                                                .addGap(79))
+                                        .addGroup(Alignment.TRAILING, gl_pan_boisson.createSequentialGroup()
+                                                .addComponent(lblBoisson)
+                                                .addGap(171))))
         );
         gl_pan_boisson.setVerticalGroup(
                 gl_pan_boisson.createParallelGroup(Alignment.LEADING)
                         .addGroup(gl_pan_boisson.createSequentialGroup()
-                                .addGap(23)
+                                .addGap(32)
                                 .addComponent(lblBoisson)
-                                .addGap(27)
+                                .addGap(18)
                                 .addComponent(btn_coca, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
                                 .addGap(41)
                                 .addComponent(btn_fanta, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
@@ -506,6 +485,8 @@ public class Interface_vendeur extends JFrame {
         JButton btn_decon = new JButton("Deconnection");
         btn_decon.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+
+                //TODO FAIRE LA DECONNEXION DU VENDEUR ET ARRIVER A LA PAGE CONNEXION
             }
         });
         btn_decon.setBounds(243, 0, 136, 36);
@@ -523,21 +504,74 @@ public class Interface_vendeur extends JFrame {
                 }
                 mis_a_jour_total();
                 lab_prix.setText(String.valueOf(total_prix));
+
+                //Vider le vector commandes et ajouter les commandes au vector vitrine
+                for( int i=0; i<commandes.size();i++)
+                {
+                    System.out.println("Ajouter vitrine");
+                    vitrine.add(commandes.get(i));
+                }
+
+                System.out.println("VIder commandes");
+                commandes.clear();
+
+                System.out.println("\n");
+                System.out.println("VITRINE");
+                for(int i=0 ; i<vitrine.size(); i++)
+                {
+
+                    System.out.println (vitrine.elementAt(i).getNom()+" "+vitrine.elementAt(i).getQuantite()+" "+vitrine.elementAt(i).getPrix()+" "+vitrine.elementAt(i).getPerime()+ " "+vitrine.elementAt(i).getDate()+" "+vitrine.elementAt(i).getTime());
+
+                }
+                System.out.println("\n");
+                System.out.println("COMMANDES");
+                for(int i=0 ; i<commandes.size(); i++)
+                {
+
+                    System.out.println (commandes.elementAt(i).getNom()+" "+commandes.elementAt(i).getQuantite()+" "+commandes.elementAt(i).getPrix()+" "+commandes.elementAt(i).getPerime()+ " "+commandes.elementAt(i).getDate()+" "+commandes.elementAt(i).getTime());
+
+                }
+
+
             }
         });
         btn_logo.setBounds(10, 11, 209, 122);
         pan_commande.add(btn_logo);
 
         JButton btn_payer = new JButton("PAYER");
-        btn_payer.setBounds(73, 724, 251, 89);
+        btn_payer.setBounds(41, 724, 442, 199);
         pan_commande.add(btn_payer);
+
+        JLabel lblTotal = new JLabel("TOTAL");
+        lblTotal.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        lblTotal.setBounds(75, 678, 81, 35);
+        pan_commande.add(lblTotal);
+
+        JLabel lblVie = new JLabel("VIENNOISERIE");
+        lblVie.setFont(new Font("Tahoma", Font.PLAIN, 18));
 
         btn_payer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
                 if(total_prix>0)
                 {
-                    Interface_paiement paiement=new Interface_paiement(total_prix);
+                    //recuperer les nouveaux produits ajoutés à la BDD vitrine
+                    vitrine=base.getVitrine(vitrine);
+
+                    for(int i=0 ; i<vitrine.size(); i++)
+                    {
+                        String nul="null";
+                        if(nul.equals(vitrine.elementAt(i).getNom()))
+                        {
+                            //Si l'element du vitrine à pour nom = null on va le supprimer
+                            vitrine.remove(i);
+                        }
+                        System.out.println (vitrine.elementAt(i).getNom()+" "+vitrine.elementAt(i).getQuantite()+" "+vitrine.elementAt(i).getPrix()+" "+vitrine.elementAt(i).getPerime()+ " "+vitrine.elementAt(i).getDate()+" "+vitrine.elementAt(i).getTime());
+
+                    }
+
+
+                    Interface_paiement paiement=new Interface_paiement(vitrine,commandes,tab_commande,total_prix, lab_prix);
                     paiement.setVisible(true);
                     paiement.setLocationRelativeTo(null);
                 }
@@ -551,199 +585,37 @@ public class Interface_vendeur extends JFrame {
 
 
 
-        JLabel lblTotal = new JLabel("TOTAL");
-        lblTotal.setFont(new Font("Tahoma", Font.PLAIN, 18));
-        lblTotal.setBounds(75, 678, 81, 35);
-        pan_commande.add(lblTotal);
 
-        JLabel lblVie = new JLabel("VIENNOISERIE");
-        lblVie.setFont(new Font("Tahoma", Font.PLAIN, 18));
 
         JButton btn_crois = new JButton("Croissant");
         btn_crois.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                boolean base_de_datos=false;
-                // S'il y a des produits dans la base de donnes
-                if(base_de_datos)
-                {
-                    JOptionPane.showMessageDialog(null, "Il n'a pas des croissants", "croissant", JOptionPane.WARNING_MESSAGE);
-                }
-                else
-                {
-                    //parcourir la liste des produits dans la commande
-                    int ver=verifier("Croissant");
-                    if(ver!=20)
-                    {
 
-                        //System.out.println(rowSelected);
-                        String ex = tab_commande.getModel().getValueAt(ver, 1).toString();
-                        int quant=Integer.parseInt(ex);
-                        quant++;
-                        String prix_unit=tab_commande.getModel().getValueAt(ver, 3).toString();
-                        float prix_unitaire=Float.parseFloat(prix_unit);
-                        float prix_total=prix_unitaire*quant;
-                        //prix_total = (float)(Math.floor(prix_total * 100) / 100);
-                        round(prix_total,1);
-                        prix_total = (float)(Math.floor(prix_total * 10) / 10);
-                        //Increment of the price
-                        tab_commande.setValueAt(String.valueOf(prix_total), ver, 2);
-                        //Increment of the quantity
-                        tab_commande.setValueAt(Integer.toString(quant), ver, 1);
-                        //refresh
-                        tab_commande.repaint();
-                        mis_a_jour_total();
-                        lab_prix.setText(String.valueOf(total_prix));
-                    }
-                    else
-                    {
-                        DefaultTableModel model = (DefaultTableModel) tab_commande.getModel();
-                        model.addRow(new Object[]{"Croissant", "1", "1.2","1.2"});
-                        mis_a_jour_total();
-                        lab_prix.setText(String.valueOf(total_prix));
-
-                    }
-                }
+                gerer_produit_selectione("Croissant");
             }
         });
 
         JButton btn_painauchoc = new JButton("Pain_choc");
         btn_painauchoc.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                boolean base_de_datos=false;
-                // S'il y a des produits dans la base de donnes
-                if(base_de_datos)
-                {
-                    JOptionPane.showMessageDialog(null, "Il n'a pas des pains au chocolat", "pain au chocolat", JOptionPane.WARNING_MESSAGE);
-                }
-                else
-                {
-                    //parcourir la liste des produits dans la commande
-                    int ver=verifier("Pain_choc");
-                    if(ver!=20)
-                    {
 
-                        //System.out.println(rowSelected);
-                        String ex = tab_commande.getModel().getValueAt(ver, 1).toString();
-                        int quant=Integer.parseInt(ex);
-                        quant++;
-                        String prix_unit=tab_commande.getModel().getValueAt(ver, 3).toString();
-                        float prix_unitaire=Float.parseFloat(prix_unit);
-                        float prix_total=prix_unitaire*quant;
-                        //prix_total = (float)(Math.floor(prix_total * 100) / 100);
-                        round(prix_total,1);
-                        prix_total = (float)(Math.floor(prix_total * 10) / 10);
-                        //Increment of the price
-                        tab_commande.setValueAt(String.valueOf(prix_total), ver, 2);
-                        //Increment of the quantity
-                        tab_commande.setValueAt(Integer.toString(quant), ver, 1);
-                        //refresh
-                        tab_commande.repaint();
-                        mis_a_jour_total();
-                        lab_prix.setText(String.valueOf(total_prix));
-                    }
-                    else
-                    {
-                        DefaultTableModel model = (DefaultTableModel) tab_commande.getModel();
-                        model.addRow(new Object[]{"Pain_choc", "1", "1.2","1.2"});
-                        mis_a_jour_total();
-                        lab_prix.setText(String.valueOf(total_prix));
-
-                    }
-                }
+                gerer_produit_selectione("Pain au chocolat");
             }
         });
 
         JButton btn_sucre = new JButton("Brioche_sucre");
         btn_sucre.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                boolean base_de_datos=false;
-                // S'il y a des produits dans la base de donnes
-                if(base_de_datos)
-                {
-                    JOptionPane.showMessageDialog(null, "Il n'a pas des brioches", "briochest", JOptionPane.WARNING_MESSAGE);
-                }
-                else
-                {
-                    //parcourir la liste des produits dans la commande
-                    int ver=verifier("Brioche_sucre");
-                    if(ver!=20)
-                    {
 
-                        //System.out.println(rowSelected);
-                        String ex = tab_commande.getModel().getValueAt(ver, 1).toString();
-                        int quant=Integer.parseInt(ex);
-                        quant++;
-                        String prix_unit=tab_commande.getModel().getValueAt(ver, 3).toString();
-                        float prix_unitaire=Float.parseFloat(prix_unit);
-                        float prix_total=prix_unitaire*quant;
-                        //prix_total = (float)(Math.floor(prix_total * 100) / 100);
-                        round(prix_total,1);
-                        prix_total = (float)(Math.floor(prix_total * 10) / 10);
-                        //Increment of the price
-                        tab_commande.setValueAt(String.valueOf(prix_total), ver, 2);
-                        //Increment of the quantity
-                        tab_commande.setValueAt(Integer.toString(quant), ver, 1);
-                        //refresh
-                        tab_commande.repaint();
-                        mis_a_jour_total();
-                        lab_prix.setText(String.valueOf(total_prix));
-                    }
-                    else
-                    {
-                        DefaultTableModel model = (DefaultTableModel) tab_commande.getModel();
-                        model.addRow(new Object[]{"Brioche_sucre", "1", "1.5","1.5"});
-                        mis_a_jour_total();
-                        lab_prix.setText(String.valueOf(total_prix));
-
-                    }
-                }
+                gerer_produit_selectione("Brioche sucre");
             }
         });
 
         JButton btn_painaulait = new JButton("Pain_lait");
         btn_painaulait.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                boolean base_de_datos=false;
-                // S'il y a des produits dans la base de donnes
-                if(base_de_datos)
-                {
-                    JOptionPane.showMessageDialog(null, "Il n'a pas des pains au lait", "pains au lait", JOptionPane.WARNING_MESSAGE);
-                }
-                else
-                {
-                    //parcourir la liste des produits dans la commande
-                    int ver=verifier("Pain_lait");
-                    if(ver!=20)
-                    {
 
-                        //System.out.println(rowSelected);
-                        String ex = tab_commande.getModel().getValueAt(ver, 1).toString();
-                        int quant=Integer.parseInt(ex);
-                        quant++;
-                        String prix_unit=tab_commande.getModel().getValueAt(ver, 3).toString();
-                        float prix_unitaire=Float.parseFloat(prix_unit);
-                        float prix_total=prix_unitaire*quant;
-                        //prix_total = (float)(Math.floor(prix_total * 100) / 100);
-                        round(prix_total,1);
-                        prix_total = (float)(Math.floor(prix_total * 10) / 10);
-                        //Increment of the price
-                        tab_commande.setValueAt(String.valueOf(prix_total), ver, 2);
-                        //Increment of the quantity
-                        tab_commande.setValueAt(Integer.toString(quant), ver, 1);
-                        //refresh
-                        tab_commande.repaint();
-                        mis_a_jour_total();
-                        lab_prix.setText(String.valueOf(total_prix));
-                    }
-                    else
-                    {
-                        DefaultTableModel model = (DefaultTableModel) tab_commande.getModel();
-                        model.addRow(new Object[]{"Pain_lait", "1", "1.5","1.5"});
-                        mis_a_jour_total();
-                        lab_prix.setText(String.valueOf(total_prix));
-
-                    }
-                }
+                gerer_produit_selectione("Pain au lait");
             }
         });
 
@@ -751,94 +623,15 @@ public class Interface_vendeur extends JFrame {
         btn_tartecitron.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                boolean base_de_datos=false;
-                // S'il y a des produits dans la base de donnes
-                if(base_de_datos)
-                {
-                    JOptionPane.showMessageDialog(null, "Il n'a pas des tartes au citron", "tarte au citron", JOptionPane.WARNING_MESSAGE);
-                }
-                else
-                {
-                    //parcourir la liste des produits dans la commande
-                    int ver=verifier("Tarte_citron");
-                    if(ver!=20)
-                    {
-
-                        //System.out.println(rowSelected);
-                        String ex = tab_commande.getModel().getValueAt(ver, 1).toString();
-                        int quant=Integer.parseInt(ex);
-                        quant++;
-                        String prix_unit=tab_commande.getModel().getValueAt(ver, 3).toString();
-                        float prix_unitaire=Float.parseFloat(prix_unit);
-                        float prix_total=prix_unitaire*quant;
-                        //prix_total = (float)(Math.floor(prix_total * 100) / 100);
-                        round(prix_total,1);
-                        prix_total = (float)(Math.floor(prix_total * 10) / 10);
-                        //Increment of the price
-                        tab_commande.setValueAt(String.valueOf(prix_total), ver, 2);
-                        //Increment of the quantity
-                        tab_commande.setValueAt(Integer.toString(quant), ver, 1);
-                        //refresh
-                        tab_commande.repaint();
-                        mis_a_jour_total();
-                        lab_prix.setText(String.valueOf(total_prix));
-                    }
-                    else
-                    {
-                        DefaultTableModel model = (DefaultTableModel) tab_commande.getModel();
-                        model.addRow(new Object[]{"Tarte_citron", "1", "1.8","1.8"});
-                        mis_a_jour_total();
-                        lab_prix.setText(String.valueOf(total_prix));
-
-                    }
-                }
+                gerer_produit_selectione("Tarte citron");
             }
         });
 
         JButton btn_tartepra = new JButton("Tarte_praline");
         btn_tartepra.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                boolean base_de_datos=false;
-                // S'il y a des produits dans la base de donnes
-                if(base_de_datos)
-                {
-                    JOptionPane.showMessageDialog(null, "Il n'a pas des tartes praline", "tarte praline", JOptionPane.WARNING_MESSAGE);
-                }
-                else
-                {
-                    //parcourir la liste des produits dans la commande
-                    int ver=verifier("Tarte_praline");
-                    if(ver!=20)
-                    {
 
-                        //System.out.println(rowSelected);
-                        String ex = tab_commande.getModel().getValueAt(ver, 1).toString();
-                        int quant=Integer.parseInt(ex);
-                        quant++;
-                        String prix_unit=tab_commande.getModel().getValueAt(ver, 3).toString();
-                        float prix_unitaire=Float.parseFloat(prix_unit);
-                        float prix_total=prix_unitaire*quant;
-                        //prix_total = (float)(Math.floor(prix_total * 100) / 100);
-                        round(prix_total,1);
-                        prix_total = (float)(Math.floor(prix_total * 10) / 10);
-                        //Increment of the price
-                        tab_commande.setValueAt(String.valueOf(prix_total), ver, 2);
-                        //Increment of the quantity
-                        tab_commande.setValueAt(Integer.toString(quant), ver, 1);
-                        //refresh
-                        tab_commande.repaint();
-                        mis_a_jour_total();
-                        lab_prix.setText(String.valueOf(total_prix));
-                    }
-                    else
-                    {
-                        DefaultTableModel model = (DefaultTableModel) tab_commande.getModel();
-                        model.addRow(new Object[]{"Tarte_praline", "1", "1.8","1.8"});
-                        mis_a_jour_total();
-                        lab_prix.setText(String.valueOf(total_prix));
-
-                    }
-                }
+                gerer_produit_selectione("Tarte praline");
             }
         });
         GroupLayout gl_pan_vienn = new GroupLayout(pan_vienn);
@@ -889,94 +682,16 @@ public class Interface_vendeur extends JFrame {
         JButton btn_baguettes = new JButton("Baguette");
         btn_baguettes.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                boolean base_de_datos=false;
-                // S'il y a des produits dans la base de donnes
-                if(base_de_datos)
-                {
-                    JOptionPane.showMessageDialog(null, "Il n'a pas des baguettes", "baguettes", JOptionPane.WARNING_MESSAGE);
-                }
-                else
-                {
-                    //parcourir la liste des produits dans la commande
-                    int ver=verifier("Baguette");
-                    if(ver!=20)
-                    {
 
-                        //System.out.println(rowSelected);
-                        String ex = tab_commande.getModel().getValueAt(ver, 1).toString();
-                        int quant=Integer.parseInt(ex);
-                        quant++;
-                        String prix_unit=tab_commande.getModel().getValueAt(ver, 3).toString();
-                        float prix_unitaire=Float.parseFloat(prix_unit);
-                        float prix_total=prix_unitaire*quant;
-                        //prix_total = (float)(Math.floor(prix_total * 100) / 100);
-                        round(prix_total,1);
-                        prix_total = (float)(Math.floor(prix_total * 10) / 10);
-                        //Increment of the price
-                        tab_commande.setValueAt(String.valueOf(prix_total), ver, 2);
-                        //Increment of the quantity
-                        tab_commande.setValueAt(Integer.toString(quant), ver, 1);
-                        //refresh
-                        tab_commande.repaint();
-                        mis_a_jour_total();
-                        lab_prix.setText(String.valueOf(total_prix));
-                    }
-                    else
-                    {
-                        DefaultTableModel model = (DefaultTableModel) tab_commande.getModel();
-                        model.addRow(new Object[]{"Baguette", "1", "0.8","0.8"});
-                        mis_a_jour_total();
-                        lab_prix.setText(String.valueOf(total_prix));
+                gerer_produit_selectione("Baguette");
 
-                    }
-                }
             }
         });
 
         JButton btn_flute = new JButton("Flute");
         btn_flute.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                boolean base_de_datos=false;
-                // S'il y a des produits dans la base de donnes
-                if(base_de_datos)
-                {
-                    JOptionPane.showMessageDialog(null, "Il n'a pas des flutes", "flute", JOptionPane.WARNING_MESSAGE);
-                }
-                else
-                {
-                    //parcourir la liste des produits dans la commande
-                    int ver=verifier("Flute");
-                    if(ver!=20)
-                    {
-
-                        //System.out.println(rowSelected);
-                        String ex = tab_commande.getModel().getValueAt(ver, 1).toString();
-                        int quant=Integer.parseInt(ex);
-                        quant++;
-                        String prix_unit=tab_commande.getModel().getValueAt(ver, 3).toString();
-                        float prix_unitaire=Float.parseFloat(prix_unit);
-                        float prix_total=prix_unitaire*quant;
-                        //prix_total = (float)(Math.floor(prix_total * 100) / 100);
-                        round(prix_total,1);
-                        prix_total = (float)(Math.floor(prix_total * 10) / 10);
-                        //Increment of the price
-                        tab_commande.setValueAt(String.valueOf(prix_total), ver, 2);
-                        //Increment of the quantity
-                        tab_commande.setValueAt(Integer.toString(quant), ver, 1);
-                        //refresh
-                        tab_commande.repaint();
-                        mis_a_jour_total();
-                        lab_prix.setText(String.valueOf(total_prix));
-                    }
-                    else
-                    {
-                        DefaultTableModel model = (DefaultTableModel) tab_commande.getModel();
-                        model.addRow(new Object[]{"Flute", "1", "1","1"});
-                        mis_a_jour_total();
-                        lab_prix.setText(String.valueOf(total_prix));
-
-                    }
-                }
+                gerer_produit_selectione("Flute");
             }
         });
 
@@ -985,14 +700,7 @@ public class Interface_vendeur extends JFrame {
         String columnNamesJeter[] = { "Nom", "Quantite" };
 
         // Create some data
-        String dataValuesJeter[][] =
-                {
-
-                        { "Flute", "4" },
-                        { "Croissant", "12" },
-
-
-                };
+        String dataValuesJeter[][] ={ };
 
         tab_jeter = new JTable( dataValuesJeter, columnNamesJeter );
         DefaultTableModel model_1 = new DefaultTableModel(dataValuesJeter,columnNamesJeter);
@@ -1010,6 +718,24 @@ public class Interface_vendeur extends JFrame {
             public void actionPerformed(ActionEvent arg0) {
 
                 int rowSelected = tab_jeter.getSelectedRow();
+
+                String nom=tab_jeter.getModel().getValueAt(rowSelected, 0).toString();
+
+
+                //on garde en la variable i la position du premièr produit avec le même nom
+                for(int i=0 ; i<jeter.size(); i++)
+                {
+                    if(nom.equals(jeter.elementAt(i).getNom()))
+                    {
+                        jeter.remove(i);
+
+                        DefaultTableModel model = new DefaultTableModel();
+                        model = (DefaultTableModel) tab_jeter.getModel();
+                        model.removeRow(tab_jeter.getSelectedRow());
+                        tab_commande.repaint();
+                        break;
+                    }
+                }
 
                 //System.out.println(rowSelected);
                 //Supprimer le row
@@ -1072,16 +798,15 @@ public class Interface_vendeur extends JFrame {
                                 .addContainerGap())
         );
         groupLayout.setVerticalGroup(
-                groupLayout.createParallelGroup(Alignment.LEADING)
+                groupLayout.createParallelGroup(Alignment.TRAILING)
                         .addGroup(groupLayout.createSequentialGroup()
-                                .addGap(11)
-                                .addComponent(pan_commande, GroupLayout.PREFERRED_SIZE, 837, GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(142, Short.MAX_VALUE))
-                        .addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
-                                .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-                                        .addComponent(pan_vienn, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 974, Short.MAX_VALUE)
-                                        .addComponent(pan_boisson, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 974, Short.MAX_VALUE)
-                                        .addComponent(pan_pain, GroupLayout.DEFAULT_SIZE, 974, Short.MAX_VALUE))
+                                .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+                                        .addComponent(pan_vienn, GroupLayout.DEFAULT_SIZE, 974, Short.MAX_VALUE)
+                                        .addComponent(pan_boisson, GroupLayout.DEFAULT_SIZE, 974, Short.MAX_VALUE)
+                                        .addComponent(pan_pain, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 974, Short.MAX_VALUE)
+                                        .addGroup(groupLayout.createSequentialGroup()
+                                                .addGap(11)
+                                                .addComponent(pan_commande, GroupLayout.DEFAULT_SIZE, 963, Short.MAX_VALUE)))
                                 .addContainerGap())
         );
 
@@ -1110,7 +835,7 @@ public class Interface_vendeur extends JFrame {
         tab_commande = new JTable(model);
 
         tab_commande.setFont(new java.awt.Font("Arial", 0, 20));
-        tab_commande.setBounds(41, 253, 318, 414);
+        tab_commande.setBounds(41, 253, 442, 414);
         tab_commande.getColumnModel().getColumn(0).setPreferredWidth(90);
         tab_commande.getColumnModel().getColumn(1).setPreferredWidth(30);
         tab_commande.getColumnModel().getColumn(2).setPreferredWidth(30);
@@ -1131,12 +856,12 @@ public class Interface_vendeur extends JFrame {
 
         JLabel lblQuantite = new JLabel("QUANTITE");
         lblQuantite.setFont(new Font("Tahoma", Font.PLAIN, 18));
-        lblQuantite.setBounds(193, 224, 87, 22);
+        lblQuantite.setBounds(230, 224, 87, 22);
         pan_commande.add(lblQuantite);
 
         JLabel lblValue = new JLabel("PRIX");
         lblValue.setFont(new Font("Tahoma", Font.PLAIN, 18));
-        lblValue.setBounds(306, 224, 73, 18);
+        lblValue.setBounds(397, 226, 73, 18);
         pan_commande.add(lblValue);
 
         JButton btn_plus= new JButton("+");
@@ -1144,25 +869,12 @@ public class Interface_vendeur extends JFrame {
         btn_plus.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
 
+
                 int rowSelected = tab_commande.getSelectedRow();
-                //System.out.println(rowSelected);
-                String ex = tab_commande.getModel().getValueAt(rowSelected, 1).toString();
-                int quant=Integer.parseInt(ex);
-                quant++;
-                String prix_unit=tab_commande.getModel().getValueAt(rowSelected, 3).toString();
-                float prix_unitaire=Float.parseFloat(prix_unit);
-                float prix_total=prix_unitaire*quant;
-                //prix_total = (float)(Math.floor(prix_total * 100) / 100);
-                round(prix_total,1);
-                prix_total = (float)(Math.floor(prix_total * 10) / 10);
-                //Increment of the price
-                tab_commande.setValueAt(String.valueOf(prix_total), rowSelected, 2);
-                //Increment of the quantity
-                tab_commande.setValueAt(Integer.toString(quant), rowSelected, 1);
-                //refresh
-                tab_commande.repaint();
-                mis_a_jour_total();
-                lab_prix.setText(String.valueOf(total_prix));
+                String nom = tab_commande.getModel().getValueAt(rowSelected, 0).toString();
+
+                gerer_produit_selectione(nom);
+
             }
         });
         btn_plus.setBounds(106, 180, 65, 37);
@@ -1171,13 +883,30 @@ public class Interface_vendeur extends JFrame {
         JButton btn_less = new JButton("-");
         btn_less.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
+
+                int i;
                 int rowSelected = tab_commande.getSelectedRow();
                 //System.out.println(rowSelected);
+                String nom=tab_commande.getModel().getValueAt(rowSelected, 0).toString();
                 String ex=tab_commande.getModel().getValueAt(rowSelected, 1).toString();
                 int quant=Integer.parseInt(ex);
                 //	System.out.println(quant);
+
+                //on garde en la variable i la position du premièr produit avec le même nom
+                for(i=0 ; i<vitrine.size(); i++)
+                {
+                    if(nom.equals(commandes.elementAt(i).getNom()))
+                    {
+                        System.out.println(i);
+                        break;
+                    }
+                }
+
                 if(quant>1)
                 {
+                    Produit aux = new Produit(commandes.elementAt(i).getNom(),commandes.elementAt(i).getPrix(),commandes.elementAt(i).getQuantite(),commandes.elementAt(i).getDate(),commandes.elementAt(i).getTime(),commandes.elementAt(i).getPerime());
+                    vitrine.add(aux);
+                    commandes.remove(i);
                     quant--;
                     int rowSelectedless = tab_commande.getSelectedRow();
                     String prix_unit=tab_commande.getModel().getValueAt(rowSelectedless, 3).toString();
@@ -1196,6 +925,9 @@ public class Interface_vendeur extends JFrame {
                 }
                 else
                 {
+                    Produit aux = new Produit(commandes.elementAt(i).getNom(),commandes.elementAt(i).getPrix(),commandes.elementAt(i).getQuantite(),commandes.elementAt(i).getDate(),commandes.elementAt(i).getTime(),commandes.elementAt(i).getPerime());
+                    vitrine.add(aux);
+                    commandes.remove(i);
                     //System.out.println(rowSelected);
                     //Supprimer le row
                     DefaultTableModel model = new DefaultTableModel();
@@ -1207,9 +939,27 @@ public class Interface_vendeur extends JFrame {
 
                 }
 
-                //System.out.println(quant);
+                //Mettre à jour la quantitè
                 tab_commande.setValueAt(Integer.toString(quant), rowSelected, 1);
                 tab_commande.repaint();
+
+                System.out.println("\n");
+                System.out.println("VITRINE");
+                for(int j=0 ; j<vitrine.size(); j++)
+                {
+
+                    System.out.println (vitrine.elementAt(j).getNom()+" "+vitrine.elementAt(j).getQuantite()+" "+vitrine.elementAt(j).getPrix()+" "+vitrine.elementAt(j).getPerime()+ " "+vitrine.elementAt(j).getDate()+" "+vitrine.elementAt(j).getTime());
+
+                }
+                System.out.println("\n");
+                System.out.println("COMMANDES");
+                for(int l=0 ; l<commandes.size(); l++)
+                {
+
+                    System.out.println (commandes.elementAt(l).getNom()+" "+commandes.elementAt(l).getQuantite()+" "+commandes.elementAt(l).getPrix()+" "+commandes.elementAt(l).getPerime()+ " "+commandes.elementAt(l).getDate()+" "+commandes.elementAt(l).getTime());
+
+                }
+
             }
         });
         btn_less.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -1228,6 +978,8 @@ public class Interface_vendeur extends JFrame {
         lab_euro.setBounds(290, 686, 27, 27);
         pan_commande.add(lab_euro);
 
+        //TODO faire le timer de jeter
+        timer_refresh_produits_jeter();
 
         getContentPane().setLayout(groupLayout);
         this.setExtendedState(MAXIMIZED_BOTH);

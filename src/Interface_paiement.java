@@ -1,4 +1,7 @@
 /**
+ * Created by Elio on 11/12/2014.
+ */
+/**
  * Created by Elio on 29/11/2014.
  */
 import java.awt.EventQueue;
@@ -33,6 +36,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.GridLayout;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.util.Vector;
 
 import javax.swing.JList;
 import javax.swing.JSplitPane;
@@ -60,7 +64,7 @@ public class Interface_paiement extends JFrame {
     /**
      * Create the frame.
      */
-    public Interface_paiement(float total_ihm_vendeur) {
+    public Interface_paiement(final Vector <Produit> vitrine, final Vector <Produit> commandes, final JTable tab_commande,float total_ihm_vendeur, final JLabel total) {
         this.total_prix=total_ihm_vendeur;
         //System.out.println(total_ihm_vendeur);
         setTitle("Paiement");
@@ -123,7 +127,7 @@ public class Interface_paiement extends JFrame {
                 {
                     if(billet)
                     {
-                        Interface_billet ibillet=new Interface_billet(total_prix);
+                        Interface_billet ibillet=new Interface_billet(vitrine,commandes,tab_commande,total_prix, total);
                         ibillet.setVisible(true);
                         ibillet.setLocationRelativeTo(null);
                         setVisible(false);
@@ -135,13 +139,33 @@ public class Interface_paiement extends JFrame {
                                 "Confirmer paiement ?", JOptionPane.OK_CANCEL_OPTION);
                         if (result == JOptionPane.YES_OPTION)
                         {
+                            total.setText(String.valueOf(0));
+                            //Vider le Jtable du commandes
+                            DefaultTableModel model = (DefaultTableModel)tab_commande.getModel();
+                            int rows = model.getRowCount();
 
+                            for(int i = rows - 1; i >=0; i--)
+                            {
+                                model.removeRow(i);
+                            }
+
+                            System.out.println("COMMANDES dans paiement");
+
+                            //Connection avec la BDD
+                            GestionBDD base= new GestionBDD();
+                            for(int i=0 ; i<commandes.size(); i++)
+                            {
+
+                                System.out.println ("AJOUTER AU BILAN "+commandes.elementAt(i).getNom()+" "+commandes.elementAt(i).getQuantite()+" "+commandes.elementAt(i).getPrix()+" "+commandes.elementAt(i).getPerime()+ " "+commandes.elementAt(i).getDate()+" "+commandes.elementAt(i).getTime());
+                                base.ajouterBilan(commandes.elementAt(i).getNom(),commandes.elementAt(i).getQuantite());
+
+                            }
                             //Supprimer les produits de la commande dans la base de donnès
+                            commandes.clear();
 
                             JOptionPane.showMessageDialog(null, "Paiement accepté", "Paiement accepté", JOptionPane.WARNING_MESSAGE);
                             //Aller à la page principal du vendeur
                             dispose();
-                            // Il faut mettre à zero l'interface vendeur (supprimer les produits dans la base de données et vider la liste des commandes)
 
                         }
                         else

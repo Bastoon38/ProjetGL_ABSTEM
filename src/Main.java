@@ -14,13 +14,12 @@ public class Main {
         //frame.setVisible(true);
         //Connexion frame1 = new Connexion();
         //frame1.setVisible(true);
-        GestionBDD bdd = new GestionBDD();
-        Produit[] p = bdd.getStock();
-        for (int i = 0 ; i<3 ; i++) {
-            System.out.println(p[i].getNom());
-            System.out.println(p[i].getQuantite());
-            System.out.println(p[i].getPrix());
-            System.out.println(p[i].getDate());
-        }
+        //GestionBDD bdd = new GestionBDD();
+        //System.out.println(bdd.supprimerStock("Baguette",500));
+        //Elio Test Vendeur
+        // ihm_billet billet = new ihm_billet();
+        //billet.setVisible(true);
+        Interface_vendeur frame = new Interface_vendeur();
+        Vendeur vendeur= new Vendeur(frame);
     }
 }

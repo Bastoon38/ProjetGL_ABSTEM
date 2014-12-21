@@ -1,16 +1,17 @@
-/**
- * Created by Elio on 17/12/2014.
- */
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JTextField;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 
+import java.awt.Component;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -27,6 +28,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.Vector;
 
 
 public class Interface_billet extends JFrame {
@@ -42,7 +44,7 @@ public class Interface_billet extends JFrame {
     /**
      * Create the frame.
      */
-    public Interface_billet(float total) {
+    public Interface_billet(Vector <Produit> vitrine, final Vector <Produit> commandes, final JTable tab_commande,float total, final JLabel lab_total) {
 
         this.total_prix=total;
         setTitle("Billet");
@@ -53,14 +55,44 @@ public class Interface_billet extends JFrame {
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
         contentPane.setLayout(null);
-       final JButton btnValider = new JButton("VALIDER");
+        final JButton btnValider = new JButton("VALIDER");
         btnValider.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+
                 //Supprimer la liste des produits dans la base de données et fermer les Frames et mis à zero la liste des produits
+                int result = JOptionPane.showConfirmDialog((Component) null, "Voulez vous confirmer le paiement ?",
+                        "Confirmer paiement ?", JOptionPane.OK_CANCEL_OPTION);
+                if (result == JOptionPane.YES_OPTION)
+                {
+                    lab_total.setText(String.valueOf(0));
+                    //Vider le Jtable du commandes
+                    DefaultTableModel model = (DefaultTableModel)tab_commande.getModel();
+                    int rows = model.getRowCount();
+                    for(int i = rows - 1; i >=0; i--)
+                    {
+                        model.removeRow(i);
+                    }
 
 
-                dispose();
+                    System.out.println("COMMANDES dans paiement");
 
+                    //Connection avec la BDD
+                    GestionBDD base= new GestionBDD();
+                    for(int i=0 ; i<commandes.size(); i++)
+                    {
+
+                        System.out.println (commandes.elementAt(i).getNom()+" "+commandes.elementAt(i).getQuantite()+" "+commandes.elementAt(i).getPrix()+" "+commandes.elementAt(i).getPerime()+ " "+commandes.elementAt(i).getDate()+" "+commandes.elementAt(i).getTime());
+                        base.ajouterBilan(commandes.elementAt(i).getNom(),commandes.elementAt(i).getQuantite());
+
+                    }
+
+
+                    //Supprimer les produits de la commande dans la base de donnès
+                    commandes.clear();
+                    JOptionPane.showMessageDialog(null, "Paiement accepté", "Paiement accepté", JOptionPane.WARNING_MESSAGE);
+
+                    dispose();
+                }
 
             }
         });
@@ -109,7 +141,6 @@ public class Interface_billet extends JFrame {
                 lblARendre.setFont(f.deriveFont(f.getStyle() | Font.BOLD));
             }
             public void focusGained(FocusEvent arg0) {
-                // TODO Auto-generated method stub
 
             }
         });
@@ -149,11 +180,10 @@ public class Interface_billet extends JFrame {
 
 
         btnAnnuler.setFont(new Font("Tahoma", Font.PLAIN, 34));
-//        btnAnnuler.setBackground(new Color(255, 0, 0));
+        btnAnnuler.setBackground(new Color(255, 0, 0));
         btnAnnuler.setBounds(772, 528, 250, 122);
         contentPane.add(btnAnnuler);
 
         this.setExtendedState(MAXIMIZED_BOTH);
     }
 }
-
