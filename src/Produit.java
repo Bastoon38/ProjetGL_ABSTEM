@@ -1,6 +1,8 @@
 /**
  * Created by Elio on 11/12/2014.
  */
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
 import java.text.DecimalFormat;
 import  java.sql.Date;
 import java.sql.Time;
@@ -15,6 +17,9 @@ public class Produit {
     private Date date;
     private Time time;
     private int perime;
+    private int vendu;
+    private int jete;
+    private boolean cuisson;
 
     public Produit(String obj_name,  float credit, int quant, Date date) {
 
@@ -32,6 +37,19 @@ public class Produit {
         this.date=date;
         this.time=time;
         this.perime=perime;
+    }
+    public Produit(String obj_name, int vendu, int jete) {
+
+        this.nom = obj_name;
+        this.vendu = vendu;
+        this.jete = jete;
+    }
+
+    public Produit(String obj_name, int quant, boolean cuisson) {
+
+        this.nom = obj_name;
+        this.quantite = quant;
+        this.cuisson = cuisson;
     }
     //get Methods
     public String getNom()
@@ -58,6 +76,19 @@ public class Produit {
     {
         return this.perime;
     }
+    public int getVendu()
+    {
+        return this.vendu;
+    }
+    public int getJete()
+    {
+        return this.jete;
+    }
+    public boolean getCuisson()
+    {
+        return this.cuisson;
+    }
+
     // set Methods
     public void setNom(String nom)
     {
@@ -83,5 +114,16 @@ public class Produit {
     {
         this.perime=perime;
     }
-
+    public void setVendu(int vendu)
+    {
+        this.vendu=vendu;
+    }
+    public void setJete(int jete)
+    {
+        this.jete=jete;
+    }
+    public void setCuisson(boolean cuisson)
+    {
+        this.cuisson=cuisson;
+    }
 }

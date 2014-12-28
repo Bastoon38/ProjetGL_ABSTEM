@@ -12,14 +12,14 @@ public class Main {
         //ihm.setVisible(true);
         //Interface_vendeur frame = new Interface_vendeur();
         //frame.setVisible(true);
-        //Connexion frame1 = new Connexion();
-        //frame1.setVisible(true);
+        Connexion frame1 = new Connexion();
+        frame1.setVisible(true);
         //GestionBDD bdd = new GestionBDD();
         //System.out.println(bdd.supprimerStock("Baguette",500));
         //Elio Test Vendeur
         // ihm_billet billet = new ihm_billet();
         //billet.setVisible(true);
-        Interface_vendeur frame = new Interface_vendeur();
-        Vendeur vendeur= new Vendeur(frame);
+        //Interface_vendeur frame = new Interface_vendeur();
+        //Vendeur vendeur= new Vendeur(frame);
     }
 }

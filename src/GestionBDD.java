@@ -11,7 +11,7 @@ public class GestionBDD {
 		try {
 			String url = "jdbc:mysql://localhost/albm_dev";
 			String login = "root";
-			String password = "";
+			String password = "root";
 			Connection con = DriverManager.getConnection(url,login,password);
 			return con;
 		}
@@ -38,8 +38,6 @@ public class GestionBDD {
 	//GETTER ****************************************
 	//GETTER ****************************************
 	public Vector<Produit> getVitrine(Vector<Produit> vitrine) {
-
-
 		Connection con = connexion();
 		int rows = 0;
 
@@ -91,6 +89,7 @@ public class GestionBDD {
 
 		return vitrine;
 	}
+
 	public Produit[] getVitrine() {
 
 
@@ -194,6 +193,89 @@ public class GestionBDD {
 		}
 
 		return stock;
+	}
+
+	public Produit[] getBilan() {
+
+		Connection con = connexion();
+
+		Produit[] bilan = null;
+		int rows = 0;
+
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM `bilan`");
+			while (rs.next()) {
+				if (rs.last()) {
+					rows = rs.getRow();
+					// Move to beginning
+					rs.beforeFirst();
+					break;
+				}
+			}
+			bilan = new Produit[rows];
+			int j = 0;
+			float prix = 0;
+			while (rs.next()) {
+				String nom = rs.getString("PRODUIT");
+				int vendu = rs.getInt("VENDU");
+				int jete = rs.getInt("JETE");
+				bilan[j] = new Produit(nom,vendu,jete);
+				j++;
+			}
+
+			rs.close();
+			stmt.close();
+			con.close();
+
+		}
+		catch(SQLException sqle){
+			sqle.printStackTrace();
+			System.out.println(sqle.getMessage());
+		}
+
+		return bilan;
+	}
+
+	public Produit[] getFour() {
+
+		Connection con = connexion();
+
+		Produit[] four = null;
+		int rows = 0;
+
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM `four`");
+			while (rs.next()) {
+				if (rs.last()) {
+					rows = rs.getRow();
+					// Move to beginning
+					rs.beforeFirst();
+					break;
+				}
+			}
+			four = new Produit[rows];
+			int j = 0;
+			while (rs.next()) {
+				String nom = rs.getString("PRODUIT");
+				int quant = rs.getInt("QUANTITE");
+				boolean cuisson = rs.getBoolean("CUISSON");
+				four[j] = new Produit(nom,quant,cuisson);
+				j++;
+			}
+
+			rs.close();
+			stmt.close();
+			con.close();
+
+		}
+		catch(SQLException sqle){
+			sqle.printStackTrace();
+			System.out.println(sqle.getMessage());
+		}
+
+		return four;
 	}
 
 

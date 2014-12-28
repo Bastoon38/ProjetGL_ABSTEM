@@ -5,6 +5,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -260,6 +262,8 @@ public class Interface_manager extends JFrame {
             cmb_heure.addItem(str_heure[i]);
         for (int i=0; i<2 ; i++)
             cmb_minute.addItem(str_minute[i]);
+
+        cuissonSelect();
     }
 
 
@@ -279,20 +283,44 @@ public class Interface_manager extends JFrame {
         // TODO: mettre les actions à effectuer quand on clique sur l'onglet ci-dessus
         //JOptionPane.showMessageDialog(null, "Bilan journalier selectionné", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
 
+        Produit[] tabBilan = null;
+
+        GestionBDD baseDonnee =  new GestionBDD();
+        tabBilan = baseDonnee.getBilan();
+
         //Les données du tableau
         Object[][] data = {
-                {"200 BAGUETTE", "28 BAGUETTE"},
-                {"50 FLUTE", "28 FLUTE"},
-                {"17 CROISSANT", "24 CROISSANT"},
-                {"54 PAIN AU CHOCOLAT", "32 PAIN AU CHOCOLAT"}
+                {tabBilan[0].getNom().toUpperCase(), tabBilan[0].getVendu(), tabBilan[0].getJete()},
+                {tabBilan[1].getNom().toUpperCase(), tabBilan[1].getVendu(), tabBilan[1].getJete()},
+                {tabBilan[2].getNom().toUpperCase(), tabBilan[2].getVendu(), tabBilan[2].getJete()},
+                {tabBilan[3].getNom().toUpperCase(), tabBilan[3].getVendu(), tabBilan[3].getJete()},
+                {tabBilan[4].getNom().toUpperCase(), tabBilan[4].getVendu(), tabBilan[4].getJete()},
+                {tabBilan[5].getNom().toUpperCase(), tabBilan[5].getVendu(), tabBilan[5].getJete()},
+                {tabBilan[6].getNom().toUpperCase(), tabBilan[6].getVendu(), tabBilan[6].getJete()},
+                {tabBilan[7].getNom().toUpperCase(), tabBilan[7].getVendu(), tabBilan[7].getJete()},
+                {tabBilan[8].getNom().toUpperCase(), tabBilan[8].getVendu(), tabBilan[8].getJete()},
+                {tabBilan[9].getNom().toUpperCase(), tabBilan[9].getVendu(), tabBilan[9].getJete()},
+                {tabBilan[10].getNom().toUpperCase(), tabBilan[10].getVendu(), tabBilan[10].getJete()},
+                {tabBilan[11].getNom().toUpperCase(), tabBilan[11].getVendu(), tabBilan[11].getJete()},
+                {tabBilan[12].getNom().toUpperCase(), tabBilan[12].getVendu(), tabBilan[12].getJete()},
+                {tabBilan[13].getNom().toUpperCase(), tabBilan[13].getVendu(), tabBilan[13].getJete()},
+                {tabBilan[14].getNom().toUpperCase(), tabBilan[14].getVendu(), tabBilan[14].getJete()},
         };
 
         //Les titres des colonnes
-        String  title[] = {"VENTES", "JETES"};
+        String  title[] = {"PRODUIT", "VENTES", "JETES"};
         JTable tab_bilan = new JTable(data, title);
+
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+        tab_bilan.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+        tab_bilan.getColumnModel().getColumn(1).setCellRenderer( centerRenderer );
+        tab_bilan.getColumnModel().getColumn(2).setCellRenderer( centerRenderer );
+
         tab_bilan.setFont(new Font("Serif", Font.PLAIN, 30));
         tab_bilan.getTableHeader().setFont(new Font("Serif", Font.BOLD, 23));
         updateRowHeights(tab_bilan);
+        tab_bilan.setEnabled(false);
         //Nous ajoutons notre tableau à notre contentPane dans un scroll
         //Sinon les titres des colonnes ne s'afficheront pas !
         JScrollPane tbc_bilan = new JScrollPane(tab_bilan);
@@ -301,7 +329,6 @@ public class Interface_manager extends JFrame {
         lab_recette.setFont(new Font("Serif", Font.BOLD, 23));
         pan_bilanJournalier.add(lab_recette, BorderLayout.SOUTH);
     }
-
 
     public void commandeSelect() {
         // TODO: mettre les actions à effectuer quand on clique sur l'onglet ci-dessus
@@ -355,6 +382,43 @@ public class Interface_manager extends JFrame {
     public void cuissonSelect() {
         // TODO: mettre les actions à effectuer quand on clique sur l'onglet ci-dessus
         //JOptionPane.showMessageDialog(null, "Cuisson selectionné", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
+
+        Produit[] tabCuisson = null;
+
+        GestionBDD baseDonnee =  new GestionBDD();
+        tabCuisson = baseDonnee.getFour();
+
+        DefaultTableModel model = new DefaultTableModel();
+        JTable tab_cuisson = new JTable(model);
+
+        // Create a couple of columns
+        model.addColumn("PRODUIT");
+        model.addColumn("QUANTITE");
+        model.addColumn("CUISSON");
+
+        // Append a row
+        for (int i =0; i < tabCuisson.length; i++)
+        {
+            if (tabCuisson[i].getCuisson() == true)
+                model.addRow(new Object[]{tabCuisson[i].getNom().toUpperCase(),tabCuisson[i].getQuantite(),"EN COURS"});
+            else if (tabCuisson[i].getCuisson() == false)
+                model.addRow(new Object[]{tabCuisson[i].getNom().toUpperCase(),tabCuisson[i].getQuantite(),"EN ATTENTE"});
+        }
+
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+        tab_cuisson.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+        tab_cuisson.getColumnModel().getColumn(1).setCellRenderer( centerRenderer );
+        tab_cuisson.getColumnModel().getColumn(2).setCellRenderer( centerRenderer );
+
+        tab_cuisson.setFont(new Font("Serif", Font.PLAIN, 30));
+        tab_cuisson.getTableHeader().setFont(new Font("Serif", Font.BOLD, 23));
+        updateRowHeights(tab_cuisson);
+        tab_cuisson.setEnabled(false);
+        //Nous ajoutons notre tableau à notre contentPane dans un scroll
+        //Sinon les titres des colonnes ne s'afficheront pas !
+        JScrollPane tbc_cuisson = new JScrollPane(tab_cuisson);
+        pan_cuisson.add(tbc_cuisson, BorderLayout.CENTER);
     }
 
     public void vitrineSelect(){
@@ -362,23 +426,41 @@ public class Interface_manager extends JFrame {
         //JOptionPane.showMessageDialog(null, "Vitrine selectionné", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
 
         Produit[] tabVitrine = null;
+        LinkedList tab;
 
         GestionBDD baseDonnee =  new GestionBDD();
         tabVitrine = baseDonnee.getVitrine();
 
+        tab = setAfficheTab(tabVitrine, tabVitrine.length);
+
         //Les données du tableau
         Object[][] data = {
-                {tabVitrine[0].getNom(), tabVitrine[0].getQuantite()},
-                {tabVitrine[1].getNom(), tabVitrine[1].getQuantite()},
-                {tabVitrine[2].getNom(), tabVitrine[2].getQuantite()},
-                {tabVitrine[3].getNom(), tabVitrine[3].getQuantite()},
-                {tabVitrine[4].getNom(), tabVitrine[4].getQuantite()},
+                {"BAGUETTE", tab.get(0)},
+                {"FLUTE", tab.get(1)},
+                {"CROISSANT", tab.get(2)},
+                {"PAIN AU CHOCOLAT", tab.get(3)},
+                {"BRIOCHE SUCRE", tab.get(4)},
+                {"PAIN AU LAIT", tab.get(5)},
+                {"TARTE AU CITRON", tab.get(6)},
+                {"TARTE PRALINE", tab.get(7)},
+                {"COCA-COLA", tab.get(8)},
+                {"FANTA", tab.get(9)},
+                {"SPRITE", tab.get(10)},
+                {"OASIS", tab.get(11)},
+                {"ORANGE", tab.get(12)},
+                {"POMME", tab.get(13)},
+                {"RAISIN", tab.get(14)},
         };
-
 
         //Les titres des colonnes
         String  title[] = {"PRODUIT", "NOMBRE EN VITRINE"};
         JTable tab_vitrine = new JTable(data, title);
+
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+        tab_vitrine.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+        tab_vitrine.getColumnModel().getColumn(1).setCellRenderer( centerRenderer );
+
         tab_vitrine.setFont(new Font("Serif", Font.PLAIN, 30));
         tab_vitrine.getTableHeader().setFont(new Font("Serif", Font.BOLD, 23));
         updateRowHeights(tab_vitrine);
@@ -394,22 +476,41 @@ public class Interface_manager extends JFrame {
         //JOptionPane.showMessageDialog(null, "Stock selectionné", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
 
         Produit[] tabStock = null;
+        LinkedList tab;
 
         GestionBDD baseDonnee =  new GestionBDD();
         tabStock = baseDonnee.getStock();
 
+        tab = setAfficheTab(tabStock, tabStock.length);
+
         //Les données du tableau
         Object[][] data = {
-                {tabStock[0].getNom(), tabStock[0].getQuantite()},
-                {tabStock[1].getNom(), tabStock[1].getQuantite()},
-                {tabStock[2].getNom(), tabStock[2].getQuantite()},
-                {tabStock[3].getNom(), tabStock[3].getQuantite()},
-                {tabStock[4].getNom(), tabStock[4].getQuantite()},
+                {"BAGUETTE", tab.get(0)},
+                {"FLUTE", tab.get(1)},
+                {"CROISSANT", tab.get(2)},
+                {"PAIN AU CHOCOLAT", tab.get(3)},
+                {"BRIOCHE SUCRE", tab.get(4)},
+                {"PAIN AU LAIT", tab.get(5)},
+                {"TARTE AU CITRON", tab.get(6)},
+                {"TARTE PRALINE", tab.get(7)},
+                {"COCA-COLA", tab.get(8)},
+                {"FANTA", tab.get(9)},
+                {"SPRITE", tab.get(10)},
+                {"OASIS", tab.get(11)},
+                {"ORANGE", tab.get(12)},
+                {"POMME", tab.get(13)},
+                {"RAISIN", tab.get(14)},
         };
 
         //Les titres des colonnes
         String  title[] = {"PRODUIT", "STOCK"};
         JTable tab_stock = new JTable(data, title);
+
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+        tab_stock.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+        tab_stock.getColumnModel().getColumn(1).setCellRenderer( centerRenderer );
+
         tab_stock.setFont(new Font("Serif", Font.PLAIN, 30));
         tab_stock.getTableHeader().setFont(new Font("Serif", Font.BOLD, 23));
         updateRowHeights(tab_stock);
@@ -494,5 +595,78 @@ public class Interface_manager extends JFrame {
             }
         }
         catch(ClassCastException e) {}
+    }
+
+    private LinkedList setAfficheTab(Produit[] tab, int taille)
+    {
+        LinkedList<Integer> tabAffich = new LinkedList<Integer>();
+
+        System.out.println(taille);
+
+        tabAffich.add(0);
+        tabAffich.add(0);
+        tabAffich.add(0);
+        tabAffich.add(0);
+        tabAffich.add(0);
+        tabAffich.add(0);
+        tabAffich.add(0);
+        tabAffich.add(0);
+        tabAffich.add(0);
+        tabAffich.add(0);
+        tabAffich.add(0);
+        tabAffich.add(0);
+        tabAffich.add(0);
+        tabAffich.add(0);
+        tabAffich.add(0);
+
+        for (int i=0 ; i < taille ; i++)
+        {
+            if (tab[i].getNom().equals("Baguette"))
+                tabAffich.set(0, tabAffich.get(0)+tab[i].getQuantite());
+
+           else if (tab[i].getNom().equals("Flute"))
+                tabAffich.set(1, tabAffich.get(1)+tab[i].getQuantite());
+
+            else if (tab[i].getNom().equals("Croissant"))
+                tabAffich.set(2, tabAffich.get(2)+tab[i].getQuantite());
+
+            else if (tab[i].getNom().equals("Pain au chocolat"))
+                tabAffich.set(3, tabAffich.get(3)+tab[i].getQuantite());
+
+            else if (tab[i].getNom().equals("Brioche sucre"))
+                tabAffich.set(4, tabAffich.get(4)+tab[i].getQuantite());
+
+            else if (tab[i].getNom().equals("Pain au lait"))
+                tabAffich.set(5, tabAffich.get(5)+tab[i].getQuantite());
+
+            else if (tab[i].getNom().equals("Tarte citron"))
+                tabAffich.set(6, tabAffich.get(6)+tab[i].getQuantite());
+
+            else if (tab[i].getNom().equals("Tarte praline"))
+                tabAffich.set(7, tabAffich.get(7)+tab[i].getQuantite());
+
+            else if (tab[i].getNom().equals("Coca Cola"))
+                tabAffich.set(8, tabAffich.get(8)+tab[i].getQuantite());
+
+            else if (tab[i].getNom().equals("Fanta"))
+                tabAffich.set(9, tabAffich.get(9)+tab[i].getQuantite());
+
+            else if (tab[i].getNom().equals("Sprite"))
+                tabAffich.set(10, tabAffich.get(10)+tab[i].getQuantite());
+
+            else if (tab[i].getNom().equals("Oasis"))
+                tabAffich.set(11, tabAffich.get(11)+tab[i].getQuantite());
+
+            else if (tab[i].getNom().equals("Orange"))
+                tabAffich.set(12, tabAffich.get(12)+tab[i].getQuantite());
+
+            else if (tab[i].getNom().equals("Pomme"))
+                tabAffich.set(13, tabAffich.get(13)+tab[i].getQuantite());
+
+            else if (tab[i].getNom().equals("Raisin"))
+                tabAffich.set(14, tabAffich.get(14)+tab[i].getQuantite());
+        }
+        System.out.print(tabAffich);
+        return tabAffich;
     }
 }
