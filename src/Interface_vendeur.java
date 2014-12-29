@@ -511,7 +511,9 @@ public class Interface_vendeur extends JFrame {
         btn_decon.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                //TODO FAIRE LA DECONNEXION DU VENDEUR ET ARRIVER A LA PAGE CONNEXION
+                setVisible(false);
+                Connexion connexion = new Connexion();
+                connexion.setVisible(true);
             }
         });
 

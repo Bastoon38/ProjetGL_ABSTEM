@@ -41,8 +41,8 @@ public class Connexion extends JFrame {
 
     public void  affichePageVendeur(){
         // TODO: mettre les actions à effectuer quand on clique sur le bouton vendeur
-        Interface_vendeur vendeur = new Interface_vendeur();
-        vendeur.setVisible(true);
+       Interface_vendeur vendeur = new Interface_vendeur();
+        Vendeur v=new Vendeur(vendeur);
         this.setVisible(false);
     }
 
