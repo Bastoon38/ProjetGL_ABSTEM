@@ -283,6 +283,46 @@ public class GestionBDD {
 		return four;
 	}
 
+	public Produit[] getCommande() {
+
+		Connection con = connexion();
+
+		Produit[] commande = null;
+		int rows = 0;
+
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM `commande`");
+			while (rs.next()) {
+				if (rs.last()) {
+					rows = rs.getRow();
+					// Move to beginning
+					rs.beforeFirst();
+					break;
+				}
+			}
+			commande = new Produit[rows];
+			int j = 0;
+			while (rs.next()) {
+				String nom = rs.getString("PRODUIT");
+				int quant = rs.getInt("QUANTITE");
+				boolean recu = rs.getBoolean("RECU");
+				commande[j] = new Produit(nom,quant,recu);
+				j++;
+			}
+
+			rs.close();
+			stmt.close();
+			con.close();
+
+		}
+		catch(SQLException sqle){
+			sqle.printStackTrace();
+			System.out.println(sqle.getMessage());
+		}
+		return commande;
+	}
+
 
 	//AJOUT & SUPPR ****************************************
 	//STOCK ****************************************
@@ -549,9 +589,23 @@ public class GestionBDD {
 
 	}
 
-	public void ajouterCommandeFournisseur(String nom) {
-		int quantite = getQuantiteParametree(nom);
-		// Ajouter nom et quantite à la commande fournisseur
+	public void ajouterCommandeFournisseur(Object nom, Object quantite) {
+		//int quantite = getQuantiteParametree(nom);
+
+		try{
+
+			Connection con = connexion();
+			Statement stmt = con.createStatement();
+
+			stmt.executeUpdate("INSERT INTO `commande`(`PRODUIT`,`QUANTITE`,`RECU`) VALUES ('" + nom +"'," + String.valueOf(quantite) + ",0)");
+
+			stmt.close();
+			con.close();
+
+		}
+		catch(SQLException sqle){
+			sqle.printStackTrace();
+		}
 	}
 
 	private int getQuantiteParametree(String nom) {
