@@ -213,7 +213,6 @@ public class Interface_vendeur extends JFrame {
         Time aux_time_baguette=null;
         Date aux_date_baguette=null;
 
-//TODO      hacer una funcion con el codigo de abajo
 
         for(int i=0 ; i<vitrine.size(); i++)
         {
