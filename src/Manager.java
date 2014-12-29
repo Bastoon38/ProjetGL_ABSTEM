@@ -20,11 +20,9 @@ public class Manager {
 
         panel.add(label);
         panel.add(pass);
-        String[] options = new String[]{"OK", "Cancel"};
-        int option = JOptionPane.showOptionDialog(null, panel, "Mot de Passe",
-                JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE,
-                null, options, options[1]);
-        if(option == 0) // pressing OK button
+        String[] options = new String[]{"Cancel", "OK"};
+        int option = JOptionPane.showOptionDialog(null, panel, "Mot de Passe",JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[1]);
+        if(option == 1) // pressing OK button
         {
             char[] password_char = pass.getPassword();
             String str = String.valueOf(password_char);
