@@ -311,14 +311,10 @@ public class Interface_vendeur extends JFrame {
             // SI ON A SEULEMENT 1 PRODUIT, on doit le supprimer
             else
             {
-                //System.out.println("test para las dates=1 "+prod_baguette.getNom()+ " "+prod_baguette.getDate()+ " " + prod_baguette.getTime() );
-                //ajouter au vector de la commande
-                //	System.out.println("ANADIR A PRODUIT =1 "+ nom+" "+prod_baguette.getQuantite());
+
                 ajouter_produit_a_commande(prod_baguette,nom);
                 ajouter_produit_a_jtable(prod_baguette,nom);
-                // TODO supprimer le produit du vector vitrine et de la BDD
-                //pour le supprimer, je vais modifier le nom et après il faut justement faire la suppresion par une requete de la BDD
-                //System.out.println("indice del producto a suprimir = "+pos_produit_en_vitrine);
+
                 vitrine.elementAt(pos_produit_en_vitrine).setNom("null");
                 vitrine.elementAt(pos_produit_en_vitrine).setQuantite(quantity-1);
 
