@@ -55,8 +55,12 @@ public class Connexion extends JFrame {
 
     public void  affichePageManager(){
         // TODO: mettre les actions à effectuer quand on clique sur le bouton manager
+    //    Interface_manager manager = new Interface_manager();
+    //    manager.setVisible(true);
+      //  Manager man=new Manager();
         Interface_manager manager = new Interface_manager();
-        manager.setVisible(true);
+        Manager man=new Manager(manager);
         this.setVisible(false);
+
     }
 }
