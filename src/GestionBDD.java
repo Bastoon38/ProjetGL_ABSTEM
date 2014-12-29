@@ -2,6 +2,7 @@
 import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 import java.sql.Date;
+import java.util.Vector;
 import java.util.*;
 
 public class GestionBDD {
@@ -22,12 +23,60 @@ public class GestionBDD {
 		}
 	}
 
+	//lance un timer qui execute toutes les minutes une verif des produits perimes
+	public void lancerTimerPerime() {
+
+
+		TimerTask task = new TimerTask()
+		{
+			@Override
+			public void run()
+			{
+
+				Vector<Produit> produits = new Vector<Produit>();
+				produits = getVitrine(produits);
+				for (int i = 0 ; i < produits.size() ; i++) {
+					if (verifPerime(produits.get(i).getNom())) {
+						//????
+						System.out.println("OK CA MARCHE LOL " + produits.get(i).getNom());
+					}
+				}
+			}
+		};
+
+		Timer timer = new Timer();
+		timer.scheduleAtFixedRate(task, 0, 60000);
+
+	}
 
 	//GESTION PERIME VITRINE ****************************************
 	//verif les produits périmés en vitrine
-	public void verifVitrine(String nom_prod) {
+	public boolean verifPerime(String nom_prod) {
+		Connection con = connexion();
+		boolean perime = false;
 
-	}
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT PERIME FROM `vitrine` WHERE `PRODUIT`='" + nom_prod + "'");
+
+			rs.next();
+			int res = rs.getInt(1);
+			if (res==1) {
+				perime=true;
+			}
+			rs.close();
+			stmt.close();
+			con.close();
+
+		}
+		catch(SQLException sqle){
+			sqle.printStackTrace();
+			System.out.println(sqle.getMessage());
+		}
+
+		return perime;
+
+		}
 
 	public static void supprimerPerime (String lieu) {	// Le timer a détecté au moins un produit périmé, donc vérifie peremption de tous les produits de la BDD concernée
 		// lieu = "Stock" ou "Vitrine"  Cuisson n'est pas concerné par la péremption
@@ -41,22 +90,10 @@ public class GestionBDD {
 
 
 		Connection con = connexion();
-		int rows = 0;
 
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM vitrine,produit WHERE vitrine.produit = produit.produit AND vitrine.traite = '0'");
-			while (rs.next()) {
-				if (rs.last()) {
-					rows = rs.getRow();
-					// Move to beginning
-					rs.beforeFirst();
-					break;
-				}
-			}
-			//vitrine = new Produit[rows];
-
-			int j = 0;
+			ResultSet rs = stmt.executeQuery("SELECT * FROM vitrine,produit WHERE vitrine.produit = produit.produit");// AND vitrine.traite = '0'");
 
 			while (rs.next()) {
 				String nom = rs.getString("PRODUIT");
@@ -68,9 +105,6 @@ public class GestionBDD {
 
 				Produit aux=new Produit(nom,prix,quantite,date,time,perime);
 				vitrine.add(aux);
-
-
-				j++;
 
 			}
 
@@ -92,6 +126,9 @@ public class GestionBDD {
 
 		return vitrine;
 	}
+
+
+
 
 	public Produit[] getVitrine() {
 
@@ -218,7 +255,6 @@ public class GestionBDD {
 			}
 			bilan = new Produit[rows];
 			int j = 0;
-			float prix = 0;
 			while (rs.next()) {
 				String nom = rs.getString("PRODUIT");
 				int vendu = rs.getInt("VENDU");
@@ -609,16 +645,6 @@ public class GestionBDD {
 	private int getQuantiteParametree(String nom) {
 		return 0;
 	}
-
-
-
-
-
-
-	// Rajouter les méthodes pour gérer l'affichage du bilan du manager
-
-
-
 
 
 
