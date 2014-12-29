@@ -1,62 +1,52 @@
-/**
- * Created by Angèle on 09/12/2014.
- */
-
 import javax.swing.*;
-import java.awt.Dimension;
-import java.awt.event.*;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
-
-//import java.util.Comparator;
-
-
+import java.awt.*;
 
 public class Manager {
 
-    public String motDePasse = "Manager";
+    public String password;
 
-    public class JPasswordField2 implements ActionListener {
+    private Interface_manager im;
 
-        JPasswordField passwordField1 = null;
 
-        public void Manager () {
-            JPasswordField2 jpf2 = new JPasswordField2();
-            jpf2.init();
-        }
+    public Manager(Interface_manager b) {
+        this.im = b;
+        this.password="manager";
 
-        public void init() {
 
-            JFrame f = new JFrame("ma fenêtre");
-            f.setSize(300, 100);
-            JPanel pannel = new JPanel();
 
-            passwordField1 = new JPasswordField("");
-            passwordField1.setPreferredSize(new Dimension(100, 20));
-            pannel.add(passwordField1);
+        JPanel panel = new JPanel();
+        JLabel label = new JLabel("Ecrivez votre Password:");
+        JPasswordField pass = new JPasswordField(10);
 
-            JButton bouton1 = new JButton("Afficher");
-            bouton1.addActionListener(this);
-
-            pannel.add(bouton1);
-            f.getContentPane().add(pannel);
-            f.setVisible(true);
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            int compare = String.copyValueOf(passwordField1.getPassword()).compareToIgnoreCase(String.valueOf(motDePasse));
-            if(compare == 0) {    // Si le mot de passe est le bon
-                System.out.println("Mot de passe bon");
+        panel.add(label);
+        panel.add(pass);
+        String[] options = new String[]{"OK", "Cancel"};
+        int option = JOptionPane.showOptionDialog(null, panel, "Mot de Passe",
+                JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE,
+                null, options, options[1]);
+        if(option == 0) // pressing OK button
+        {
+            char[] password_char = pass.getPassword();
+            String str = String.valueOf(password_char);
+            //System.out.println(str+" "+password);
+            if(str.equals(password))
+            {
+                im.setVisible(true);
             }
-            else{
-                System.out.println("Mot de passe mauvais");
+            else
+            {
+                JOptionPane.showMessageDialog(null, "Mot de passe incorrect", "Mot de passe", JOptionPane.WARNING_MESSAGE);
+                Connexion frame1 = new Connexion();
+                frame1.setVisible(true);
             }
-            System.out.println("texte saisie = " + String.copyValueOf(passwordField1.getPassword()));
         }
+        else
+        {
+            Connexion frame1 = new Connexion();
+            frame1.setVisible(true);
+        }
+
+
 
     }
-
 }
-
