@@ -74,13 +74,11 @@ public class GestionBDD {
 
 			}
 
+			//TODO IL FAUT ENLEVER LE COMMENTAIRE DU TRAITE =1
+			//stmt.executeUpdate("UPDATE `vitrine` SET `traite`='1'");
 
-			stmt.executeUpdate("UPDATE `vitrine` SET `traite`='1'");
 
-			//TODO
-			// String sql = "truncate vitrine";
 
-			// stmt.executeUpdate(sql);
 
 			rs.close();
 			stmt.close();
