@@ -11,7 +11,7 @@ public class GestionBDD {
 		try {
 			String url = "jdbc:mysql://localhost/albm_dev";
 			String login = "root";
-			String password = "root";
+			String password = "";
 			Connection con = DriverManager.getConnection(url,login,password);
 			return con;
 		}
@@ -38,12 +38,14 @@ public class GestionBDD {
 	//GETTER ****************************************
 	//GETTER ****************************************
 	public Vector<Produit> getVitrine(Vector<Produit> vitrine) {
+
+
 		Connection con = connexion();
 		int rows = 0;
 
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM vitrine,produit WHERE vitrine.produit = produit.produit ");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM vitrine,produit WHERE vitrine.produit = produit.produit AND vitrine.traite = '0'");
 			while (rs.next()) {
 				if (rs.last()) {
 					rows = rs.getRow();
@@ -71,6 +73,9 @@ public class GestionBDD {
 				j++;
 
 			}
+
+
+			stmt.executeUpdate("UPDATE `vitrine` SET `traite`='1'");
 
 			//TODO
 			// String sql = "truncate vitrine";
@@ -450,7 +455,7 @@ public class GestionBDD {
 
 			Connection con = connexion();
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT `QUANTITE` FROM `vitrine` WHERE `PRODUIT`='" + nom + "' ORDER BY `DATE_PEREMPTION`");
+			ResultSet rs = stmt.executeQuery("SELECT `QUANTITE` FROM `vitrine` WHERE `PRODUIT`='" + nom + "' AND `TRAITE`=1");
 
 			if (rs.next()) {
 				int qteVit = rs.getInt("QUANTITE");
@@ -458,10 +463,10 @@ public class GestionBDD {
 				if (qteVit > quantite) {
 
 					int val = qteVit - quantite;
-					stmt.executeUpdate("UPDATE `vitrine` SET `QUANTITE`=" + val + " WHERE `PRODUIT`='" + nom + "' ORDER BY `DATE_PEREMPTION` LIMIT 1");
+					stmt.executeUpdate("UPDATE `vitrine` SET `QUANTITE`=" + val + " WHERE `PRODUIT`='" + nom + "' AND `TRAITE`=1 LIMIT 1");
 
 				} else if (qteVit == quantite) {
-					stmt.executeUpdate("DELETE FROM `vitrine` WHERE `PRODUIT`='" + nom + "' ORDER BY `DATE_PEREMPTION` LIMIT 1");
+					stmt.executeUpdate("DELETE FROM `vitrine` WHERE `PRODUIT`='" + nom + "' AND `TRAITE`=1 LIMIT 1");
 				} else { // qteStock < quantite
 					Statement stmt2 = con.createStatement();
 					stmt2.executeUpdate("DELETE FROM `vitrine` WHERE `PRODUIT`='" + nom + "' AND `QUANTITE`=" + qteVit + " LIMIT 1");
@@ -506,6 +511,25 @@ public class GestionBDD {
 		}
 
 	}
+	// Ajouter un produit perime dans le bilan du manager
+	public void ajouterPerime(String nom, int quantite) {
+		Connection con = connexion();
+		int qte=0;
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT `JETE` FROM `bilan` WHERE `PRODUIT`='" + nom + "'");
+			if (rs.next()) {
+				qte=rs.getInt("JETE");
+			}
+			Statement stmt2 = con.createStatement();
+			int qteFinale=qte+quantite;
+			stmt2.executeUpdate("UPDATE `bilan` SET `JETE`=" + qteFinale + " WHERE `PRODUIT`='" + nom + "'");
+		}
+		catch(SQLException sqle) {
+			sqle.printStackTrace();
+		}
+
+	}
 
 	public void majPrix(String nom, float nouveauPrix) {
 		Connection con = connexion();
@@ -517,7 +541,6 @@ public class GestionBDD {
 			sqle.printStackTrace();
 		}
 	}
-
 	public void majProductionDefaut () {	// Valeurs des fournées remplacées par celles par défaut
 
 	}

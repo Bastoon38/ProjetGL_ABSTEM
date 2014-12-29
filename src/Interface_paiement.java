@@ -64,7 +64,7 @@ public class Interface_paiement extends JFrame {
     /**
      * Create the frame.
      */
-    public Interface_paiement(final Vector <Produit> vitrine, final Vector <Produit> commandes, final JTable tab_commande,float total_ihm_vendeur, final JLabel total) {
+    public Interface_paiement(final Vector <Produit> vitrine,final Vector <Produit> commandes, final JTable tab_commande,float total_ihm_vendeur,final JLabel total) {
         this.total_prix=total_ihm_vendeur;
         //System.out.println(total_ihm_vendeur);
         setTitle("Paiement");
@@ -78,6 +78,8 @@ public class Interface_paiement extends JFrame {
         final JButton btnBillet = new JButton("Billet");
         final JButton btnCheque = new JButton("Cheque");
         final JButton btnCb = new JButton("CB");
+        btnCb.setIcon(new ImageIcon("images/cb.jpg"));
+        btnBillet.setIcon(new ImageIcon("images/billet.jpg"));
         btnCb.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -158,9 +160,10 @@ public class Interface_paiement extends JFrame {
 
                                 System.out.println ("AJOUTER AU BILAN "+commandes.elementAt(i).getNom()+" "+commandes.elementAt(i).getQuantite()+" "+commandes.elementAt(i).getPrix()+" "+commandes.elementAt(i).getPerime()+ " "+commandes.elementAt(i).getDate()+" "+commandes.elementAt(i).getTime());
                                 base.ajouterBilan(commandes.elementAt(i).getNom(),commandes.elementAt(i).getQuantite());
+                                base.supprimerVitrine(commandes.elementAt(i).getNom(),commandes.elementAt(i).getQuantite());
 
                             }
-                            //Supprimer les produits de la commande dans la base de donnès
+                            //Supprimer les produits de la commande dans le vecteur commandes
                             commandes.clear();
 
                             JOptionPane.showMessageDialog(null, "Paiement accepté", "Paiement accepté", JOptionPane.WARNING_MESSAGE);
@@ -212,6 +215,7 @@ public class Interface_paiement extends JFrame {
         pan_vienn.setLayout(gl_pan_vienn);
 
 
+        btnCheque.setIcon(new ImageIcon("images/cheque.jpg"));
         btnCheque.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
 

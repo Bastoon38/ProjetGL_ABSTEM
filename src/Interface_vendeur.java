@@ -1,8 +1,6 @@
 /**
  * Created by Elio on 29/11/2014.
  */
-import java.awt.EventQueue;
-
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -18,6 +16,7 @@ import java.awt.Insets;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.Icon;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
@@ -33,6 +32,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Time;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -43,11 +43,15 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.JTable;
 
+import java.awt.FlowLayout;
+
+
+
 
 
 public class Interface_vendeur extends JFrame {
     private JTable tab_commande;
-    private JTable tab_jeter;
+    private JTable tab_jeter_1;
     private float total_prix=0;
     //vector produits
     // Produit vitrine[] = null;
@@ -58,8 +62,8 @@ public class Interface_vendeur extends JFrame {
     final JLabel lab_prix = new JLabel("");
     ///////////////////////////PARTIE TIMER////////////////////////////////////////////////////////////////
     /*
-
-
+    // Appeller à la fonction chaque x minutes avec le timer
+    timer_refresh_produits_jeter();
 
 
 	*/
@@ -71,16 +75,65 @@ public class Interface_vendeur extends JFrame {
         for(int i=0 ; i<vitrine.size(); i++)
         {
 
+            java.util.Date fechaActual = new java.util.Date();
+
+            if(vitrine.elementAt(i).getDate().after(fechaActual))
+            {
+                //System.out.println ("PAS PERIME "+vitrine.elementAt(i).getNom()+" "+vitrine.elementAt(i).getQuantite()+" "+vitrine.elementAt(i).getPrix()+" "+vitrine.elementAt(i).getPerime()+ " "+vitrine.elementAt(i).getDate()+" "+vitrine.elementAt(i).getTime());
+            }
+            else
+            {
+                String date_now =new SimpleDateFormat("yyyy-MM-dd").format(fechaActual);
+                String date_produit=vitrine.elementAt(i).getDate().toString();
+
+                // QUAND LES DATES SONT EGALS == MEME JOUR
+                if(date_now.equals(date_produit))
+                {
+                    //time now
+                    int hours_now=fechaActual.getHours();
+                    int minutes_now=fechaActual.getMinutes();
+                    int seconds_now=fechaActual.getSeconds();
+
+                    Time now= new Time(hours_now,minutes_now,seconds_now);
+
+                    //time produit
+                    int hours=vitrine.elementAt(i).getTime().getHours();
+                    int minutes=vitrine.elementAt(i).getTime().getMinutes();
+                    int seconds=vitrine.elementAt(i).getTime().getSeconds();
+                    Time produit=new Time(hours,minutes,seconds);
+                    //si le produit est perimé
+                    if(now.after(produit))
+                    {
+                        vitrine.elementAt(i).setPerime(1);
+                    }
+                }
+                else
+                {
+                    vitrine.elementAt(i).setPerime(1);
+                }
+            }
+
+        }
+        for(int i=0 ; i<vitrine.size(); i++)
+        {
+
             //System.out.println (vitrine.elementAt(i).getNom()+" "+vitrine.elementAt(i).getQuantite()+" "+vitrine.elementAt(i).getPrix()+" "+vitrine.elementAt(i).getPerime()+ " "+vitrine.elementAt(i).getDate()+" "+vitrine.elementAt(i).getTime());
             if(vitrine.elementAt(i).getPerime()== 1)
             {
+                //System.out.println ("VITRINE PERIME "+vitrine.elementAt(i).getNom()+"	"+vitrine.elementAt(i).getQuantite()+"	"+vitrine.elementAt(i).getPrix()+"	"+vitrine.elementAt(i).getPerime()+"	"+vitrine.elementAt(i).getDate()+"	"+vitrine.elementAt(i).getTime());
 
                 JOptionPane.showMessageDialog(null, vitrine.elementAt(i).getNom()+" perimè", "Perimè "+ vitrine.elementAt(i).getNom(), JOptionPane.WARNING_MESSAGE);
                 Produit aux = new Produit(vitrine.elementAt(i).getNom(),vitrine.elementAt(i).getPrix(),vitrine.elementAt(i).getQuantite(),vitrine.elementAt(i).getDate(),vitrine.elementAt(i).getTime(),vitrine.elementAt(i).getPerime());
                 vitrine.remove(i);
-                ajouter_produit_a_jeter(aux);
+                jeter.add(aux);
+                i--;
+
+                DefaultTableModel model = (DefaultTableModel) tab_jeter_1.getModel();
+                model.addRow(new Object[]{aux.getNom(),Integer.toString(aux.getQuantite())});
             }
         }
+
+
     }
 
 
@@ -122,26 +175,7 @@ public class Interface_vendeur extends JFrame {
         }
     }
 
-    void ajouter_produit_a_jeter(Produit prod_baguette)
-    {
-        Produit aux = new Produit(prod_baguette.getNom(),prod_baguette.getPrix(),prod_baguette.getQuantite(),prod_baguette.getDate(),prod_baguette.getTime(),prod_baguette.getPerime());
 
-
-        DefaultTableModel model = (DefaultTableModel) tab_jeter.getModel();
-        model.addRow(new Object[]{aux.getNom(),Float.toString(aux.getQuantite())});
-        jeter.add(aux);
-
-        System.out.println("\n");
-        System.out.println("JETER");
-        for(int i=0 ; i<jeter.size(); i++)
-        {
-
-            System.out.println (jeter.elementAt(i).getNom()+" "+jeter.elementAt(i).getQuantite()+" "+jeter.elementAt(i).getPrix()+" "+jeter.elementAt(i).getPerime()+ " "+jeter.elementAt(i).getDate()+" "+jeter.elementAt(i).getTime());
-
-        }
-        System.out.println("\n");
-
-    }
 
 
     void ajouter_produit_a_commande(Produit prod_baguette, String nom)
@@ -370,10 +404,13 @@ public class Interface_vendeur extends JFrame {
 
 
         JPanel pan_pain = new JPanel();
+        pan_pain.setBounds(0, 16, 463, 924);
 
         JPanel pan_vienn = new JPanel();
+        pan_vienn.setBounds(463, 4, 432, 963);
 
         JPanel pan_boisson = new JPanel();
+        pan_boisson.setBounds(910, 4, 419, 938);
 
 
 
@@ -381,6 +418,7 @@ public class Interface_vendeur extends JFrame {
         lblBoisson.setFont(new Font("Tahoma", Font.PLAIN, 18));
 
         JButton btn_raisin = new JButton("Raisin");
+        btn_raisin.setIcon(new ImageIcon("images/raisin.jpg"));
         btn_raisin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -389,6 +427,7 @@ public class Interface_vendeur extends JFrame {
         });
 
         JButton btn_pomme = new JButton("Pomme");
+        btn_pomme.setIcon(new ImageIcon("images/pomme.jpg"));
         btn_pomme.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -397,6 +436,7 @@ public class Interface_vendeur extends JFrame {
         });
 
         JButton btn_orange = new JButton("Orange");
+        btn_orange.setIcon(new ImageIcon("images/orange.jpg"));
         btn_orange.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -405,6 +445,7 @@ public class Interface_vendeur extends JFrame {
         });
 
         JButton btn_oasis = new JButton("Oasis");
+        btn_oasis.setIcon(new ImageIcon("images/oasis.jpg"));
         btn_oasis.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -413,6 +454,7 @@ public class Interface_vendeur extends JFrame {
         });
 
         JButton btn_sprite = new JButton("Sprite");
+        btn_sprite.setIcon(new ImageIcon("images/sprite.jpg"));
         btn_sprite.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -421,6 +463,7 @@ public class Interface_vendeur extends JFrame {
         });
 
         JButton btn_fanta = new JButton("Fanta");
+        btn_fanta.setIcon(new ImageIcon("images/fanta.jpg"));
         btn_fanta.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -429,58 +472,17 @@ public class Interface_vendeur extends JFrame {
         });
 
         JButton btn_coca = new JButton("Coca_cola");
+        btn_coca.setIcon(new ImageIcon("images/coca_cola.jpg"));
         btn_coca.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
                 gerer_produit_selectione("Coca cola");
             }
         });
-        GroupLayout gl_pan_boisson = new GroupLayout(pan_boisson);
-        gl_pan_boisson.setHorizontalGroup(
-                gl_pan_boisson.createParallelGroup(Alignment.TRAILING)
-                        .addGroup(gl_pan_boisson.createSequentialGroup()
-                                .addContainerGap(97, Short.MAX_VALUE)
-                                .addGroup(gl_pan_boisson.createParallelGroup(Alignment.LEADING)
-                                        .addGroup(gl_pan_boisson.createSequentialGroup()
-                                                .addGroup(gl_pan_boisson.createParallelGroup(Alignment.LEADING)
-                                                        .addComponent(btn_pomme, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(btn_orange, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(btn_oasis, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(btn_sprite, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(btn_fanta, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(btn_coca, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(btn_raisin, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE))
-                                                .addGap(79))
-                                        .addGroup(Alignment.TRAILING, gl_pan_boisson.createSequentialGroup()
-                                                .addComponent(lblBoisson)
-                                                .addGap(171))))
-        );
-        gl_pan_boisson.setVerticalGroup(
-                gl_pan_boisson.createParallelGroup(Alignment.LEADING)
-                        .addGroup(gl_pan_boisson.createSequentialGroup()
-                                .addGap(32)
-                                .addComponent(lblBoisson)
-                                .addGap(18)
-                                .addComponent(btn_coca, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
-                                .addGap(41)
-                                .addComponent(btn_fanta, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
-                                .addGap(42)
-                                .addComponent(btn_sprite, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
-                                .addGap(38)
-                                .addComponent(btn_oasis, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
-                                .addGap(42)
-                                .addComponent(btn_orange, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
-                                .addComponent(btn_pomme, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
-                                .addGap(37)
-                                .addComponent(btn_raisin, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
-                                .addGap(36))
-        );
         this.setExtendedState(MAXIMIZED_BOTH);
-        pan_boisson.setLayout(gl_pan_boisson);
 
         JPanel pan_commande = new JPanel();
-        pan_commande.setLayout(null);
+        pan_commande.setBounds(1344, 28, 495, 924);
 
         JButton btn_decon = new JButton("Deconnection");
         btn_decon.addActionListener(new ActionListener() {
@@ -489,10 +491,9 @@ public class Interface_vendeur extends JFrame {
                 //TODO FAIRE LA DECONNEXION DU VENDEUR ET ARRIVER A LA PAGE CONNEXION
             }
         });
-        btn_decon.setBounds(243, 0, 136, 36);
-        pan_commande.add(btn_decon);
 
         JButton btn_logo = new JButton("logo");
+        btn_logo.setIcon(new ImageIcon("images/logo.jpg"));
         btn_logo.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -535,17 +536,12 @@ public class Interface_vendeur extends JFrame {
 
             }
         });
-        btn_logo.setBounds(10, 11, 209, 122);
-        pan_commande.add(btn_logo);
 
         JButton btn_payer = new JButton("PAYER");
-        btn_payer.setBounds(41, 724, 442, 199);
-        pan_commande.add(btn_payer);
+        btn_payer.setIcon(new ImageIcon("images/payer.jpg"));
 
         JLabel lblTotal = new JLabel("TOTAL");
         lblTotal.setFont(new Font("Tahoma", Font.PLAIN, 18));
-        lblTotal.setBounds(75, 678, 81, 35);
-        pan_commande.add(lblTotal);
 
         JLabel lblVie = new JLabel("VIENNOISERIE");
         lblVie.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -588,6 +584,7 @@ public class Interface_vendeur extends JFrame {
 
 
         JButton btn_crois = new JButton("Croissant");
+        btn_crois.setIcon(new ImageIcon("images/croissant.jpg"));
         btn_crois.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -596,6 +593,7 @@ public class Interface_vendeur extends JFrame {
         });
 
         JButton btn_painauchoc = new JButton("Pain_choc");
+        btn_painauchoc.setIcon(new ImageIcon("images/pain_chocolat.jpg"));
         btn_painauchoc.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -604,6 +602,7 @@ public class Interface_vendeur extends JFrame {
         });
 
         JButton btn_sucre = new JButton("Brioche_sucre");
+        btn_sucre.setIcon(new ImageIcon("images/brioche_sucre.jpg"));
         btn_sucre.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -612,6 +611,7 @@ public class Interface_vendeur extends JFrame {
         });
 
         JButton btn_painaulait = new JButton("Pain_lait");
+        btn_painaulait.setIcon(new ImageIcon("images/pain_lait.jpg"));
         btn_painaulait.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -620,6 +620,7 @@ public class Interface_vendeur extends JFrame {
         });
 
         JButton btn_tartecitron = new JButton("Tarte_citron");
+        btn_tartecitron.setIcon(new ImageIcon("images/tarte_citron.jpg"));
         btn_tartecitron.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -628,70 +629,11 @@ public class Interface_vendeur extends JFrame {
         });
 
         JButton btn_tartepra = new JButton("Tarte_praline");
+        btn_tartepra.setIcon(new ImageIcon("images/tarte_praline.jpg"));
         btn_tartepra.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
                 gerer_produit_selectione("Tarte praline");
-            }
-        });
-        GroupLayout gl_pan_vienn = new GroupLayout(pan_vienn);
-        gl_pan_vienn.setHorizontalGroup(
-                gl_pan_vienn.createParallelGroup(Alignment.LEADING)
-                        .addGroup(gl_pan_vienn.createSequentialGroup()
-                                .addGroup(gl_pan_vienn.createParallelGroup(Alignment.LEADING)
-                                        .addGroup(gl_pan_vienn.createSequentialGroup()
-                                                .addGap(132)
-                                                .addComponent(lblVie))
-                                        .addGroup(gl_pan_vienn.createSequentialGroup()
-                                                .addGap(84)
-                                                .addGroup(gl_pan_vienn.createParallelGroup(Alignment.LEADING)
-                                                        .addComponent(btn_crois, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(btn_tartepra, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(btn_painauchoc, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(btn_sucre, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(btn_painaulait, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(btn_tartecitron, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE))))
-                                .addContainerGap(40, Short.MAX_VALUE))
-        );
-        gl_pan_vienn.setVerticalGroup(
-                gl_pan_vienn.createParallelGroup(Alignment.LEADING)
-                        .addGroup(gl_pan_vienn.createSequentialGroup()
-                                .addGap(23)
-                                .addComponent(lblVie)
-                                .addGap(18)
-                                .addComponent(btn_crois, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE)
-                                .addGap(59)
-                                .addComponent(btn_painauchoc, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE)
-                                .addGap(59)
-                                .addComponent(btn_sucre, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE)
-                                .addGap(62)
-                                .addComponent(btn_painaulait, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
-                                .addComponent(btn_tartecitron, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE)
-                                .addGap(59)
-                                .addComponent(btn_tartepra, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE)
-                                .addGap(31))
-        );
-        pan_vienn.setLayout(gl_pan_vienn);
-
-
-
-        JLabel lab_pain = new JLabel("PAIN");
-        lab_pain.setFont(new Font("Tahoma", Font.PLAIN, 18));
-
-        JButton btn_baguettes = new JButton("Baguette");
-        btn_baguettes.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-
-                gerer_produit_selectione("Baguette");
-
-            }
-        });
-
-        JButton btn_flute = new JButton("Flute");
-        btn_flute.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                gerer_produit_selectione("Flute");
             }
         });
 
@@ -702,113 +644,10 @@ public class Interface_vendeur extends JFrame {
         // Create some data
         String dataValuesJeter[][] ={ };
 
-        tab_jeter = new JTable( dataValuesJeter, columnNamesJeter );
+
         DefaultTableModel model_1 = new DefaultTableModel(dataValuesJeter,columnNamesJeter);
-        tab_jeter = new JTable(model_1);
-        tab_jeter.setFont(new java.awt.Font("Arial", 0, 20));
-
-        tab_jeter.getColumnModel().getColumn(0).setPreferredWidth(90);
-        tab_jeter.getColumnModel().getColumn(1).setPreferredWidth(30);
-
-        tab_jeter.setRowHeight(60);
-
-        JButton btn_jeter = new JButton("JETER");
-        btn_jeter.setFont(new Font("Tahoma", Font.PLAIN, 18));
-        btn_jeter.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-
-                int rowSelected = tab_jeter.getSelectedRow();
-
-                String nom=tab_jeter.getModel().getValueAt(rowSelected, 0).toString();
-
-
-                //on garde en la variable i la position du premièr produit avec le même nom
-                for(int i=0 ; i<jeter.size(); i++)
-                {
-                    if(nom.equals(jeter.elementAt(i).getNom()))
-                    {
-                        jeter.remove(i);
-
-                        DefaultTableModel model = new DefaultTableModel();
-                        model = (DefaultTableModel) tab_jeter.getModel();
-                        model.removeRow(tab_jeter.getSelectedRow());
-                        tab_commande.repaint();
-                        break;
-                    }
-                }
-
-                //System.out.println(rowSelected);
-                //Supprimer le row
-                DefaultTableModel model_1 = new DefaultTableModel();
-                model_1 = (DefaultTableModel) tab_jeter.getModel();
-                model_1.removeRow(tab_jeter.getSelectedRow());
-                tab_jeter.repaint();
-
-            }
-        });
-
-        GroupLayout gl_pan_pain = new GroupLayout(pan_pain);
-        gl_pan_pain.setHorizontalGroup(
-                gl_pan_pain.createParallelGroup(Alignment.TRAILING)
-                        .addGroup(gl_pan_pain.createSequentialGroup()
-                                .addGroup(gl_pan_pain.createParallelGroup(Alignment.LEADING)
-                                        .addGroup(gl_pan_pain.createSequentialGroup()
-                                                .addGap(148)
-                                                .addComponent(lab_pain))
-                                        .addGroup(gl_pan_pain.createSequentialGroup()
-                                                .addGap(61)
-                                                .addGroup(gl_pan_pain.createParallelGroup(Alignment.LEADING)
-                                                        .addComponent(btn_flute, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(btn_baguettes, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE)))
-                                        .addGroup(gl_pan_pain.createSequentialGroup()
-                                                .addGap(23)
-                                                .addComponent(tab_jeter, GroupLayout.PREFERRED_SIZE, 301, GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(gl_pan_pain.createSequentialGroup()
-                                                .addGap(80)
-                                                .addComponent(btn_jeter, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE)))
-                                .addContainerGap(20, Short.MAX_VALUE))
-        );
-        gl_pan_pain.setVerticalGroup(
-                gl_pan_pain.createParallelGroup(Alignment.LEADING)
-                        .addGroup(gl_pan_pain.createSequentialGroup()
-                                .addGap(27)
-                                .addComponent(lab_pain)
-                                .addGap(18)
-                                .addComponent(btn_baguettes, GroupLayout.PREFERRED_SIZE, 131, GroupLayout.PREFERRED_SIZE)
-                                .addGap(36)
-                                .addComponent(btn_flute, GroupLayout.PREFERRED_SIZE, 131, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
-                                .addComponent(btn_jeter, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
-                                .addGap(18)
-                                .addComponent(tab_jeter, GroupLayout.PREFERRED_SIZE, 340, GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap())
-        );
-        pan_pain.setLayout(gl_pan_pain);
-        GroupLayout groupLayout = new GroupLayout(getContentPane());
-        groupLayout.setHorizontalGroup(
-                groupLayout.createParallelGroup(Alignment.LEADING)
-                        .addGroup(groupLayout.createSequentialGroup()
-                                .addComponent(pan_pain, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
-                                .addComponent(pan_vienn, GroupLayout.PREFERRED_SIZE, 440, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(pan_boisson, GroupLayout.PREFERRED_SIZE, 427, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(pan_commande, GroupLayout.PREFERRED_SIZE, 577, GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap())
-        );
-        groupLayout.setVerticalGroup(
-                groupLayout.createParallelGroup(Alignment.TRAILING)
-                        .addGroup(groupLayout.createSequentialGroup()
-                                .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-                                        .addComponent(pan_vienn, GroupLayout.DEFAULT_SIZE, 974, Short.MAX_VALUE)
-                                        .addComponent(pan_boisson, GroupLayout.DEFAULT_SIZE, 974, Short.MAX_VALUE)
-                                        .addComponent(pan_pain, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 974, Short.MAX_VALUE)
-                                        .addGroup(groupLayout.createSequentialGroup()
-                                                .addGap(11)
-                                                .addComponent(pan_commande, GroupLayout.DEFAULT_SIZE, 963, Short.MAX_VALUE)))
-                                .addContainerGap())
-        );
+        tab_jeter_1 = new JTable( model_1 );
+        tab_jeter_1.setRowHeight(27);
 
 
 
@@ -823,11 +662,7 @@ public class Interface_vendeur extends JFrame {
         String columnNames[] = { "Nom", "Quantite", "Value","Prix-unit" };
 
         // Create some data
-        String dataValues[][] =
-                {
-
-
-                };
+        String dataValues[][] = { };
 
         // Create a new table instance
         //table = new JTable( dataValues, columnNames );
@@ -835,7 +670,6 @@ public class Interface_vendeur extends JFrame {
         tab_commande = new JTable(model);
 
         tab_commande.setFont(new java.awt.Font("Arial", 0, 20));
-        tab_commande.setBounds(41, 253, 442, 414);
         tab_commande.getColumnModel().getColumn(0).setPreferredWidth(90);
         tab_commande.getColumnModel().getColumn(1).setPreferredWidth(30);
         tab_commande.getColumnModel().getColumn(2).setPreferredWidth(30);
@@ -847,22 +681,14 @@ public class Interface_vendeur extends JFrame {
         tab_commande.getColumnModel().getColumn(3).setMinWidth(0);
         tab_commande.getColumnModel().getColumn(3).setPreferredWidth(0);
 
-        pan_commande.add(tab_commande);
-
         JLabel lblNom = new JLabel("NOM");
         lblNom.setFont(new Font("Tahoma", Font.PLAIN, 18));
-        lblNom.setBounds(66, 228, 46, 14);
-        pan_commande.add(lblNom);
 
         JLabel lblQuantite = new JLabel("QUANTITE");
         lblQuantite.setFont(new Font("Tahoma", Font.PLAIN, 18));
-        lblQuantite.setBounds(230, 224, 87, 22);
-        pan_commande.add(lblQuantite);
 
         JLabel lblValue = new JLabel("PRIX");
         lblValue.setFont(new Font("Tahoma", Font.PLAIN, 18));
-        lblValue.setBounds(397, 226, 73, 18);
-        pan_commande.add(lblValue);
 
         JButton btn_plus= new JButton("+");
         btn_plus.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -877,8 +703,6 @@ public class Interface_vendeur extends JFrame {
 
             }
         });
-        btn_plus.setBounds(106, 180, 65, 37);
-        pan_commande.add(btn_plus);
 
         JButton btn_less = new JButton("-");
         btn_less.addActionListener(new ActionListener() {
@@ -963,26 +787,282 @@ public class Interface_vendeur extends JFrame {
             }
         });
         btn_less.setFont(new Font("Tahoma", Font.BOLD, 18));
-        btn_less.setBounds(215, 180, 65, 37);
-        pan_commande.add(btn_less);
 
 
         lab_prix.setFont(new Font("Tahoma", Font.PLAIN, 18));
-        lab_prix.setBounds(172, 676, 108, 39);
         lab_prix.setText("0.0");
-
-        pan_commande.add(lab_prix);
 
         JLabel lab_euro = new JLabel("\u20AC");
         lab_euro.setFont(new Font("Tahoma", Font.BOLD, 18));
-        lab_euro.setBounds(290, 686, 27, 27);
-        pan_commande.add(lab_euro);
+        getContentPane().setLayout(null);
+        getContentPane().add(pan_pain);
+
+        JButton btn_flute = new JButton("Flute");
+        btn_flute.setIcon(new ImageIcon("images/flute.jpg"));
+        btn_flute.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                gerer_produit_selectione("Flute");
+            }
+        });
+
+        JButton btn_baguettes = new JButton("Baguette");
+        btn_baguettes.setIcon(new ImageIcon("images/baguette.jpg"));
+        btn_baguettes.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                gerer_produit_selectione("Baguette");
+
+            }
+        });
+
+
+
+        JLabel lab_pain = new JLabel("PAIN");
+        lab_pain.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        tab_jeter_1 = new JTable(new DefaultTableModel(
+                new Object[][] {},
+                new String[] {"Nom", "Quantite"}
+        ) {
+            Class[] columnTypes = new Class[] {
+                    Object.class, Integer.class
+            };
+            public Class getColumnClass(int columnIndex) {
+                return columnTypes[columnIndex];
+            }
+        });
+        tab_jeter_1.setFont(new java.awt.Font("Arial", 0, 20));
+
+        JButton btn_jeter = new JButton("JETER");
+        btn_jeter.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        btn_jeter.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+
+                int rowSelected = tab_jeter_1.getSelectedRow();
+
+                DefaultTableModel model_1 = new DefaultTableModel();
+                model_1 = (DefaultTableModel) tab_jeter_1.getModel();
+
+                String nom=tab_jeter_1.getModel().getValueAt(rowSelected, 0).toString();
+                String quant=tab_jeter_1.getModel().getValueAt(rowSelected, 1).toString();
+                int int_quan=Integer.parseInt(quant);
+
+
+                JOptionPane.showMessageDialog(null, nom+" supprimé du système", "Jeter "+ nom, JOptionPane.WARNING_MESSAGE);
+                for(int u=0;u<jeter.size();u++)
+                {
+                    int int_quanty=jeter.elementAt(u).getQuantite();
+                    if(jeter.elementAt(u).getNom().equals(nom)&& int_quan==int_quanty)
+                    {
+                        model_1.removeRow(tab_jeter_1.getSelectedRow());
+                        jeter.remove(u);
+                        tab_jeter_1.repaint();
+                        base.ajouterPerime(nom,int_quanty);
+                        String mensaje= base.supprimerVitrine(nom,int_quanty);
+
+                    }
+                }
+
+
+            }
+        });
+
+        tab_jeter_1.setRowHeight(40);
+        GroupLayout gl_pan_pain = new GroupLayout(pan_pain);
+        gl_pan_pain.setHorizontalGroup(
+                gl_pan_pain.createParallelGroup(Alignment.LEADING)
+                        .addGroup(gl_pan_pain.createSequentialGroup()
+                                .addGap(147)
+                                .addComponent(lab_pain))
+                        .addGroup(gl_pan_pain.createSequentialGroup()
+                                .addGap(61)
+                                .addComponent(btn_baguettes, GroupLayout.PREFERRED_SIZE, 301, GroupLayout.PREFERRED_SIZE))
+                        .addGroup(gl_pan_pain.createSequentialGroup()
+                                .addGap(61)
+                                .addComponent(btn_flute, GroupLayout.PREFERRED_SIZE, 301, GroupLayout.PREFERRED_SIZE))
+                        .addGroup(gl_pan_pain.createSequentialGroup()
+                                .addGap(61)
+                                .addComponent(btn_jeter))
+                        .addGroup(gl_pan_pain.createSequentialGroup()
+                                .addGap(61)
+                                .addComponent(tab_jeter_1, GroupLayout.PREFERRED_SIZE, 301, GroupLayout.PREFERRED_SIZE))
+        );
+        gl_pan_pain.setVerticalGroup(
+                gl_pan_pain.createParallelGroup(Alignment.LEADING)
+                        .addGroup(gl_pan_pain.createSequentialGroup()
+                                .addComponent(lab_pain)
+                                .addGap(4)
+                                .addComponent(btn_baguettes, GroupLayout.PREFERRED_SIZE, 170, GroupLayout.PREFERRED_SIZE)
+                                .addGap(67)
+                                .addComponent(btn_flute, GroupLayout.PREFERRED_SIZE, 161, GroupLayout.PREFERRED_SIZE)
+                                .addGap(79)
+                                .addComponent(btn_jeter, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)
+                                .addGap(4)
+                                .addComponent(tab_jeter_1, GroupLayout.PREFERRED_SIZE, 340, GroupLayout.PREFERRED_SIZE))
+        );
+        pan_pain.setLayout(gl_pan_pain);
+        getContentPane().add(pan_vienn);
+        GroupLayout gl_pan_vienn = new GroupLayout(pan_vienn);
+        gl_pan_vienn.setHorizontalGroup(
+                gl_pan_vienn.createParallelGroup(Alignment.LEADING)
+                        .addGroup(gl_pan_vienn.createSequentialGroup()
+                                .addGap(154)
+                                .addComponent(lblVie))
+                        .addGroup(gl_pan_vienn.createSequentialGroup()
+                                .addGap(84)
+                                .addComponent(btn_crois, GroupLayout.PREFERRED_SIZE, 261, GroupLayout.PREFERRED_SIZE))
+                        .addGroup(gl_pan_vienn.createSequentialGroup()
+                                .addGap(84)
+                                .addComponent(btn_painauchoc, GroupLayout.PREFERRED_SIZE, 261, GroupLayout.PREFERRED_SIZE))
+                        .addGroup(gl_pan_vienn.createSequentialGroup()
+                                .addGap(84)
+                                .addComponent(btn_sucre, GroupLayout.PREFERRED_SIZE, 261, GroupLayout.PREFERRED_SIZE))
+                        .addGroup(gl_pan_vienn.createSequentialGroup()
+                                .addGap(84)
+                                .addComponent(btn_painaulait, GroupLayout.PREFERRED_SIZE, 261, GroupLayout.PREFERRED_SIZE))
+                        .addGroup(gl_pan_vienn.createSequentialGroup()
+                                .addGap(84)
+                                .addComponent(btn_tartecitron, GroupLayout.PREFERRED_SIZE, 261, GroupLayout.PREFERRED_SIZE))
+                        .addGroup(gl_pan_vienn.createSequentialGroup()
+                                .addGap(84)
+                                .addComponent(btn_tartepra, GroupLayout.PREFERRED_SIZE, 261, GroupLayout.PREFERRED_SIZE))
+        );
+        gl_pan_vienn.setVerticalGroup(
+                gl_pan_vienn.createParallelGroup(Alignment.LEADING)
+                        .addGroup(gl_pan_vienn.createSequentialGroup()
+                                .addGap(18)
+                                .addComponent(lblVie)
+                                .addGap(18)
+                                .addComponent(btn_crois, GroupLayout.PREFERRED_SIZE, 139, GroupLayout.PREFERRED_SIZE)
+                                .addGap(14)
+                                .addComponent(btn_painauchoc, GroupLayout.PREFERRED_SIZE, 146, GroupLayout.PREFERRED_SIZE)
+                                .addGap(8)
+                                .addComponent(btn_sucre, GroupLayout.PREFERRED_SIZE, 149, GroupLayout.PREFERRED_SIZE)
+                                .addGap(8)
+                                .addComponent(btn_painaulait, GroupLayout.PREFERRED_SIZE, 152, GroupLayout.PREFERRED_SIZE)
+                                .addGap(8)
+                                .addComponent(btn_tartecitron, GroupLayout.PREFERRED_SIZE, 146, GroupLayout.PREFERRED_SIZE)
+                                .addGap(8)
+                                .addComponent(btn_tartepra, GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE))
+        );
+        pan_vienn.setLayout(gl_pan_vienn);
+        getContentPane().add(pan_boisson);
+        GroupLayout gl_pan_boisson = new GroupLayout(pan_boisson);
+        gl_pan_boisson.setHorizontalGroup(
+                gl_pan_boisson.createParallelGroup(Alignment.LEADING)
+                        .addGroup(gl_pan_boisson.createSequentialGroup()
+                                .addGap(184)
+                                .addComponent(lblBoisson))
+                        .addGroup(gl_pan_boisson.createSequentialGroup()
+                                .addGap(97)
+                                .addComponent(btn_coca, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE))
+                        .addGroup(gl_pan_boisson.createSequentialGroup()
+                                .addGap(97)
+                                .addComponent(btn_fanta, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE))
+                        .addGroup(gl_pan_boisson.createSequentialGroup()
+                                .addGap(97)
+                                .addComponent(btn_sprite, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE))
+                        .addGroup(gl_pan_boisson.createSequentialGroup()
+                                .addGap(97)
+                                .addComponent(btn_oasis, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE))
+                        .addGroup(gl_pan_boisson.createSequentialGroup()
+                                .addGap(97)
+                                .addComponent(btn_orange, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE))
+                        .addGroup(gl_pan_boisson.createSequentialGroup()
+                                .addGap(97)
+                                .addComponent(btn_pomme, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE))
+                        .addGroup(gl_pan_boisson.createSequentialGroup()
+                                .addGap(97)
+                                .addComponent(btn_raisin, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE))
+        );
+        gl_pan_boisson.setVerticalGroup(
+                gl_pan_boisson.createParallelGroup(Alignment.LEADING)
+                        .addGroup(gl_pan_boisson.createSequentialGroup()
+                                .addGap(32)
+                                .addComponent(lblBoisson)
+                                .addGap(18)
+                                .addComponent(btn_coca, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
+                                .addGap(41)
+                                .addComponent(btn_fanta, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
+                                .addGap(42)
+                                .addComponent(btn_sprite, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
+                                .addGap(38)
+                                .addComponent(btn_oasis, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
+                                .addGap(42)
+                                .addComponent(btn_orange, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
+                                .addGap(43)
+                                .addComponent(btn_pomme, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
+                                .addGap(37)
+                                .addComponent(btn_raisin, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE))
+        );
+        pan_boisson.setLayout(gl_pan_boisson);
+        getContentPane().add(pan_commande);
+        GroupLayout gl_pan_commande = new GroupLayout(pan_commande);
+        gl_pan_commande.setHorizontalGroup(
+                gl_pan_commande.createParallelGroup(Alignment.LEADING)
+                        .addGroup(gl_pan_commande.createSequentialGroup()
+                                .addGap(9)
+                                .addComponent(btn_logo, GroupLayout.PREFERRED_SIZE, 209, GroupLayout.PREFERRED_SIZE)
+                                .addGap(30)
+                                .addComponent(btn_decon))
+                        .addGroup(gl_pan_commande.createSequentialGroup()
+                                .addGap(123)
+                                .addComponent(btn_plus)
+                                .addGap(66)
+                                .addComponent(btn_less))
+                        .addGroup(gl_pan_commande.createSequentialGroup()
+                                .addGap(70)
+                                .addComponent(lblNom)
+                                .addGap(118)
+                                .addComponent(lblQuantite)
+                                .addGap(77)
+                                .addComponent(lblValue, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE))
+                        .addGroup(gl_pan_commande.createSequentialGroup()
+                                .addGap(9)
+                                .addComponent(tab_commande, GroupLayout.PREFERRED_SIZE, 468, GroupLayout.PREFERRED_SIZE))
+                        .addGroup(gl_pan_commande.createSequentialGroup()
+                                .addGap(62)
+                                .addComponent(lblTotal)
+                                .addGap(54)
+                                .addComponent(lab_prix, GroupLayout.PREFERRED_SIZE, 106, GroupLayout.PREFERRED_SIZE)
+                                .addGap(9)
+                                .addComponent(lab_euro))
+                        .addGroup(gl_pan_commande.createSequentialGroup()
+                                .addGap(9)
+                                .addComponent(btn_payer, GroupLayout.PREFERRED_SIZE, 468, GroupLayout.PREFERRED_SIZE))
+        );
+        gl_pan_commande.setVerticalGroup(
+                gl_pan_commande.createParallelGroup(Alignment.LEADING)
+                        .addGroup(gl_pan_commande.createSequentialGroup()
+                                .addGroup(gl_pan_commande.createParallelGroup(Alignment.LEADING)
+                                        .addComponent(btn_logo, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(btn_decon))
+                                .addGap(47)
+                                .addGroup(gl_pan_commande.createParallelGroup(Alignment.LEADING)
+                                        .addComponent(btn_plus, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(btn_less, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
+                                .addGap(8)
+                                .addGroup(gl_pan_commande.createParallelGroup(Alignment.LEADING)
+                                        .addComponent(lblNom)
+                                        .addComponent(lblQuantite)
+                                        .addComponent(lblValue))
+                                .addGap(8)
+                                .addComponent(tab_commande, GroupLayout.PREFERRED_SIZE, 414, GroupLayout.PREFERRED_SIZE)
+                                .addGap(8)
+                                .addGroup(gl_pan_commande.createParallelGroup(Alignment.LEADING)
+                                        .addComponent(lblTotal, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lab_prix, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(gl_pan_commande.createSequentialGroup()
+                                                .addGap(8)
+                                                .addComponent(lab_euro)))
+                                .addGap(8)
+                                .addComponent(btn_payer, GroupLayout.PREFERRED_SIZE, 199, GroupLayout.PREFERRED_SIZE))
+        );
+        pan_commande.setLayout(gl_pan_commande);
+        this.setExtendedState(MAXIMIZED_BOTH);
+
 
         //TODO faire le timer de jeter
         timer_refresh_produits_jeter();
-
-        getContentPane().setLayout(groupLayout);
-        this.setExtendedState(MAXIMIZED_BOTH);
     }
 
 }

@@ -44,7 +44,7 @@ public class Interface_billet extends JFrame {
     /**
      * Create the frame.
      */
-    public Interface_billet(Vector <Produit> vitrine, final Vector <Produit> commandes, final JTable tab_commande,float total, final JLabel lab_total) {
+    public Interface_billet(Vector <Produit> vitrine,final Vector <Produit> commandes, final JTable tab_commande,float total,final JLabel lab_total) {
 
         this.total_prix=total;
         setTitle("Billet");
@@ -83,6 +83,7 @@ public class Interface_billet extends JFrame {
 
                         System.out.println (commandes.elementAt(i).getNom()+" "+commandes.elementAt(i).getQuantite()+" "+commandes.elementAt(i).getPrix()+" "+commandes.elementAt(i).getPerime()+ " "+commandes.elementAt(i).getDate()+" "+commandes.elementAt(i).getTime());
                         base.ajouterBilan(commandes.elementAt(i).getNom(),commandes.elementAt(i).getQuantite());
+                        base.supprimerVitrine(commandes.elementAt(i).getNom(),commandes.elementAt(i).getQuantite());
 
                     }
 
@@ -96,7 +97,7 @@ public class Interface_billet extends JFrame {
 
             }
         });
-        JButton btnAnnuler = new JButton("ANNULER");
+       final JButton btnAnnuler = new JButton("ANNULER");
         btnAnnuler.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 //Close the JFrame
