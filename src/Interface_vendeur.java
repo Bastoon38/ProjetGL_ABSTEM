@@ -29,6 +29,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import java.awt.GridLayout;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.sql.Date;
 import java.sql.Time;
 import java.text.DecimalFormat;
@@ -390,7 +391,8 @@ public class Interface_vendeur extends JFrame {
         setTitle("Vendeur");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 1446, 879);
-
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL file;
         //Connection avec la BDD
         final GestionBDD base= new GestionBDD();
         vitrine=base.getVitrine(vitrine);
@@ -418,7 +420,10 @@ public class Interface_vendeur extends JFrame {
         lblBoisson.setFont(new Font("Tahoma", Font.PLAIN, 18));
 
         JButton btn_raisin = new JButton("Raisin");
-        btn_raisin.setIcon(new ImageIcon("images/raisin.jpg"));
+        file = classLoader.getResource("images/raisin.jpg");
+        Icon icn_raisin = new ImageIcon(file);
+        btn_raisin.setIcon(icn_raisin);
+       // btn_raisin.setIcon(new ImageIcon("images/raisin.jpg"));
         btn_raisin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -427,7 +432,10 @@ public class Interface_vendeur extends JFrame {
         });
 
         JButton btn_pomme = new JButton("Pomme");
-        btn_pomme.setIcon(new ImageIcon("images/pomme.jpg"));
+        file = classLoader.getResource("images/pomme.jpg");
+        Icon icn_pomme = new ImageIcon(file);
+        btn_pomme.setIcon(icn_pomme);
+       // btn_pomme.setIcon(new ImageIcon("images/pomme.jpg"));
         btn_pomme.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -436,7 +444,10 @@ public class Interface_vendeur extends JFrame {
         });
 
         JButton btn_orange = new JButton("Orange");
-        btn_orange.setIcon(new ImageIcon("images/orange.jpg"));
+        file = classLoader.getResource("images/orange.jpg");
+        Icon icn_orange = new ImageIcon(file);
+        btn_orange.setIcon(icn_orange);
+        //btn_orange.setIcon(new ImageIcon("images/orange.jpg"));
         btn_orange.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -445,7 +456,10 @@ public class Interface_vendeur extends JFrame {
         });
 
         JButton btn_oasis = new JButton("Oasis");
-        btn_oasis.setIcon(new ImageIcon("images/oasis.jpg"));
+        file = classLoader.getResource("images/oasis.jpg");
+        Icon icn_oasis = new ImageIcon(file);
+        btn_oasis.setIcon(icn_oasis);
+        //btn_oasis.setIcon(new ImageIcon("images/oasis.jpg"));
         btn_oasis.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -454,7 +468,10 @@ public class Interface_vendeur extends JFrame {
         });
 
         JButton btn_sprite = new JButton("Sprite");
-        btn_sprite.setIcon(new ImageIcon("images/sprite.jpg"));
+        file = classLoader.getResource("images/sprite.jpg");
+        Icon icn_sprite = new ImageIcon(file);
+        btn_sprite.setIcon(icn_sprite);
+       // btn_sprite.setIcon(new ImageIcon("images/sprite.jpg"));
         btn_sprite.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -463,7 +480,10 @@ public class Interface_vendeur extends JFrame {
         });
 
         JButton btn_fanta = new JButton("Fanta");
-        btn_fanta.setIcon(new ImageIcon("images/fanta.jpg"));
+        file = classLoader.getResource("images/fanta.jpg");
+        Icon icn_fanta = new ImageIcon(file);
+        btn_fanta.setIcon(icn_fanta);
+        //btn_fanta.setIcon(new ImageIcon("images/fanta.jpg"));
         btn_fanta.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -472,7 +492,10 @@ public class Interface_vendeur extends JFrame {
         });
 
         JButton btn_coca = new JButton("Coca_cola");
-        btn_coca.setIcon(new ImageIcon("images/coca_cola.jpg"));
+        file = classLoader.getResource("images/coca_cola.jpg");
+        Icon icn_coca_cola = new ImageIcon(file);
+        btn_coca.setIcon(icn_coca_cola);
+       // btn_coca.setIcon(new ImageIcon("images/coca_cola.jpg"));
         btn_coca.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -493,7 +516,10 @@ public class Interface_vendeur extends JFrame {
         });
 
         JButton btn_logo = new JButton("logo");
-        btn_logo.setIcon(new ImageIcon("images/logo.jpg"));
+       // btn_logo.setIcon(new ImageIcon("images/logo.jpg"));
+        file = classLoader.getResource("images/logo.jpg");
+        Icon icn_logo = new ImageIcon(file);
+        btn_logo.setIcon(icn_logo);
         btn_logo.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -538,7 +564,10 @@ public class Interface_vendeur extends JFrame {
         });
 
         JButton btn_payer = new JButton("PAYER");
-        btn_payer.setIcon(new ImageIcon("images/payer.jpg"));
+       // btn_payer.setIcon(new ImageIcon("images/payer.jpg"));
+        file = classLoader.getResource("images/payer.jpg");
+        Icon icn_payer = new ImageIcon(file);
+        btn_payer.setIcon(icn_payer);
 
         JLabel lblTotal = new JLabel("TOTAL");
         lblTotal.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -584,7 +613,10 @@ public class Interface_vendeur extends JFrame {
 
 
         JButton btn_crois = new JButton("Croissant");
-        btn_crois.setIcon(new ImageIcon("images/croissant.jpg"));
+        file = classLoader.getResource("images/croissant.jpg");
+        Icon icn_crois = new ImageIcon(file);
+        btn_crois.setIcon(icn_crois);
+        //btn_crois.setIcon(new ImageIcon("images/croissant.jpg"));
         btn_crois.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -593,7 +625,10 @@ public class Interface_vendeur extends JFrame {
         });
 
         JButton btn_painauchoc = new JButton("Pain_choc");
-        btn_painauchoc.setIcon(new ImageIcon("images/pain_chocolat.jpg"));
+        file = classLoader.getResource("images/pain_chocolat.jpg");
+        Icon icn_painauchoc = new ImageIcon(file);
+        btn_painauchoc.setIcon(icn_painauchoc);
+        //btn_painauchoc.setIcon(new ImageIcon("images/pain_chocolat.jpg"));
         btn_painauchoc.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -602,7 +637,10 @@ public class Interface_vendeur extends JFrame {
         });
 
         JButton btn_sucre = new JButton("Brioche_sucre");
-        btn_sucre.setIcon(new ImageIcon("images/brioche_sucre.jpg"));
+        file = classLoader.getResource("images/brioche_sucre.jpg");
+        Icon icn_sucre = new ImageIcon(file);
+        btn_sucre.setIcon(icn_sucre);
+       // btn_sucre.setIcon(new ImageIcon("images/brioche_sucre.jpg"));
         btn_sucre.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -611,7 +649,10 @@ public class Interface_vendeur extends JFrame {
         });
 
         JButton btn_painaulait = new JButton("Pain_lait");
-        btn_painaulait.setIcon(new ImageIcon("images/pain_lait.jpg"));
+        file = classLoader.getResource("images/pain_lait.jpg");
+        Icon icn_painaulait = new ImageIcon(file);
+        btn_painaulait.setIcon(icn_painaulait);
+       // btn_painaulait.setIcon(new ImageIcon("images/pain_lait.jpg"));
         btn_painaulait.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -620,7 +661,10 @@ public class Interface_vendeur extends JFrame {
         });
 
         JButton btn_tartecitron = new JButton("Tarte_citron");
-        btn_tartecitron.setIcon(new ImageIcon("images/tarte_citron.jpg"));
+        file = classLoader.getResource("images/tarte_citron.jpg");
+        Icon icn_tartecitron = new ImageIcon(file);
+        btn_tartecitron.setIcon(icn_tartecitron);
+       // btn_tartecitron.setIcon(new ImageIcon("images/tarte_citron.jpg"));
         btn_tartecitron.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -629,7 +673,10 @@ public class Interface_vendeur extends JFrame {
         });
 
         JButton btn_tartepra = new JButton("Tarte_praline");
-        btn_tartepra.setIcon(new ImageIcon("images/tarte_praline.jpg"));
+        file = classLoader.getResource("images/tarte_praline.jpg");
+        Icon icn_tartepra = new ImageIcon(file);
+        btn_tartepra.setIcon(icn_tartepra);
+       // btn_tartepra.setIcon(new ImageIcon("images/tarte_praline.jpg"));
         btn_tartepra.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -798,7 +845,10 @@ public class Interface_vendeur extends JFrame {
         getContentPane().add(pan_pain);
 
         JButton btn_flute = new JButton("Flute");
-        btn_flute.setIcon(new ImageIcon("images/flute.jpg"));
+         file = classLoader.getResource("images/flute.jpg");
+        Icon icn_flu = new ImageIcon(file);
+        btn_flute.setIcon(icn_flu);
+       // btn_flute.setIcon(new ImageIcon("images/flute.jpg"));
         btn_flute.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 gerer_produit_selectione("Flute");
@@ -806,7 +856,11 @@ public class Interface_vendeur extends JFrame {
         });
 
         JButton btn_baguettes = new JButton("Baguette");
-        btn_baguettes.setIcon(new ImageIcon("images/baguette.jpg"));
+
+        file = classLoader.getResource("images/baguette.jpg");
+        Icon icn_bag = new ImageIcon(file);
+        btn_baguettes.setIcon(icn_bag);
+       // btn_baguettes.setIcon(new ImageIcon("images/baguette.jpg"));
         btn_baguettes.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
