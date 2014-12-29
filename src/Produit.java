@@ -19,7 +19,7 @@ public class Produit {
     private int perime;
     private int vendu;
     private int jete;
-    private boolean cuisson;
+    private boolean flag;
 
     public Produit(String obj_name,  float credit, int quant, Date date) {
 
@@ -45,11 +45,11 @@ public class Produit {
         this.jete = jete;
     }
 
-    public Produit(String obj_name, int quant, boolean cuisson) {
+    public Produit(String obj_name, int quant, boolean flag) {
 
         this.nom = obj_name;
         this.quantite = quant;
-        this.cuisson = cuisson;
+        this.flag = flag;
     }
     //get Methods
     public String getNom()
@@ -84,10 +84,7 @@ public class Produit {
     {
         return this.jete;
     }
-    public boolean getCuisson()
-    {
-        return this.cuisson;
-    }
+    public boolean getFlag() {return this.flag;}
 
     // set Methods
     public void setNom(String nom)
@@ -122,8 +119,8 @@ public class Produit {
     {
         this.jete=jete;
     }
-    public void setCuisson(boolean cuisson)
+    public void setFlag(boolean flag)
     {
-        this.cuisson=cuisson;
+        this.flag=flag;
     }
 }

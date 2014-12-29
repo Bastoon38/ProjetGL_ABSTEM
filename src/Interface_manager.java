@@ -60,6 +60,7 @@ public class Interface_manager extends JFrame {
     private JPanel pan_panel1;
     private JButton btn_managerDeco;
     private JTable tab_cmd;
+    private JTable tab_att;
 
 
     private String motDePasse = "Manager";
@@ -241,30 +242,45 @@ public class Interface_manager extends JFrame {
 
         // MISE EN PLACE DES PREMIERES PAGE POUR LE DEMARRAGE (SANS AVOIR A CLIQUER DESSUS)
 
-        //Les données du tableau
-        Object[][] data = {
-                {"BAGUETTE", 0, false},
-                {"FLUTE", 0, false},
-                {"CROISSANT", 0, false},
-                {"PAIN AU CHOCOLAT", 0, false},
-                {"BRIOCHE SUCRE", 0, false},
-                {"PAIN AU LAIT", 0, false},
-                {"TARTE AU CITRON", 0, false},
-                {"TARTE PRALINE", 0, false},
-                {"COCA-COLA", 0, false},
-                {"FANTA", 0, false},
-                {"SPRITE", 0, false},
-                {"OASIS", 0, false},
-                {"ORANGE", 0, false},
-                {"POMME", 0, false},
-                {"RAISIN", 0, false},
+        DefaultTableModel model = new DefaultTableModel()
+        {
+            //@Override
+            //public boolean isCellEditable(int row, int column) {
+            //    return column==2;
+            //}
+
+            @Override
+            public Class<?> getColumnClass(int columnIndex)
+            {
+                if(columnIndex==2)
+                    return Boolean.class;
+                return super.getColumnClass(columnIndex);
+            }
         };
+        tab_cmd= new JTable(model);
 
-        //Les titres des colonnes
-        String title[] = {"PRODUIT", "QUANTITE A COMMANDER", "boolean"};
-        tab_cmd = new JTable(data, title);
+        // Create a couple of columns
+        model.addColumn("PRODUIT");
+        model.addColumn("QUANTITE A COMMANDER");
+        model.addColumn("BOOLEAN");
 
-        tab_cmd.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(new JCheckBox()));
+        // Append a row
+            model.addRow(new Object[]{"BAGUETTE", 0, false});
+            model.addRow(new Object[]{"FLUTE", 0, false});
+            model.addRow(new Object[]{"CROISSANT", 0, false});
+            model.addRow(new Object[]{"PAIN AU CHOCOLAT", 0, false});
+            model.addRow(new Object[]{"BRIOCHE SUCRE", 0, false});
+            model.addRow(new Object[]{"PAIN AU LAIT", 0, false});
+            model.addRow(new Object[]{"TARTE AU CITRON", 0, false});
+            model.addRow(new Object[]{"TARTE PRALINE", 0, false});
+            model.addRow(new Object[]{"COCA-COLA", 0, false});
+            model.addRow(new Object[]{"FANTA", 0, false});
+            model.addRow(new Object[]{"SPRITE", 0, false});
+            model.addRow(new Object[]{"OASIS", 0, false});
+            model.addRow(new Object[]{"ORANGE", 0, false});
+            model.addRow(new Object[]{"POMME", 0, false});
+            model.addRow(new Object[]{"RAISIN", 0, false});
+
         tab_cmd.setFont(new Font("Serif", Font.PLAIN, 30));
         tab_cmd.getTableHeader().setFont(new Font("Serif", Font.BOLD, 23));
         updateRowHeights(tab_cmd);
@@ -285,6 +301,52 @@ public class Interface_manager extends JFrame {
                     if (tab_cmd.getValueAt(i,2).equals(true))
                         baseDonnee.ajouterCommandeFournisseur(tab_cmd.getValueAt(i,0), tab_cmd.getValueAt(i,1));
                 }
+
+                commandeSelect();
+            }
+        });
+
+        btn_majStock.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                Produit[] tabAttendu = null;
+
+                GestionBDD baseDonnee = new GestionBDD();
+                tabAttendu = baseDonnee.getCommande();
+
+                for (int i=0; i<tabAttendu.length ; i++)
+                {
+                    if (tab_att.getValueAt(i,2).equals(true))
+                        baseDonnee.majCommande(tabAttendu[i].getNom(),tabAttendu[i].getQuantite(),1);
+                }
+
+                tabAttendu = baseDonnee.getCommande();
+
+                for (int i=0; i<tabAttendu.length ; i++)
+                {
+                    if (tabAttendu[i].getFlag() == true)
+                    {
+                        JPanel panel = new JPanel();
+                        JLabel label = new JLabel("date (ex: 2014-12-29 17:10:04) :");
+                        JTextField date = new JTextField(19);
+
+                        panel.add(label);
+                        panel.add(date);
+                        String[] options = new String[]{"OK", "Cancel"};
+                        int option = JOptionPane.showOptionDialog(null, panel, "Date de péremption : "+tabAttendu[i].getNom(),
+                                JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE,
+                                null, options, options[0]);
+                        if(option == 0) // pressing OK button
+                        {
+                            String dat = date.getText();
+                            baseDonnee.ajouterStock(tabAttendu[i].getNom(), tabAttendu[i].getQuantite(),dat);
+                        }
+                    }
+
+                }
+
+                commandeSelect();
             }
         });
 
@@ -381,6 +443,7 @@ public class Interface_manager extends JFrame {
         //Nous ajoutons notre tableau à notre contentPane dans un scroll
         //Sinon les titres des colonnes ne s'afficheront pas !
         JScrollPane tbc_bilan = new JScrollPane(tab_bilan);
+        pan_bilanJournalier.removeAll();
         pan_bilanJournalier.add(tbc_bilan, BorderLayout.CENTER);
         lab_recette.setText("RECETTE = 13976 €");
         lab_recette.setFont(new Font("Serif", Font.BOLD, 23));
@@ -390,24 +453,39 @@ public class Interface_manager extends JFrame {
     public void commandeSelect() {
         // TODO: mettre les actions à effectuer quand on clique sur l'onglet ci-dessus
         //JOptionPane.showMessageDialog(null, "Commandes selectionné", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
-
         Produit[] tabAtt = null;
 
         GestionBDD baseDonnee = new GestionBDD();
         tabAtt = baseDonnee.getCommande();
 
-        DefaultTableModel model = new DefaultTableModel();
-        JTable tab_att = new JTable(model);
+        DefaultTableModel model = new DefaultTableModel()
+        {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column==2;
+            }
+
+            @Override
+            public Class<?> getColumnClass(int columnIndex)
+            {
+                if(columnIndex==2)
+                    return Boolean.class;
+                return super.getColumnClass(columnIndex);
+            }
+        };
+        tab_att = new JTable(model);
 
         // Create a couple of columns
         model.addColumn("PRODUIT");
         model.addColumn("QUANTITE");
+        model.addColumn("RECU");
 
         // Append a row
         for (int i = 0; i < tabAtt.length; i++)
-                model.addRow(new Object[]{tabAtt[i].getNom().toUpperCase(), tabAtt[i].getQuantite()});
+                model.addRow(new Object[]{tabAtt[i].getNom().toUpperCase(), tabAtt[i].getQuantite(), tabAtt[i].getFlag()});
 
 
+        //tab_att.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(new JCheckBox()));
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
         tab_att.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
@@ -416,10 +494,12 @@ public class Interface_manager extends JFrame {
         tab_att.setFont(new Font("Serif", Font.PLAIN, 30));
         tab_att.getTableHeader().setFont(new Font("Serif", Font.BOLD, 23));
         updateRowHeights(tab_att);
-        tab_att.setEnabled(false);
+        //tab_att.setEnabled(true);
         //Nous ajoutons notre tableau à notre contentPane dans un scroll
         //Sinon les titres des colonnes ne s'afficheront pas !
         JScrollPane tbc_att = new JScrollPane(tab_att);
+        if(pan_produitAttendu.getComponentCount() == 2)
+            pan_produitAttendu.remove(1);
         pan_produitAttendu.add(tbc_att, BorderLayout.CENTER);
     }
 
@@ -447,9 +527,9 @@ public class Interface_manager extends JFrame {
 
         // Append a row
         for (int i = 0; i < tabCuisson.length; i++) {
-            if (tabCuisson[i].getCuisson() == true)
+            if (tabCuisson[i].getFlag() == true)
                 model.addRow(new Object[]{tabCuisson[i].getNom().toUpperCase(), tabCuisson[i].getQuantite(), "EN COURS"});
-            else if (tabCuisson[i].getCuisson() == false)
+            else if (tabCuisson[i].getFlag() == false)
                 model.addRow(new Object[]{tabCuisson[i].getNom().toUpperCase(), tabCuisson[i].getQuantite(), "EN ATTENTE"});
         }
 
@@ -466,6 +546,7 @@ public class Interface_manager extends JFrame {
         //Nous ajoutons notre tableau à notre contentPane dans un scroll
         //Sinon les titres des colonnes ne s'afficheront pas !
         JScrollPane tbc_cuisson = new JScrollPane(tab_cuisson);
+        pan_cuisson.removeAll();
         pan_cuisson.add(tbc_cuisson, BorderLayout.CENTER);
     }
 
@@ -478,6 +559,9 @@ public class Interface_manager extends JFrame {
 
         GestionBDD baseDonnee = new GestionBDD();
         tabVitrine = baseDonnee.getVitrine();
+
+        for (int i=0; i<tabVitrine.length;i++)
+            System.out.println(tabVitrine[i].getQuantite());
 
         tab = setAfficheTab(tabVitrine, tabVitrine.length);
 
@@ -516,6 +600,7 @@ public class Interface_manager extends JFrame {
         //Nous ajoutons notre tableau à notre contentPane dans un scroll
         //Sinon les titres des colonnes ne s'afficheront pas !
         JScrollPane tbc_vitrine = new JScrollPane(tab_vitrine);
+        pan_vitrine.removeAll();
         pan_vitrine.add(tbc_vitrine, BorderLayout.CENTER);
     }
 
@@ -566,6 +651,7 @@ public class Interface_manager extends JFrame {
         //Nous ajoutons notre tableau à notre contentPane dans un scroll
         //Sinon les titres des colonnes ne s'afficheront pas !
         JScrollPane tbc_stock = new JScrollPane(tab_stock);
+        pan_stock.removeAll();
         pan_stock.add(tbc_stock, BorderLayout.CENTER);
     }
 

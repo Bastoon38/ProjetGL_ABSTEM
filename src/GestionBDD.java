@@ -10,7 +10,7 @@ public class GestionBDD {
 	//connexion à la base de données
 	private Connection connexion() {
 		try {
-			String url = "jdbc:mysql://localhost/albm_dev";
+			String url = "jdbc:mysql://localhost/abstem";
 			String login = "root";
 			String password = "";
 			Connection con = DriverManager.getConnection(url,login,password);
@@ -131,8 +131,6 @@ public class GestionBDD {
 
 
 	public Produit[] getVitrine() {
-
-
 		Connection con = connexion();
 
 		Produit[] vitrine = null;
@@ -165,19 +163,16 @@ public class GestionBDD {
 
 				vitrine[j] = new Produit(nom,prix,quantite,date,time,perime);
 				j++;
-
 			}
 
 			rs.close();
 			stmt.close();
 			con.close();
-
 		}
 		catch(SQLException sqle){
 			sqle.printStackTrace();
 			System.out.println(sqle.getMessage());
 		}
-
 		return vitrine;
 	}
 
@@ -642,6 +637,25 @@ public class GestionBDD {
 		}
 	}
 
+	public void majCommande(String nom, int qte, int flag) {
+
+		try{
+
+			Connection con = connexion();
+			Statement stmt = con.createStatement();
+
+			stmt.executeUpdate("UPDATE `commande` SET `RECU`='" +flag+"' WHERE `PRODUIT`='" + nom + "' AND `QUANTITE`=" + qte + " LIMIT 1");
+
+			stmt.close();
+			con.close();
+
+
+
+		}
+		catch(SQLException sqle){
+			sqle.printStackTrace();
+		}
+	}
 	private int getQuantiteParametree(String nom) {
 		return 0;
 	}
