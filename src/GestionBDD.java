@@ -127,9 +127,6 @@ public class GestionBDD {
 		return vitrine;
 	}
 
-
-
-
 	public Produit[] getVitrine() {
 		Connection con = connexion();
 
@@ -350,6 +347,157 @@ public class GestionBDD {
 			System.out.println(sqle.getMessage());
 		}
 		return commande;
+	}
+
+	public Produit[] getProduit() {
+
+		Connection con = connexion();
+
+		Produit[] produit = null;
+		int rows = 0;
+
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM `produit`");
+			while (rs.next()) {
+				if (rs.last()) {
+					rows = rs.getRow();
+					// Move to beginning
+					rs.beforeFirst();
+					break;
+				}
+			}
+			produit = new Produit[rows];
+			int j = 0;
+			while (rs.next()) {
+				String nom = rs.getString("PRODUIT");
+				float prix = rs.getFloat("PRIX");
+				int tpsCuisson = rs.getInt("TEMPS CUISSON");
+				int tailleCmd = rs.getInt("TAILLE COMMANDE");
+				produit[j] = new Produit(nom,prix,tpsCuisson,tailleCmd);
+				j++;
+			}
+
+			rs.close();
+			stmt.close();
+			con.close();
+
+		}
+		catch(SQLException sqle){
+			sqle.printStackTrace();
+			System.out.println(sqle.getMessage());
+		}
+		return produit;
+	}
+
+	public String getMdp() {
+
+		Connection con = connexion();
+
+		String mdp = null;
+		int rows = 0;
+
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM `mot_de_passe`");
+			while (rs.next()) {
+				if (rs.last()) {
+					rows = rs.getRow();
+					// Move to beginning
+					rs.beforeFirst();
+					break;
+				}
+			}
+			int j = 0;
+			while (rs.next()) {
+				mdp = rs.getString("Valeur");
+			}
+			rs.close();
+			stmt.close();
+			con.close();
+
+		}
+		catch(SQLException sqle){
+			sqle.printStackTrace();
+			System.out.println(sqle.getMessage());
+		}
+		return mdp;
+	}
+
+	public void setMdp(String nom) {
+
+		try{
+
+			Connection con = connexion();
+			Statement stmt = con.createStatement();
+
+			stmt.executeUpdate("UPDATE `mot_de_passe` SET `Valeur`='"+nom+"' WHERE 1");
+			stmt.close();
+			con.close();
+		}
+		catch(SQLException sqle){
+			sqle.printStackTrace();
+		}
+	}
+
+	public Produit[] getSeuil(String jour, String heure) {
+
+		Connection con = connexion();
+
+		Produit[] seuil = null;
+		int rows = 0;
+
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM `param_seuil` WHERE`JOUR`='"+jour+"' AND `HEURE`='"+heure+"'");
+			while (rs.next()) {
+				if (rs.last()) {
+					rows = rs.getRow();
+					// Move to beginning
+					rs.beforeFirst();
+					break;
+				}
+			}
+			seuil = new Produit[rows];
+			int j = 0;
+			while (rs.next()) {
+				String name = rs.getString("PRODUIT");
+				String jour1 = rs.getString("JOUR");
+				String heure1 = rs.getString("HEURE");
+				int seuil_ini = rs.getInt("SEUIL_INI");
+				int seuil1 = rs.getInt("SEUIL");
+				int fournee_ini = rs.getInt("FOURNEE_INI");
+				int fournee = rs.getInt("FOURNEE");
+				seuil[j] = new Produit(name,jour1,heure1,seuil_ini,seuil1,fournee_ini,fournee);
+				j++;
+			}
+
+			rs.close();
+			stmt.close();
+			con.close();
+
+		}
+		catch(SQLException sqle){
+			sqle.printStackTrace();
+			System.out.println(sqle.getMessage());
+		}
+		return seuil;
+	}
+
+	public void majSeuil(Object nom, String jour, String heure ,Object seuil, Object fournee) {
+
+		try{
+			Connection con = connexion();
+			Statement stmt = con.createStatement();
+
+			stmt.executeUpdate("UPDATE `param_seuil` SET `SEUIL`='"+seuil+"' WHERE `PRODUIT`='" + nom + "' AND `JOUR`='" + jour + "' AND `HEURE`=" + heure + "");
+			stmt.executeUpdate("UPDATE `param_seuil` SET `FOURNEE`='"+fournee+"' WHERE `PRODUIT`='" + nom + "' AND `JOUR`='" + jour + "' AND `HEURE`=" + heure + "");
+			stmt.close();
+			con.close();
+		}
+		catch(SQLException sqle){
+			sqle.printStackTrace();
+		}
 	}
 
 
@@ -600,7 +748,7 @@ public class GestionBDD {
 
 	}
 
-	public void majPrix(String nom, float nouveauPrix) {
+	public void majPrix(Object nom, Object nouveauPrix) {
 		Connection con = connexion();
 		try {
 			Statement stmt = con.createStatement();
@@ -694,11 +842,5 @@ public class GestionBDD {
 	private int getQuantiteParametree(String nom) {
 		return 0;
 	}
-
-
-
-
-
-
 
 }

@@ -10,8 +10,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.net.URL;
 import java.util.*;
 
@@ -54,16 +52,23 @@ public class Interface_manager extends JFrame {
     private JPasswordField passwordField1;
     private JPasswordField psw_nouvMotDePasse;
     private JPasswordField psw_confirmeChgt;
-    private JButton btn_okChangementMotDePasse;
+    private JButton btn_majMdp;
     private JPasswordField psw_ancienMDP;
     private JPanel pan_panelDeco;
     private JPanel pan_panel1;
     private JButton btn_managerDeco;
+    private JButton btn_majPrix;
     private JTable tab_cmd;
     private JTable tab_att;
+    private JTable tab_paramPrix;
+    private JTable tab_seuil;
+    private String jour;
+    private String heure;
+    private String minute;
+    private String heureFinal;
 
 
-    private String motDePasse = "Manager";
+    private String password = "manager";
 
 
     public Interface_manager() {
@@ -158,12 +163,6 @@ public class Interface_manager extends JFrame {
         Icon icn_prix = new ImageIcon(file);
         tbp_parametre.setIconAt(2, icn_prix);
 
-        btn_okChangementMotDePasse.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                changeMdp();
-            }
-        });
 
         tbp_prinCat.setSelectedIndex(0);
         tbp_prinCat.addChangeListener(new ChangeListener() {
@@ -210,7 +209,7 @@ public class Interface_manager extends JFrame {
             public void stateChanged(ChangeEvent e) {
                 switch (tbp_parametre.getSelectedIndex()) {
                     case 0:
-                        paramSeuilSelect();
+                        //paramSeuilSelect();
                         break;
                     case 1:
                         paramMdpSelect();
@@ -350,26 +349,49 @@ public class Interface_manager extends JFrame {
             }
         });
 
+        btn_majPrix.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GestionBDD baseDonnee = new GestionBDD();
+                baseDonnee.majPrix(tab_paramPrix.getValueAt(0,0), tab_paramPrix.getValueAt(0,1));
+                baseDonnee.majPrix(tab_paramPrix.getValueAt(1,0), tab_paramPrix.getValueAt(1,1));
+                baseDonnee.majPrix(tab_paramPrix.getValueAt(2,0), tab_paramPrix.getValueAt(2,1));
+                baseDonnee.majPrix(tab_paramPrix.getValueAt(3,0), tab_paramPrix.getValueAt(3,1));
+                baseDonnee.majPrix(tab_paramPrix.getValueAt(4,0), tab_paramPrix.getValueAt(4,1));
+                baseDonnee.majPrix(tab_paramPrix.getValueAt(5,0), tab_paramPrix.getValueAt(5,1));
+                baseDonnee.majPrix(tab_paramPrix.getValueAt(6,0), tab_paramPrix.getValueAt(6,1));
+                baseDonnee.majPrix(tab_paramPrix.getValueAt(7,0), tab_paramPrix.getValueAt(7,1));
+                baseDonnee.majPrix(tab_paramPrix.getValueAt(8,0), tab_paramPrix.getValueAt(8,1));
+                baseDonnee.majPrix(tab_paramPrix.getValueAt(9,0), tab_paramPrix.getValueAt(9,1));
+                baseDonnee.majPrix(tab_paramPrix.getValueAt(10,0), tab_paramPrix.getValueAt(10,1));
+                baseDonnee.majPrix(tab_paramPrix.getValueAt(11,0), tab_paramPrix.getValueAt(11,1));
+                baseDonnee.majPrix(tab_paramPrix.getValueAt(12,0), tab_paramPrix.getValueAt(12,1));
+                baseDonnee.majPrix(tab_paramPrix.getValueAt(13,0), tab_paramPrix.getValueAt(13,1));
+                baseDonnee.majPrix(tab_paramPrix.getValueAt(14,0), tab_paramPrix.getValueAt(14,1));
+            }
+        });
+
+        btn_majMdp.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                GestionBDD baseDonnee = new GestionBDD();
+                String mdpEncours  = baseDonnee.getMdp();
+                System.out.println("mdpEncours = " + mdpEncours);
+                String ancienSaisi = psw_ancienMDP.getText();
+                String nouvMdp = psw_nouvMotDePasse.getText();
+                String confMdp = psw_confirmeChgt.getText();
+                if (ancienSaisi.equals(mdpEncours))
+                {
+                    if (nouvMdp.equals(confMdp))
+                        baseDonnee.setMdp(nouvMdp );               }
+            }
+        });
+
+
         /************************************************************************************/
         /****************** Les données du tableau pour la page parametre seuil *************/
         /************************************************************************************/
-        Object[][] data2 = {
-                {"BAGUETTE", "28", "34"},
-                {"FLUTE", "28", "12"},
-                {"CROISSANT", "24", "72"},
-                {"PAIN AU CHOCOLAT", "32", "21"}
-        };
-
-        //Les titres des colonnes
-        String title2[] = {"PRODUITS", "SEUIL", "TAILLE FOURNEE"};
-        JTable tab_paramSeuil = new JTable(data2, title2);
-        tab_paramSeuil.setFont(new Font("Serif", Font.PLAIN, 30));
-        tab_paramSeuil.getTableHeader().setFont(new Font("Serif", Font.BOLD, 23));
-        updateRowHeights(tab_paramSeuil);
-        //Nous ajoutons notre tableau à notre contentPane dans un scroll
-        //Sinon les titres des colonnes ne s'afficheront pas !
-        JScrollPane tbc_paramSeuil = new JScrollPane(tab_paramSeuil);
-        pan_paramSeuil.add(tbc_paramSeuil, BorderLayout.CENTER);
         lab_paramJour.setFont(new Font("Serif", Font.PLAIN, 30));
         lab_paramHeure.setFont(new Font("Serif", Font.PLAIN, 30));
         lab_paramMinute.setFont(new Font("Serif", Font.PLAIN, 30));
@@ -384,13 +406,50 @@ public class Interface_manager extends JFrame {
             cmb_minute.addItem(str_minute[i]);
 
         cuissonSelect();
-    }
 
+        cmb_jour.addActionListener (new ActionListener () {
+            public void actionPerformed(ActionEvent e) {
+                paramSeuilSelect();
+            }
+        });
 
-    public void changeMdp() {
-        // TODO: mettre les fonctions de liaison avec la BDD
-        // TODO: mettre le test pour savoir si ca c'est bien passé
-        JOptionPane.showMessageDialog(null, "Nouveau mot de passe enregistré", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
+        cmb_heure.addActionListener (new ActionListener () {
+            public void actionPerformed(ActionEvent e) {
+                paramSeuilSelect();
+            }
+        });
+
+        cmb_minute.addActionListener (new ActionListener () {
+            public void actionPerformed(ActionEvent e) {
+                paramSeuilSelect();
+            }
+        });
+
+        btn_paramOk.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                System.out.println("cliiiiiiiiiiiiiiiiiiiiiiique");
+                GestionBDD baseDonnee = new GestionBDD();
+
+                baseDonnee.majSeuil(tab_seuil.getValueAt(0,0),jour ,heureFinal,tab_seuil.getValueAt(0,1),tab_seuil.getValueAt(0,2));
+                baseDonnee.majSeuil(tab_seuil.getValueAt(1,0),jour ,heureFinal,tab_seuil.getValueAt(1,1),tab_seuil.getValueAt(1,2));
+                baseDonnee.majSeuil(tab_seuil.getValueAt(2,0),jour ,heureFinal,tab_seuil.getValueAt(2,1),tab_seuil.getValueAt(2,2));
+                baseDonnee.majSeuil(tab_seuil.getValueAt(3,0),jour ,heureFinal,tab_seuil.getValueAt(3,1),tab_seuil.getValueAt(3,2));
+                baseDonnee.majSeuil(tab_seuil.getValueAt(4,0),jour ,heureFinal,tab_seuil.getValueAt(4,1),tab_seuil.getValueAt(4,2));
+                baseDonnee.majSeuil(tab_seuil.getValueAt(5,0),jour ,heureFinal,tab_seuil.getValueAt(5,1),tab_seuil.getValueAt(5,2));
+                baseDonnee.majSeuil(tab_seuil.getValueAt(6,0),jour ,heureFinal,tab_seuil.getValueAt(6,1),tab_seuil.getValueAt(6,2));
+                baseDonnee.majSeuil(tab_seuil.getValueAt(7,0),jour ,heureFinal,tab_seuil.getValueAt(7,1),tab_seuil.getValueAt(7,2));
+                baseDonnee.majSeuil(tab_seuil.getValueAt(8,0),jour ,heureFinal,tab_seuil.getValueAt(8,1),tab_seuil.getValueAt(8,2));
+                baseDonnee.majSeuil(tab_seuil.getValueAt(9,0),jour ,heureFinal,tab_seuil.getValueAt(9,1),tab_seuil.getValueAt(9,2));
+                baseDonnee.majSeuil(tab_seuil.getValueAt(10,0),jour ,heureFinal,tab_seuil.getValueAt(10,1),tab_seuil.getValueAt(10,2));
+                baseDonnee.majSeuil(tab_seuil.getValueAt(11,0),jour ,heureFinal,tab_seuil.getValueAt(11,1),tab_seuil.getValueAt(11,2));
+                baseDonnee.majSeuil(tab_seuil.getValueAt(12,0),jour ,heureFinal,tab_seuil.getValueAt(12,1),tab_seuil.getValueAt(12,2));
+                baseDonnee.majSeuil(tab_seuil.getValueAt(13,0),jour ,heureFinal,tab_seuil.getValueAt(13,1),tab_seuil.getValueAt(13,2));
+                baseDonnee.majSeuil(tab_seuil.getValueAt(14,0),jour ,heureFinal,tab_seuil.getValueAt(14,1),tab_seuil.getValueAt(14,2));
+            }
+        });
+
     }
 
     public void vueSynthSelect() {
@@ -659,27 +718,49 @@ public class Interface_manager extends JFrame {
         // TODO: mettre les actions à effectuer quand on clique sur l'onglet ci-dessus
         //JOptionPane.showMessageDialog(null, "Parametre seuil selectionné", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
 
-        //Les données du tableau
-        Object[][] data = {
-                {"BAGUETTE", "28", "34"},
-                {"FLUTE", "28", "12"},
-                {"CROISSANT", "24", "72"},
-                {"PAIN AU CHOCOLAT", "32", "21"}
-        };
+        GestionBDD baseDonnee = new GestionBDD();
+        jour = cmb_jour.getSelectedItem().toString();
+        heure = cmb_heure.getSelectedItem().toString();
+        minute = cmb_minute.getSelectedItem().toString();
+        heureFinal = ( heure+"."+minute );
+        System.out.println("jour = " + jour);
+        System.out.println("heure = " + heureFinal);
 
-        //Les titres des colonnes
-        String title[] = {"PRODUITS", "SEUIL", "TAILLE FOURNEE"};
-        JTable tab_paramSeuil = new JTable(data, title);
-        tab_paramSeuil.setFont(new Font("Serif", Font.PLAIN, 30));
-        tab_paramSeuil.getTableHeader().setFont(new Font("Serif", Font.BOLD, 23));
-        updateRowHeights(tab_paramSeuil);
+        Produit[] tabSeuil = null;
+
+        tabSeuil = baseDonnee.getSeuil(jour,heureFinal);
+
+        DefaultTableModel model = new DefaultTableModel();
+        tab_seuil = new JTable(model);
+
+        // Create a couple of columns
+        model.addColumn("PRODUIT");
+        model.addColumn("SEUIL");
+        model.addColumn("FOURNEE");
+
+        // Append a row
+        for (int i = 0; i < tabSeuil.length; i++)
+        {
+            model.addRow(new Object[]{tabSeuil[i].getNom().toUpperCase(), tabSeuil[i].getSeuil(), tabSeuil[i].getFournee()});
+        }
+
+
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        tab_seuil.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+        tab_seuil.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+        tab_seuil.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+
+        tab_seuil.setFont(new Font("Serif", Font.PLAIN, 30));
+        tab_seuil.getTableHeader().setFont(new Font("Serif", Font.BOLD, 23));
+        updateRowHeights(tab_seuil);
+        //tab_att.setEnabled(true);
         //Nous ajoutons notre tableau à notre contentPane dans un scroll
         //Sinon les titres des colonnes ne s'afficheront pas !
-        JScrollPane tbc_paramSeuil = new JScrollPane(tab_paramSeuil);
-        pan_paramSeuil.add(tbc_paramSeuil, BorderLayout.CENTER);
-        lab_paramJour.setFont(new Font("Serif", Font.PLAIN, 30));
-        lab_paramHeure.setFont(new Font("Serif", Font.PLAIN, 30));
-        lab_paramMinute.setFont(new Font("Serif", Font.PLAIN, 30));
+        JScrollPane tbc_seuil = new JScrollPane(tab_seuil);
+        pan_paramSeuil.removeAll();
+        pan_paramSeuil.add(tbc_seuil, BorderLayout.CENTER);
+
     }
 
     public void paramMdpSelect() {
@@ -691,23 +772,41 @@ public class Interface_manager extends JFrame {
         // TODO: mettre les actions à effectuer quand on clique sur l'onglet ci-dessus
         //JOptionPane.showMessageDialog(null, "Parametre prix selectionné", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
 
+        Produit[] tabProduit = null;
+
+        GestionBDD baseDonnee = new GestionBDD();
+        tabProduit= baseDonnee.getProduit();
+
         //Les données du tableau
         Object[][] data = {
-                {"BAGUETTE", "0.70"},
-                {"FLUTE", "0.90"},
-                {"CROISSANT", "0.90"},
-                {"PAIN AU CHOCOLAT", "1.00"}
+                {tabProduit[0].getNom(), tabProduit[0].getPrix()},
+                {tabProduit[1].getNom(), tabProduit[1].getPrix()},
+                {tabProduit[2].getNom(), tabProduit[2].getPrix()},
+                {tabProduit[3].getNom(), tabProduit[3].getPrix()},
+                {tabProduit[4].getNom(), tabProduit[4].getPrix()},
+                {tabProduit[5].getNom(), tabProduit[5].getPrix()},
+                {tabProduit[6].getNom(), tabProduit[6].getPrix()},
+                {tabProduit[7].getNom(), tabProduit[7].getPrix()},
+                {tabProduit[8].getNom(), tabProduit[8].getPrix()},
+                {tabProduit[9].getNom(), tabProduit[9].getPrix()},
+                {tabProduit[10].getNom(), tabProduit[10].getPrix()},
+                {tabProduit[11].getNom(), tabProduit[11].getPrix()},
+                {tabProduit[12].getNom(), tabProduit[12].getPrix()},
+                {tabProduit[13].getNom(), tabProduit[13].getPrix()},
+                {tabProduit[14].getNom(), tabProduit[14].getPrix()},
         };
 
         //Les titres des colonnes
         String title[] = {"PRODUIT", "PRIX"};
-        JTable tab_paramPrix = new JTable(data, title);
+        tab_paramPrix = new JTable(data, title);
         tab_paramPrix.setFont(new Font("Serif", Font.PLAIN, 30));
         tab_paramPrix.getTableHeader().setFont(new Font("Serif", Font.BOLD, 23));
         updateRowHeights(tab_paramPrix);
         //Nous ajoutons notre tableau à notre contentPane dans un scroll
         //Sinon les titres des colonnes ne s'afficheront pas !
         JScrollPane tbc_paramPrix = new JScrollPane(tab_paramPrix);
+        if(pan_paramPrix.getComponentCount() == 2)
+            pan_paramPrix.remove(1);
         pan_paramPrix.add(tbc_paramPrix, BorderLayout.CENTER);
     }
 
@@ -800,4 +899,7 @@ public class Interface_manager extends JFrame {
         System.out.print(tabAffich);
         return tabAffich;
     }
+
+    public void setPassword(String mdp) {this.password=mdp;}
+    public String getPassword() {return password;}
 }
