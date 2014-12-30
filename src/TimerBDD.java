@@ -29,6 +29,8 @@ public class TimerBDD {
                     timer1.cancel();    // Stoppe la tâche
                     timer1.purge();     // Supprime la tâche
                     System.out.println("Tâche chrono supprimée");
+                    GestionBDD bdd = new GestionBDD();
+                    bdd.lancerTimerPerime();
                     // supprimeProduit(Cuisson,...);
                     // ajouteProduit(Vitrine, ...);
                 }
