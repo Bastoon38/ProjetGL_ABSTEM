@@ -15,7 +15,7 @@ public class Main {
         //Connexion frame1 = new Connexion();
         //frame1.setVisible(true);
         GestionBDD bdd = new GestionBDD();
-        bdd.lancerTimerPerime();
+        bdd.majProductionDefaut("Baguette", "Dimanche", "00.00");
         //Elio Test Vendeur
         // ihm_billet billet = new ihm_billet();
         //billet.setVisible(true);
