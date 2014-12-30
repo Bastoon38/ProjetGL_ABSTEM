@@ -839,8 +839,43 @@ public class GestionBDD {
 			sqle.printStackTrace();
 		}
 	}
-	public void majProductionDefaut () {	// Valeurs des fournées remplacées par celles par défaut
 
+	// Valeurs des fournées remplacées par celles par défaut /!\ ATTENTION CECI EST POUR TOUTES LES VALEURS
+	public void majProductionsDefaut () {
+		Connection con = connexion();
+		try {
+			Statement stmt = con.createStatement();
+			Statement stmt2 = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM `param_seuil`");
+			while (rs.next()) {
+				String prod = rs.getString(1);
+				String jour = rs.getString(2);
+				String heure = rs.getString(3);
+				int fournee = rs.getInt("FOURNEE_INI");
+				stmt2.executeUpdate("UPDATE `param_seuil` SET `FOURNEE`=" + fournee + " WHERE `PRODUIT`='" + prod + "' AND `JOUR`='" + jour + "' AND `HEURE`='" + heure + "'");
+			}
+
+		}
+		catch(SQLException sqle) {
+			sqle.printStackTrace();
+		}
+	}
+
+	public void majProductionDefaut (String prod, String jour, String heure) {
+		Connection con = connexion();
+		try {
+			Statement stmt = con.createStatement();
+			Statement stmt2 = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT FOURNEE_INI FROM `param_seuil` WHERE `PRODUIT`='" + prod + "' AND `JOUR`='" + jour + "' AND `HEURE`='" + heure + "'");
+			while (rs.next()) {
+				int fournee = rs.getInt(1);
+				stmt2.executeUpdate("UPDATE `param_seuil` SET `FOURNEE`=" + fournee + " WHERE `PRODUIT`='" + prod + "' AND `JOUR`='" + jour + "' AND `HEURE`='" + heure + "'");
+			}
+
+		}
+		catch(SQLException sqle) {
+			sqle.printStackTrace();
+		}
 	}
 
 	public void majProduction () {	// Valeurs des fournées modifiées
