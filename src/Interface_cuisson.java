@@ -87,11 +87,16 @@ public class Interface_cuisson extends JFrame {
 
                         if(sec!=-1)
                         {
-                            jtab_cuisson.setValueAt(sec, rowSelected, 2);
+                            int hor=sec/3600;
+                            int min=(sec-(3600*hor))/60;
+                            int seg=sec-((hor*3600)+(min*60));
+
+                            jtab_cuisson.setValueAt(min + "m " + seg + "s", rowSelected, 2);
                             sec--;
                         }
                         else
                         {
+                            jtab_cuisson.setValueAt("FIN", rowSelected, 2);
                             cancel();
                         }
 
@@ -133,10 +138,10 @@ public class Interface_cuisson extends JFrame {
                 String quant=jtab_cuisson.getModel().getValueAt(rowSelected, 1).toString();
                 int int_quan=Integer.parseInt(quant);
                 String time=jtab_cuisson.getModel().getValueAt(rowSelected, 2).toString();
-                int int_time=Integer.parseInt(time);
+
 
                 //Si le temps de cuisson est fini
-                if(int_time==0)
+                if(time.equals("FIN"))
                 {
                     //TODO
                     //AJouter le produit dans vitrine
@@ -184,6 +189,17 @@ public class Interface_cuisson extends JFrame {
         lab_time.setFont(new Font("Tahoma", Font.PLAIN, 24));
         lab_time.setBounds(1006, 94, 200, 50);
         contentPane.add(lab_time);
+
+        JButton button = new JButton("Deconnection");
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+                Connexion connexion = new Connexion();
+                connexion.setVisible(true);
+            }
+        });
+        button.setBounds(1699, 16, 127, 29);
+        contentPane.add(button);
 
         cuisson=base.getFour(cuisson);
 

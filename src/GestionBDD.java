@@ -268,6 +268,7 @@ public class GestionBDD {
 		return bilan;
 	}
 	//GETTER ****************************************
+	//TODO verifier la requete du gettime_cuisson
 	public int getTime_cuisson(String nom) {
 
 		int time=0;
@@ -730,6 +731,7 @@ public class GestionBDD {
 			//TODO AJOUTER LA DATE ACTUEL + 24 HEURES dans le insert
 			Connection con = connexion();
 			Statement stmt = con.createStatement();
+
 
 			stmt.executeUpdate("INSERT INTO `vitrine`(`PRODUIT`,`QUANTITE`,`PERIME`,`TRAITE`) VALUES ('" + nom + "','" + quantite + "','" + 0 + "','" + 0 + "')");
 
