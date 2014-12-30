@@ -27,41 +27,35 @@ public class GestionBDD {
 		}
 	}
 
-	//lance un timer qui execute toutes les minutes une verif des produits perimes
-	public void lancerTimerPerime() {
 
-
-		TimerTask task = new TimerTask()
-		{
-			@Override
-			public void run()
-			{
-
-				Vector<Produit> produits = new Vector<Produit>();
-				produits = getVitrine(produits);
-				for (int i = 0 ; i < produits.size() ; i++) {
-					if (verifPerime(produits.get(i).getNom())) {
-						//????
-						System.out.println("OK CA MARCHE LOL " + produits.get(i).getNom());
-					}
-				}
-			}
-		};
-
-		Timer timer = new Timer();
-		timer.scheduleAtFixedRate(task, 0, 60000);
-
-	}
 
 	//GESTION PERIME VITRINE ****************************************
 	//verif les produits périmés en vitrine
-	public boolean verifPerime(String nom_prod) {
+	public boolean verifPerime(String lieu) {
 		Connection con = connexion();
 		boolean perime = false;
 
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT PERIME FROM `vitrine` WHERE `PRODUIT`='" + nom_prod + "'");
+			ResultSet rs = stmt.executeQuery("SELECT PERIME FROM `vitrine`");
+
+			if(lieu == "Vitrine"){
+				java.util.Date DateChrono = new java.util.Date();
+				stmt.executeUpdate("UPDATE `vitrine` SET 'PERIME'='1' WHERE `DATE_PEREMPTION`<='"+ DateChrono +"'");
+			}
+			else {
+				if(lieu == "Stock"){
+					java.util.Date DateChrono2 = new java.util.Date();
+					stmt.executeUpdate("UPDATE `vitrine` SET 'PERIME'='1' WHERE `DATE_PEREMPTION`<='"+ DateChrono2 +"'");
+					//Il faut faire +1 dans la BDD du manager (produits jetés)
+					//supprimerStock(nom, 1)
+					// Pop-up vendeuse?
+				}
+				else{
+					// Donner une valeur erreur à rs ou sortir de la fonction
+				}
+			}
+
 
 			rs.next();
 			int res = rs.getInt(1);
@@ -79,11 +73,6 @@ public class GestionBDD {
 		}
 
 		return perime;
-
-		}
-
-	public static void supprimerPerime (String lieu) {	// Le timer a détecté au moins un produit périmé, donc vérifie peremption de tous les produits de la BDD concernée
-		// lieu = "Stock" ou "Vitrine"  Cuisson n'est pas concerné par la péremption
 	}
 
 	//GETTER ****************************************
@@ -667,7 +656,7 @@ public class GestionBDD {
 
 	//AJOUT & SUPPR & MAJ CUISSON ****************************************
 	public String ajouterCuisson(String nom, int quantite) {
-		String ret = "Ajout de la cuissie complétée";
+		String ret = "Ajout de la cuisson complété";
 
 		try{
 
