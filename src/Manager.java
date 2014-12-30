@@ -3,16 +3,16 @@ import java.awt.*;
 
 public class Manager {
 
-    public String password;
+    private String password;
 
     private Interface_manager im;
 
 
     public Manager(Interface_manager b) {
         this.im = b;
-        this.password="manager";
 
-
+        GestionBDD baseDonnee = new GestionBDD();
+        this.password  = baseDonnee.getMdp();
 
         JPanel panel = new JPanel();
         JLabel label = new JLabel("Ecrivez votre Password:");
@@ -43,8 +43,5 @@ public class Manager {
             Connexion frame1 = new Connexion();
             frame1.setVisible(true);
         }
-
-
-
     }
 }

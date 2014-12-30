@@ -20,6 +20,14 @@ public class Produit {
     private int vendu;
     private int jete;
     private boolean flag;
+    private int tpsCuisson;
+    private int tailleFournee;
+    private  String jour;
+    private String heure;
+    private int seuil_ini;
+    private int seuil;
+    private int fournee_ini;
+    private int fournee;
 
     public Produit(String obj_name,  float credit, int quant, Date date) {
 
@@ -51,6 +59,26 @@ public class Produit {
         this.quantite = quant;
         this.flag = flag;
     }
+
+    public Produit(String obj_name, float prix, int tpsCuisson, int tailleFournee) {
+
+        this.nom = obj_name;
+        this.prix = prix;
+        this.tpsCuisson = tpsCuisson;
+        this.tailleFournee = tailleFournee;
+    }
+
+    public Produit(String obj_name, String jour,String heure, int seuil_ini, int seuil, int fournee_ini, int fournee) {
+
+        this.nom = obj_name;
+        this.jour = jour;
+        this.heure = heure;
+        this.seuil_ini = seuil_ini;
+        this.seuil=seuil;
+        this.fournee_ini = fournee_ini;
+        this.fournee = fournee;
+    }
+
     //get Methods
     public String getNom()
     {
@@ -85,6 +113,17 @@ public class Produit {
         return this.jete;
     }
     public boolean getFlag() {return this.flag;}
+    public int getTpsCuisson()
+    {
+        return this.tpsCuisson;
+    }
+    public int getTailleFournee() {return this.tailleFournee;}
+    public String getJour() {return this.jour;}
+    public String getHeure() {return this.heure;}
+    public int getSeuilIni() {return this.seuil_ini;}
+    public int getSeuil() {return this.seuil;}
+    public int getFourneeIni() {return this.fournee_ini;}
+    public int getFournee() {return this.fournee;}
 
     // set Methods
     public void setNom(String nom)
@@ -123,4 +162,21 @@ public class Produit {
     {
         this.flag=flag;
     }
+    public void setTpsCuisson(int tpsCuisson)
+    {
+        this.tpsCuisson=tpsCuisson;
+    }
+    public void setTailleFournee(int tailleFournee)
+    {
+        this.tailleFournee=tailleFournee;
+    }
+    public void setSeuil(int seuil)
+    {
+        this.seuil=seuil;
+    }
+    public void setFournee(int fournee)
+    {
+        this.fournee=fournee;
+    }
+
 }
