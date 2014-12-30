@@ -10,7 +10,7 @@ public class GestionBDD {
 	//connexion à la base de données
 	private Connection connexion() {
 		try {
-			String url = "jdbc:mysql://localhost/abstem";
+			String url = "jdbc:mysql://localhost/albm_dev";
 			String login = "root";
 			String password = "";
 			Connection con = DriverManager.getConnection(url,login,password);
@@ -267,7 +267,88 @@ public class GestionBDD {
 
 		return bilan;
 	}
+	//GETTER ****************************************
+	public int getTime_cuisson(String nom) {
 
+		int time=0;
+		Connection con = connexion();
+		int rows = 0;
+		System.out.println ("SELECT `TEMPS CUISSON` from produit where `produit`= '"+ nom +"'");
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT `TEMPS CUISSON` from produit where `produit`= '"+ nom +"'");
+			while (rs.next()) {
+				if (rs.last()) {
+					rows = rs.getRow();
+					// Move to beginning
+					rs.beforeFirst();
+					break;
+				}
+			}
+
+			int j = 0;
+
+			while (rs.next()) {
+				String times = rs.getString("PRODUIT");
+				time= Integer.parseInt(times);
+
+				j++;
+
+			}
+
+
+			rs.close();
+			stmt.close();
+			con.close();
+
+		}
+		catch(SQLException sqle){
+			sqle.printStackTrace();
+			System.out.println(sqle.getMessage());
+		}
+		int timer=time;
+		return timer;
+	}
+
+	public Vector<Produit> getFour(Vector<Produit>four) {
+
+		Connection con = connexion();
+
+
+		int rows = 0;
+
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM `four`");
+			while (rs.next()) {
+				if (rs.last()) {
+					rows = rs.getRow();
+					// Move to beginning
+					rs.beforeFirst();
+					break;
+				}
+			}
+
+			while (rs.next()) {
+				String nom = rs.getString("PRODUIT");
+				int quant = rs.getInt("QUANTITE");
+				int cuisson = rs.getInt("CUISSON");
+				four.add( new Produit(nom,0,quant,null,null,cuisson));
+
+			}
+
+			rs.close();
+			stmt.close();
+			con.close();
+
+		}
+		catch(SQLException sqle){
+			sqle.printStackTrace();
+			System.out.println(sqle.getMessage());
+		}
+
+		return four;
+	}
 	public Produit[] getFour() {
 
 		Connection con = connexion();
