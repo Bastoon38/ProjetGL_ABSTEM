@@ -724,14 +724,14 @@ public class GestionBDD {
 
 	//AJOUT & SUPPR VITRINE ****************************************
 	//Ajout d'un produit cuisson finie en vitrine
-	public void ajouterVitrine (String nom, int quantite, String datePerempt) {
+	public void ajouterVitrine (String nom, int quantite) {
 
 		try{
-
+			//TODO AJOUTER LA DATE ACTUEL + 24 HEURES dans le insert
 			Connection con = connexion();
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("INSERT INTO `vitrine`(`PRODUIT`,`QUANTITE`,`DATE_PEREMPTION`) VALUES ('" + nom + "'," + quantite + ",'" + datePerempt + "')");
+			stmt.executeUpdate("INSERT INTO `vitrine`(`PRODUIT`,`QUANTITE`,`PERIME`,`TRAITE`) VALUES ('" + nom + "','" + quantite + "','" + 0 + "','" + 0 + "')");
 
 			stmt.close();
 			con.close();

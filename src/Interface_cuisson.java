@@ -27,6 +27,7 @@ import javax.swing.table.TableModel;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JLabel;
 
 
 public class Interface_cuisson extends JFrame {
@@ -62,7 +63,7 @@ public class Interface_cuisson extends JFrame {
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
-        GestionBDD base=new GestionBDD();
+        final GestionBDD base=new GestionBDD();
         Vector<Produit> cuisson= new Vector<Produit>();
 
         JButton btn_debut = new JButton("DEBUT");
@@ -78,7 +79,7 @@ public class Interface_cuisson extends JFrame {
 
                 String nom=jtab_cuisson.getModel().getValueAt(rowSelected, 0).toString();
                 String quant=jtab_cuisson.getModel().getValueAt(rowSelected, 2).toString();
-               final int int_quan=Integer.parseInt(quant);
+                final int int_quan=Integer.parseInt(quant);
 
                 TimerTask timerTask = new TimerTask() {
                     int sec=(60*int_quan);
@@ -129,14 +130,18 @@ public class Interface_cuisson extends JFrame {
                 model_1 = (DefaultTableModel) jtab_cuisson.getModel();
 
                 String nom=jtab_cuisson.getModel().getValueAt(rowSelected, 0).toString();
-                String quant=jtab_cuisson.getModel().getValueAt(rowSelected, 2).toString();
+                String quant=jtab_cuisson.getModel().getValueAt(rowSelected, 1).toString();
                 int int_quan=Integer.parseInt(quant);
+                String time=jtab_cuisson.getModel().getValueAt(rowSelected, 2).toString();
+                int int_time=Integer.parseInt(time);
 
                 //Si le temps de cuisson est fini
-                if(int_quan==0)
+                if(int_time==0)
                 {
                     //TODO
                     //AJouter le produit dans vitrine
+
+                    base.ajouterVitrine(nom,int_quan);
                     model_1.removeRow(jtab_cuisson.getSelectedRow());
                     jtab_cuisson.repaint();
                 }
@@ -165,13 +170,29 @@ public class Interface_cuisson extends JFrame {
         jtab_cuisson.setBounds(187, 161, 1146, 682);
         contentPane.add(jtab_cuisson);
 
+        JLabel lblNom = new JLabel("Nom");
+        lblNom.setFont(new Font("Tahoma", Font.PLAIN, 24));
+        lblNom.setBounds(197, 94, 200, 50);
+        contentPane.add(lblNom);
+
+        JLabel labQuantite = new JLabel("Quantite");
+        labQuantite.setFont(new Font("Tahoma", Font.PLAIN, 24));
+        labQuantite.setBounds(654, 94, 200, 50);
+        contentPane.add(labQuantite);
+
+        JLabel lab_time = new JLabel("Time");
+        lab_time.setFont(new Font("Tahoma", Font.PLAIN, 24));
+        lab_time.setBounds(1006, 94, 200, 50);
+        contentPane.add(lab_time);
+
         cuisson=base.getFour(cuisson);
 
         DefaultTableModel model = (DefaultTableModel) jtab_cuisson.getModel();
         for (int i=0; i<cuisson.size();i++)
         {
+            model.addRow(new Object[]{cuisson.elementAt(i).getNom(),cuisson.elementAt(i).getQuantite(),1});
 
-            model.addRow(new Object[]{cuisson.elementAt(i).getNom(),cuisson.elementAt(i).getQuantite(),base.getTime_cuisson(cuisson.elementAt(i).getNom())});
+            // model.addRow(new Object[]{cuisson.elementAt(i).getNom(),cuisson.elementAt(i).getQuantite(),base.getTime_cuisson(cuisson.elementAt(i).getNom())});
         }
 
     }
