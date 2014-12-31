@@ -1,7 +1,11 @@
 
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+
 import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Vector;
 import java.util.*;
 
@@ -10,7 +14,7 @@ public class GestionBDD {
 	//connexion à la base de données
 	private Connection connexion() {
 		try {
-			String url = "jdbc:mysql://localhost/abstem";
+			String url = "jdbc:mysql://localhost/albm_dev";
 			String login = "root";
 			String password = "";
 			Connection con = DriverManager.getConnection(url,login,password);
@@ -273,28 +277,14 @@ public class GestionBDD {
 
 		int time=0;
 		Connection con = connexion();
-		int rows = 0;
 		System.out.println ("SELECT `TEMPS CUISSON` from produit where `produit`= '"+ nom +"'");
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT `TEMPS CUISSON` from produit where `produit`= '"+ nom +"'");
-			while (rs.next()) {
-				if (rs.last()) {
-					rows = rs.getRow();
-					// Move to beginning
-					rs.beforeFirst();
-					break;
-				}
-			}
-
-			int j = 0;
 
 			while (rs.next()) {
 				String times = rs.getString("PRODUIT");
 				time= Integer.parseInt(times);
-
-				j++;
-
 			}
 
 
@@ -307,8 +297,8 @@ public class GestionBDD {
 			sqle.printStackTrace();
 			System.out.println(sqle.getMessage());
 		}
-		int timer=time;
-		return timer;
+
+		return time;
 	}
 
 	public Vector<Produit> getFour(Vector<Produit>four) {
@@ -732,8 +722,15 @@ public class GestionBDD {
 			Connection con = connexion();
 			Statement stmt = con.createStatement();
 
+			LocalDate date = LocalDate.now();
+			date.plusDays(1);
 
-			stmt.executeUpdate("INSERT INTO `vitrine`(`PRODUIT`,`QUANTITE`,`PERIME`,`TRAITE`) VALUES ('" + nom + "','" + quantite + "','" + 0 + "','" + 0 + "')");
+			Calendar cal = Calendar.getInstance();
+			SimpleDateFormat sdform = new SimpleDateFormat("HH:mm:ss");
+			String time = sdform.format(cal.getTime());
+
+			String dateFinal = date + " " + time;
+			stmt.executeUpdate("INSERT INTO `vitrine`(`PRODUIT`,`QUANTITE`,`DATE_PEREMPTION`,`PERIME`,`TRAITE`) VALUES ('" + nom + "','" + quantite + "','" + dateFinal + "','" + 0 + "','" + 0 + "')");
 
 			stmt.close();
 			con.close();
