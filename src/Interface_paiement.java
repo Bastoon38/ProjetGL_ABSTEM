@@ -6,13 +6,9 @@
  */
 import java.awt.EventQueue;
 
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -22,11 +18,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
-import javax.swing.BorderFactory;
-import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.JOptionPane;
-import javax.swing.JEditorPane;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -35,15 +27,9 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import java.awt.GridLayout;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.Vector;
-
-import javax.swing.JList;
-import javax.swing.JSplitPane;
-import javax.swing.JTextField;
-import javax.swing.JTable;
-import javax.swing.SwingConstants;
-
 
 
 public class Interface_paiement extends JFrame {
@@ -78,8 +64,20 @@ public class Interface_paiement extends JFrame {
         final JButton btnBillet = new JButton("Billet");
         final JButton btnCheque = new JButton("Cheque");
         final JButton btnCb = new JButton("CB");
-        btnCb.setIcon(new ImageIcon("images/cb.jpg"));
-        btnBillet.setIcon(new ImageIcon("images/billet.jpg"));
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL file;
+        file = classLoader.getResource("images/billet.jpg");
+        Icon icn_bill = new ImageIcon(file);
+        btnBillet.setIcon(icn_bill);
+
+        file = classLoader.getResource("images/cb.jpg");
+        Icon icn_cb = new ImageIcon(file);
+        btnCb.setIcon(icn_cb);
+        file = classLoader.getResource("images/cheque.jpg");
+        Icon icn_cheque = new ImageIcon(file);
+        btnCheque.setIcon(icn_cheque);
+        //btnCb.setIcon(new ImageIcon("images/cb.jpg"));
+        //btnBillet.setIcon(new ImageIcon("images/billet.jpg"));
         btnCb.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -215,7 +213,7 @@ public class Interface_paiement extends JFrame {
         pan_vienn.setLayout(gl_pan_vienn);
 
 
-        btnCheque.setIcon(new ImageIcon("images/cheque.jpg"));
+        //btnCheque.setIcon(new ImageIcon("images/cheque.jpg"));
         btnCheque.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
 
@@ -236,6 +234,8 @@ public class Interface_paiement extends JFrame {
         textField.setFont(new Font("Tahoma", Font.PLAIN, 40));
         textField.setColumns(10);
         textField.setText(Float.toString(total_prix));
+        textField.setEditable(false);
+
 
         JLabel lab_payer = new JLabel("TOTAL PAYER");
         lab_payer.setFont(new Font("Tahoma", Font.PLAIN, 28));

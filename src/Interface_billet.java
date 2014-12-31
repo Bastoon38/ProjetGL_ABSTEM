@@ -128,18 +128,21 @@ public class Interface_billet extends JFrame {
                 String text = textField_1.getText();
                 try {
                     value =  Float.parseFloat(text);
+                    //System.out.printf("num is %.2f\n", value );
+                    int cifras=(int) Math.pow(10,2);
+                    double total= Math.rint((value-total_prix)*cifras)/cifras;
+                    textField_2.setText(Double.toString(total));
+                    btnValider.setEnabled(true);
+                    Font f = lblARendre.getFont();
+                    lblARendre.setFont(f.deriveFont(f.getStyle() | Font.BOLD));
                 }
                 catch (NumberFormatException er) {
                     System.err.println("Number Format Exception");
                     er.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Erreur, valeur incorrect ", "Erreur", JOptionPane.WARNING_MESSAGE);
+
                 }
-                //System.out.printf("num is %.2f\n", value );
-                int cifras=(int) Math.pow(10,2);
-                double total= Math.rint((value-total_prix)*cifras)/cifras;
-                textField_2.setText(Double.toString(total));
-                btnValider.setEnabled(true);
-                Font f = lblARendre.getFont();
-                lblARendre.setFont(f.deriveFont(f.getStyle() | Font.BOLD));
+
             }
             public void focusGained(FocusEvent arg0) {
 

@@ -684,21 +684,31 @@ public class Interface_vendeur extends JFrame {
 
         // Create columns names
         String columnNamesJeter[] = { "Nom", "Quantite" };
-
         // Create some data
         String dataValuesJeter[][] ={ };
+        tab_jeter_1 = new JTable(new DefaultTableModel(
+                new Object[][] {},
+                new String[] {"Nom", "Quantite"}
+        ) {
+            Class[] columnTypes = new Class[] {
+                    Object.class, Integer.class
+            };
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                //all cells false
+                return false;
+            }
+            public Class getColumnClass(int columnIndex) {
+                return columnTypes[columnIndex];
+            }
+        });
 
 
-        DefaultTableModel model_1 = new DefaultTableModel(dataValuesJeter,columnNamesJeter);
-        tab_jeter_1 = new JTable( model_1 );
-        tab_jeter_1.setRowHeight(27);
 
 
+      // tab_jeter_1 = new JTable( model_1 );
+      //  tab_jeter_1.setRowHeight(27);
 
-
-
-
-        //panel.add(table1);
 
 
 
@@ -709,9 +719,24 @@ public class Interface_vendeur extends JFrame {
         String dataValues[][] = { };
 
         // Create a new table instance
-        //table = new JTable( dataValues, columnNames );
-        DefaultTableModel model = new DefaultTableModel(dataValues,columnNames);
-        tab_commande = new JTable(model);
+       // DefaultTableModel model = new DefaultTableModel(dataValues,columnNames);
+        tab_commande = new JTable(new DefaultTableModel(
+                new Object[][] {},
+                new String[] {"Nom", "Quantite", "Value","Prix-unit"}
+        ) {
+            Class[] columnTypes = new Class[] {
+                    Object.class, Integer.class,Integer.class
+            };
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                //all cells false
+                return false;
+            }
+            public Class getColumnClass(int columnIndex) {
+                return columnTypes[columnIndex];
+            }
+        });
+        //tab_commande = new JTable(model);
 
         tab_commande.setFont(new java.awt.Font("Arial", 0, 20));
         tab_commande.getColumnModel().getColumn(0).setPreferredWidth(90);
@@ -867,7 +892,6 @@ public class Interface_vendeur extends JFrame {
         });
 
 
-
         JLabel lab_pain = new JLabel("PAIN");
         lab_pain.setFont(new Font("Tahoma", Font.PLAIN, 18));
         tab_jeter_1 = new JTable(new DefaultTableModel(
@@ -893,22 +917,20 @@ public class Interface_vendeur extends JFrame {
                 DefaultTableModel model_1 = new DefaultTableModel();
                 model_1 = (DefaultTableModel) tab_jeter_1.getModel();
 
-                String nom=tab_jeter_1.getModel().getValueAt(rowSelected, 0).toString();
-                String quant=tab_jeter_1.getModel().getValueAt(rowSelected, 1).toString();
-                int int_quan=Integer.parseInt(quant);
+                String nom = tab_jeter_1.getModel().getValueAt(rowSelected, 0).toString();
+                String quant = tab_jeter_1.getModel().getValueAt(rowSelected, 1).toString();
+                int int_quan = Integer.parseInt(quant);
 
 
-                JOptionPane.showMessageDialog(null, nom+" supprimé du système", "Jeter "+ nom, JOptionPane.WARNING_MESSAGE);
-                for(int u=0;u<jeter.size();u++)
-                {
-                    int int_quanty=jeter.elementAt(u).getQuantite();
-                    if(jeter.elementAt(u).getNom().equals(nom)&& int_quan==int_quanty)
-                    {
+                JOptionPane.showMessageDialog(null, nom + " supprimé du système", "Jeter " + nom, JOptionPane.WARNING_MESSAGE);
+                for (int u = 0; u < jeter.size(); u++) {
+                    int int_quanty = jeter.elementAt(u).getQuantite();
+                    if (jeter.elementAt(u).getNom().equals(nom) && int_quan == int_quanty) {
                         model_1.removeRow(tab_jeter_1.getSelectedRow());
                         jeter.remove(u);
                         tab_jeter_1.repaint();
-                        base.ajouterPerime(nom,int_quanty);
-                        String mensaje= base.supprimerVitrine(nom,int_quanty);
+                        base.ajouterPerime(nom, int_quanty);
+                        String mensaje = base.supprimerVitrine(nom,int_quanty);
 
                     }
                 }

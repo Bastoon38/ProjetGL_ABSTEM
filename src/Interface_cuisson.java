@@ -134,6 +134,7 @@ public class Interface_cuisson extends JFrame {
                 DefaultTableModel model_1 = new DefaultTableModel();
                 model_1 = (DefaultTableModel) jtab_cuisson.getModel();
 
+
                 String nom=jtab_cuisson.getModel().getValueAt(rowSelected, 0).toString();
                 String quant=jtab_cuisson.getModel().getValueAt(rowSelected, 1).toString();
                 int int_quan=Integer.parseInt(quant);
@@ -166,6 +167,11 @@ public class Interface_cuisson extends JFrame {
             Class[] columnTypes = new Class[] {
                     Object.class, Integer.class,Integer.class
             };
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                //all cells false
+                return false;
+            }
             public Class getColumnClass(int columnIndex) {
                 return columnTypes[columnIndex];
             }
