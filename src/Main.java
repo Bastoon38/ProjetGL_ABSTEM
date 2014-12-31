@@ -15,7 +15,7 @@ public class Main {
         //Connexion frame1 = new Connexion();
         //frame1.setVisible(true);
         GestionBDD bdd = new GestionBDD();
-        bdd.getTime_cuisson("Baguette");
+        System.out.println(bdd.getTime_cuisson("Tarte citron"));
         //Elio Test Vendeur
         // ihm_billet billet = new ihm_billet();
         //billet.setVisible(true);

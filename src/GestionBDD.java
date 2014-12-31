@@ -277,14 +277,12 @@ public class GestionBDD {
 
 		int time=0;
 		Connection con = connexion();
-		System.out.println ("SELECT `TEMPS CUISSON` from produit where `produit`= '"+ nom +"'");
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT `TEMPS CUISSON` from produit where `produit`= '"+ nom +"'");
+			ResultSet rs = stmt.executeQuery("SELECT `TEMPS CUISSON` from `produit` where `PRODUIT`= '"+ nom +"'");
 
 			while (rs.next()) {
-				String times = rs.getString("PRODUIT");
-				time= Integer.parseInt(times);
+				time = rs.getInt(1);
 			}
 
 
