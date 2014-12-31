@@ -1,7 +1,11 @@
 
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+
 import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Vector;
 import java.util.*;
 
@@ -732,8 +736,15 @@ public class GestionBDD {
 			Connection con = connexion();
 			Statement stmt = con.createStatement();
 
+			LocalDate date = LocalDate.now();
+			date.plusDays(1);
 
-			stmt.executeUpdate("INSERT INTO `vitrine`(`PRODUIT`,`QUANTITE`,`PERIME`,`TRAITE`) VALUES ('" + nom + "','" + quantite + "','" + 0 + "','" + 0 + "')");
+			Calendar cal = Calendar.getInstance();
+			SimpleDateFormat sdform = new SimpleDateFormat("HH:mm:ss");
+			String time = sdform.format(cal.getTime());
+
+			String dateFinal = date + " " + time;
+			stmt.executeUpdate("INSERT INTO `vitrine`(`PRODUIT`,`QUANTITE`,`DATE_PEREMPTION`,`PERIME`,`TRAITE`) VALUES ('" + nom + "','" + quantite + "','" + dateFinal + "','" + 0 + "','" + 0 + "')");
 
 			stmt.close();
 			con.close();
