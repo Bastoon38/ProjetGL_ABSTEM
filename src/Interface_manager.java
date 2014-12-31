@@ -1,3 +1,9 @@
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
+
 import javax.swing.*;
 
 import java.awt.*;
@@ -58,14 +64,29 @@ public class Interface_manager extends JFrame {
     private JPanel pan_panel1;
     private JButton btn_managerDeco;
     private JButton btn_majPrix;
+    private JPanel pan_vitTab;
+    private JPanel pan_vitGraph;
+    private JPanel pan_stockTab;
+    private JPanel pan_stockGraph;
+    private JPanel pan_bilanTab;
+    private JPanel pan_bilanGraph;
+    private JPanel pan_cuissonTab;
+    private JPanel pan_cuissonGraph;
+    private JPanel pan_cuissonGraph1;
+    private JPanel pan_cuissonGraph2;
+    private JButton btn_graphVitrine;
     private JTable tab_cmd;
     private JTable tab_att;
     private JTable tab_paramPrix;
     private JTable tab_seuil;
+    private JTable tab_vitrine;
+    private JTable tab_stock;
+    private JTable tab_cuisson;
     private String jour;
     private String heure;
     private String minute;
     private String heureFinal;
+    private JTable tab_bilan;
 
 
     private String password = "manager";
@@ -209,7 +230,7 @@ public class Interface_manager extends JFrame {
             public void stateChanged(ChangeEvent e) {
                 switch (tbp_parametre.getSelectedIndex()) {
                     case 0:
-                        //paramSeuilSelect();
+                        paramSeuilSelect();
                         break;
                     case 1:
                         paramMdpSelect();
@@ -243,10 +264,10 @@ public class Interface_manager extends JFrame {
 
         DefaultTableModel model = new DefaultTableModel()
         {
-            //@Override
-            //public boolean isCellEditable(int row, int column) {
-            //    return column==2;
-            //}
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column==2 || column==1;
+            }
 
             @Override
             public Class<?> getColumnClass(int columnIndex)
@@ -298,7 +319,18 @@ public class Interface_manager extends JFrame {
                 for (int i=0; i<15 ; i++)
                 {
                     if (tab_cmd.getValueAt(i,2).equals(true))
-                        baseDonnee.ajouterCommandeFournisseur(tab_cmd.getValueAt(i,0), tab_cmd.getValueAt(i,1));
+                    {
+                        //int j = 0;
+                        //System.out.println("tab_cmd.getValueAt(i,1) =========" + tab_cmd.getValueAt(i,1).getClass());
+                        //j = Integer.valueOf((String) tab_cmd.getValueAt(i,1));
+                        //System.out.println("j =========" + j);
+                        //if( j> 1 && j < 5000)
+                            baseDonnee.ajouterCommandeFournisseur(tab_cmd.getValueAt(i,0), tab_cmd.getValueAt(i,1));
+                        //else
+                            //JOptionPane.showMessageDialog(null, "Veuillez saisir un nombre entre 1 et 5000" + "\n" + "Tableau ligne:" + i, "SAISIE INCORRECTE",  JOptionPane.ERROR_MESSAGE);
+
+                    }
+
                 }
 
                 commandeSelect();
@@ -344,8 +376,6 @@ public class Interface_manager extends JFrame {
                     }
 
                 }
-
-                commandeSelect();
             }
         });
 
@@ -405,8 +435,6 @@ public class Interface_manager extends JFrame {
         for (int i = 0; i < 2; i++)
             cmb_minute.addItem(str_minute[i]);
 
-        cuissonSelect();
-
         cmb_jour.addActionListener (new ActionListener () {
             public void actionPerformed(ActionEvent e) {
                 paramSeuilSelect();
@@ -429,7 +457,6 @@ public class Interface_manager extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                System.out.println("cliiiiiiiiiiiiiiiiiiiiiiique");
                 GestionBDD baseDonnee = new GestionBDD();
 
                 baseDonnee.majSeuil(tab_seuil.getValueAt(0,0),jour ,heureFinal,tab_seuil.getValueAt(0,1),tab_seuil.getValueAt(0,2));
@@ -450,6 +477,58 @@ public class Interface_manager extends JFrame {
             }
         });
 
+        btn_paramDefaut.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                GestionBDD baseDonnee = new GestionBDD();
+                jour = cmb_jour.getSelectedItem().toString();
+                heure = cmb_heure.getSelectedItem().toString();
+                minute = cmb_minute.getSelectedItem().toString();
+                heureFinal = ( heure+"."+minute );
+                System.out.println("jour = " + jour);
+                System.out.println("heure = " + heureFinal);
+
+                Produit[] tabSeuilIni = null;
+
+                tabSeuilIni = baseDonnee.getSeuil(jour,heureFinal);
+
+                DefaultTableModel model = new DefaultTableModel();
+                tab_seuil = new JTable(model);
+
+                // Create a couple of columns
+                model.addColumn("PRODUIT");
+                model.addColumn("SEUIL");
+                model.addColumn("FOURNEE");
+
+                // Append a row
+                for (int i = 0; i < tabSeuilIni.length; i++)
+                {
+                    model.addRow(new Object[]{tabSeuilIni[i].getNom().toUpperCase(), tabSeuilIni[i].getSeuilIni(), tabSeuilIni[i].getFourneeIni()});
+                }
+
+                DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+                centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+                tab_seuil.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+                tab_seuil.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+                tab_seuil.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+
+                tab_seuil.setFont(new Font("Serif", Font.PLAIN, 30));
+                tab_seuil.getTableHeader().setFont(new Font("Serif", Font.BOLD, 23));
+                updateRowHeights(tab_seuil);
+                //tab_att.setEnabled(true);
+                //Nous ajoutons notre tableau à notre contentPane dans un scroll
+                //Sinon les titres des colonnes ne s'afficheront pas !
+                JScrollPane tbc_seuil = new JScrollPane(tab_seuil);
+                pan_paramSeuil.removeAll();
+                pan_paramSeuil.add(tbc_seuil, BorderLayout.CENTER);
+
+            }
+        });
+
+        cuissonSelect();
+       // commandeSelect();
+        paramSeuilSelect();
     }
 
     public void vueSynthSelect() {
@@ -487,7 +566,7 @@ public class Interface_manager extends JFrame {
 
         //Les titres des colonnes
         String title[] = {"PRODUIT", "VENTES", "JETES"};
-        JTable tab_bilan = new JTable(data, title);
+        tab_bilan = new JTable(data, title);
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
@@ -502,11 +581,40 @@ public class Interface_manager extends JFrame {
         //Nous ajoutons notre tableau à notre contentPane dans un scroll
         //Sinon les titres des colonnes ne s'afficheront pas !
         JScrollPane tbc_bilan = new JScrollPane(tab_bilan);
-        pan_bilanJournalier.removeAll();
-        pan_bilanJournalier.add(tbc_bilan, BorderLayout.CENTER);
+        pan_bilanTab.removeAll();
+        pan_bilanTab.add(tbc_bilan, BorderLayout.CENTER);
+
+        /************************************* GRAPHIQUE ********************************************/
+
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+        Map<String, Integer> repartitionVendu = new HashMap<String, Integer>();
+        Map<String, Integer> repartitionJete = new HashMap<String, Integer>();
+
+        for ( int i=0; i<tab_bilan.getRowCount(); i++)
+        {
+            repartitionVendu.put(tab_bilan.getValueAt(i,0).toString(), (Integer) tab_bilan.getValueAt(i,1));
+            repartitionJete.put(tab_bilan.getValueAt(i,0).toString(), (Integer) tab_bilan.getValueAt(i,2));
+        }
+
+
+        for ( int i=0; i<tab_bilan.getRowCount(); i++)
+            dataset.addValue(repartitionVendu.get(tab_bilan.getValueAt(i, 0)),"VENDU",  tab_bilan.getValueAt(i,0).toString());
+
+        for ( int i=0; i<tab_bilan.getRowCount(); i++)
+            dataset.addValue(repartitionJete.get(tab_bilan.getValueAt(i, 0)), "JETE",  tab_bilan.getValueAt(i,0).toString());
+
+        JFreeChart barChart = ChartFactory.createBarChart3D("GRAPHIQUE BILAN", "Produit", "Nombre", dataset);
+
+        ChartPanel cPanel = new ChartPanel(barChart);
+
+        pan_bilanGraph.removeAll();
+        pan_bilanGraph.add(cPanel, BorderLayout.CENTER);
+
+
         lab_recette.setText("RECETTE = 13976 €");
         lab_recette.setFont(new Font("Serif", Font.BOLD, 23));
-        pan_bilanJournalier.add(lab_recette, BorderLayout.SOUTH);
+        pan_bilanTab.add(lab_recette, BorderLayout.SOUTH);
     }
 
     public void commandeSelect() {
@@ -577,7 +685,7 @@ public class Interface_manager extends JFrame {
         tabCuisson = baseDonnee.getFour();
 
         DefaultTableModel model = new DefaultTableModel();
-        JTable tab_cuisson = new JTable(model);
+        tab_cuisson = new JTable(model);
 
         // Create a couple of columns
         model.addColumn("PRODUIT");
@@ -605,8 +713,59 @@ public class Interface_manager extends JFrame {
         //Nous ajoutons notre tableau à notre contentPane dans un scroll
         //Sinon les titres des colonnes ne s'afficheront pas !
         JScrollPane tbc_cuisson = new JScrollPane(tab_cuisson);
-        pan_cuisson.removeAll();
-        pan_cuisson.add(tbc_cuisson, BorderLayout.CENTER);
+        pan_cuissonTab.removeAll();
+        pan_cuissonTab.add(tbc_cuisson, BorderLayout.CENTER);
+
+        /************************************* GRAPHIQUE 1 ********************************************/
+
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+        Map<String, Integer> repartition = new HashMap<String, Integer>();
+
+        for ( int i=0; i<tab_cuisson.getRowCount(); i++)
+        {
+            if(tab_cuisson.getValueAt(i,2).equals("EN COURS"))
+                repartition.put(tab_cuisson.getValueAt(i,0).toString(), (Integer) tab_cuisson.getValueAt(i,1));
+        }
+
+        for ( int i=0; i<tab_cuisson.getRowCount(); i++)
+        {
+            if(tab_cuisson.getValueAt(i,2).equals("EN COURS"))
+                dataset.addValue(repartition.get(tab_cuisson.getValueAt(i, 0)), tab_cuisson.getValueAt(i,0).toString(),  tab_cuisson.getValueAt(i,0).toString());
+        }
+
+        JFreeChart barChart = ChartFactory.createBarChart3D("GRAPHIQUE CUISSON EN COURS", "Produit", "Nombre", dataset);
+
+        ChartPanel cPanel = new ChartPanel(barChart);
+
+        pan_cuissonGraph1.removeAll();
+        pan_cuissonGraph1.add(cPanel, BorderLayout.CENTER);
+
+
+        /************************************* GRAPHIQUE 2 ********************************************/
+
+        DefaultCategoryDataset dataset2 = new DefaultCategoryDataset();
+
+        Map<String, Integer> repartition2 = new HashMap<String, Integer>();
+
+        for ( int i=0; i<tab_cuisson.getRowCount(); i++)
+        {
+            if(tab_cuisson.getValueAt(i,2).equals("EN ATTENTE"))
+                repartition2.put(tab_cuisson.getValueAt(i,0).toString(), (Integer) tab_cuisson.getValueAt(i,1));
+        }
+
+        for ( int i=0; i<tab_cuisson.getRowCount(); i++)
+        {
+            if(tab_cuisson.getValueAt(i,2).equals("EN ATTENTE"))
+                dataset2.addValue(repartition2.get(tab_cuisson.getValueAt(i, 0)), tab_cuisson.getValueAt(i,0).toString(),  tab_cuisson.getValueAt(i,0).toString());
+        }
+
+        JFreeChart barChart2 = ChartFactory.createBarChart3D("GRAPHIQUE CUISSON EN ATTENTE", "Produit", "Nombre", dataset2);
+
+        ChartPanel cPanel2 = new ChartPanel(barChart2);
+
+        pan_cuissonGraph2.removeAll();
+        pan_cuissonGraph2.add(cPanel2, BorderLayout.CENTER);
     }
 
     public void vitrineSelect() {
@@ -645,7 +804,7 @@ public class Interface_manager extends JFrame {
 
         //Les titres des colonnes
         String title[] = {"PRODUIT", "NOMBRE EN VITRINE"};
-        JTable tab_vitrine = new JTable(data, title);
+        tab_vitrine = new JTable(data, title);
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
@@ -659,8 +818,27 @@ public class Interface_manager extends JFrame {
         //Nous ajoutons notre tableau à notre contentPane dans un scroll
         //Sinon les titres des colonnes ne s'afficheront pas !
         JScrollPane tbc_vitrine = new JScrollPane(tab_vitrine);
-        pan_vitrine.removeAll();
-        pan_vitrine.add(tbc_vitrine, BorderLayout.CENTER);
+        pan_vitTab.removeAll();
+        pan_vitTab.add(tbc_vitrine, BorderLayout.CENTER);
+
+        /************************************* GRAPHIQUE ********************************************/
+
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+        Map<String, Integer> repartition = new HashMap<String, Integer>();
+
+        for ( int i=0; i<tab_vitrine.getRowCount(); i++)
+            repartition.put(tab_vitrine.getValueAt(i,0).toString(), (Integer) tab_vitrine.getValueAt(i,1));
+
+        for ( int i=0; i<tab_vitrine.getRowCount(); i++)
+            dataset.addValue(repartition.get(tab_vitrine.getValueAt(i, 0)), tab_vitrine.getValueAt(i,0).toString(),  tab_vitrine.getValueAt(i,0).toString());
+
+        JFreeChart barChart = ChartFactory.createBarChart3D("GRAPHIQUE VITRINE", "Produit", "Nombre", dataset);
+
+        ChartPanel cPanel = new ChartPanel(barChart);
+
+        pan_vitGraph.removeAll();
+        pan_vitGraph.add(cPanel, BorderLayout.CENTER);
     }
 
     public void stockSelect() {
@@ -696,7 +874,7 @@ public class Interface_manager extends JFrame {
 
         //Les titres des colonnes
         String title[] = {"PRODUIT", "STOCK"};
-        JTable tab_stock = new JTable(data, title);
+        tab_stock = new JTable(data, title);
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
@@ -710,8 +888,27 @@ public class Interface_manager extends JFrame {
         //Nous ajoutons notre tableau à notre contentPane dans un scroll
         //Sinon les titres des colonnes ne s'afficheront pas !
         JScrollPane tbc_stock = new JScrollPane(tab_stock);
-        pan_stock.removeAll();
-        pan_stock.add(tbc_stock, BorderLayout.CENTER);
+        pan_stockTab.removeAll();
+        pan_stockTab.add(tbc_stock, BorderLayout.CENTER);
+
+        /****************************** GRAPHIQUE  ********************************/
+
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+        Map<String, Integer> repartition = new HashMap<String, Integer>();
+
+        for ( int i=0; i<tab_stock.getRowCount(); i++)
+            repartition.put(tab_stock.getValueAt(i,0).toString(), (Integer) tab_stock.getValueAt(i,1));
+
+        for ( int i=0; i<tab_stock.getRowCount(); i++)
+            dataset.addValue(repartition.get(tab_stock.getValueAt(i, 0)), tab_stock.getValueAt(i,0).toString(),  tab_stock.getValueAt(i,0).toString());
+
+        JFreeChart barChart = ChartFactory.createBarChart3D("GRAPHIQUE STOCK", "Produit", "Nombre", dataset);
+
+        ChartPanel cPanel = new ChartPanel(barChart);
+
+        pan_stockGraph.removeAll();
+        pan_stockGraph.add(cPanel, BorderLayout.CENTER);
     }
 
     public void paramSeuilSelect() {
