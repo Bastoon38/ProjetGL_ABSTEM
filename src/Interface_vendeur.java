@@ -686,24 +686,6 @@ public class Interface_vendeur extends JFrame {
         String columnNamesJeter[] = { "Nom", "Quantite" };
         // Create some data
         String dataValuesJeter[][] ={ };
-        tab_jeter_1 = new JTable(new DefaultTableModel(
-                new Object[][] {},
-                new String[] {"Nom", "Quantite"}
-        ) {
-            Class[] columnTypes = new Class[] {
-                    Object.class, Integer.class
-            };
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                //all cells false
-                return false;
-            }
-            public Class getColumnClass(int columnIndex) {
-                return columnTypes[columnIndex];
-            }
-        });
-
-
 
 
       // tab_jeter_1 = new JTable( model_1 );
@@ -901,6 +883,11 @@ public class Interface_vendeur extends JFrame {
             Class[] columnTypes = new Class[] {
                     Object.class, Integer.class
             };
+           @Override
+            public boolean isCellEditable(int row, int column) {
+                //all cells false
+                return false;
+            }
             public Class getColumnClass(int columnIndex) {
                 return columnTypes[columnIndex];
             }
@@ -922,7 +909,7 @@ public class Interface_vendeur extends JFrame {
                 int int_quan = Integer.parseInt(quant);
 
 
-                JOptionPane.showMessageDialog(null, nom + " supprimé du système", "Jeter " + nom, JOptionPane.WARNING_MESSAGE);
+
                 for (int u = 0; u < jeter.size(); u++) {
                     int int_quanty = jeter.elementAt(u).getQuantite();
                     if (jeter.elementAt(u).getNom().equals(nom) && int_quan == int_quanty) {
@@ -931,6 +918,7 @@ public class Interface_vendeur extends JFrame {
                         tab_jeter_1.repaint();
                         base.ajouterPerime(nom, int_quanty);
                         String mensaje = base.supprimerVitrine(nom,int_quanty);
+                        JOptionPane.showMessageDialog(null, mensaje, "Jeter " + nom, JOptionPane.WARNING_MESSAGE);
 
                     }
                 }
