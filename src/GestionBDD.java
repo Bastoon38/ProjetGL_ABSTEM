@@ -14,7 +14,7 @@ public class GestionBDD {
 	//connexion à la base de données
 	private Connection connexion() {
 		try {
-			String url = "jdbc:mysql://localhost/abstem";
+			String url = "jdbc:mysql://localhost/albm_dev";
 			String login = "root";
 			String password = "";
 			Connection con = DriverManager.getConnection(url,login,password);
@@ -277,28 +277,14 @@ public class GestionBDD {
 
 		int time=0;
 		Connection con = connexion();
-		int rows = 0;
 		System.out.println ("SELECT `TEMPS CUISSON` from produit where `produit`= '"+ nom +"'");
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT `TEMPS CUISSON` from produit where `produit`= '"+ nom +"'");
-			while (rs.next()) {
-				if (rs.last()) {
-					rows = rs.getRow();
-					// Move to beginning
-					rs.beforeFirst();
-					break;
-				}
-			}
-
-			int j = 0;
 
 			while (rs.next()) {
 				String times = rs.getString("PRODUIT");
 				time= Integer.parseInt(times);
-
-				j++;
-
 			}
 
 
@@ -311,8 +297,8 @@ public class GestionBDD {
 			sqle.printStackTrace();
 			System.out.println(sqle.getMessage());
 		}
-		int timer=time;
-		return timer;
+
+		return time;
 	}
 
 	public Vector<Produit> getFour(Vector<Produit>four) {
