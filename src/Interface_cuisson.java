@@ -18,9 +18,12 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.Color;
 import java.awt.Font;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.Vector;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -34,6 +37,7 @@ public class Interface_cuisson extends JFrame {
 
     private JPanel contentPane;
     private JTable jtab_cuisson;
+    private JButton btn_fini;
 
     /**
      * Launch the application.
@@ -123,13 +127,14 @@ public class Interface_cuisson extends JFrame {
 
         contentPane.add(btn_debut);
 
-        JButton btn_fini = new JButton("FINI");
+        btn_fini = new JButton("FINI");
         btn_fini.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
 
-
-
                 int rowSelected = jtab_cuisson.getSelectedRow();
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm:ss");
+                LocalDateTime today = LocalDateTime.now();
 
                 DefaultTableModel model_1 = new DefaultTableModel();
                 model_1 = (DefaultTableModel) jtab_cuisson.getModel();
@@ -147,7 +152,25 @@ public class Interface_cuisson extends JFrame {
                     //TODO
                     //AJouter le produit dans vitrine
 
-                    base.ajouterVitrine(nom,int_quan);
+                    if ( nom.toUpperCase().equals("BAGUETTE"))
+                    {
+                        LocalDateTime datePerime = today.plusHours(12);
+                        String date = formatter.format(datePerime);
+                        base.ajouterVitrine(nom,int_quan,date);
+                    }
+                    else if ( nom.toUpperCase().equals("FLUTE") || nom.toUpperCase().equals("TARTE CITRON") || nom.toUpperCase().equals("TARTE PRALINE") )
+                    {
+                        LocalDateTime datePerime = today.plusHours(24);
+                        String date = formatter.format(datePerime);
+                        base.ajouterVitrine(nom,int_quan,date);
+                    }
+                    else if (nom.toUpperCase().equals("CROISSANT") ||nom.toUpperCase().equals("PAIN AU CHOCOLAT") ||nom.toUpperCase().equals("BRIOCHE SUCRE") ||nom.toUpperCase().equals("PAIN AU LAIT"))
+                    {
+                        System.out.println("dans croissant");
+                        LocalDateTime datePerime = today.plusHours(6);
+                        String date = formatter.format(datePerime);
+                        base.ajouterVitrine(nom,int_quan,date);
+                    }
                     model_1.removeRow(jtab_cuisson.getSelectedRow());
                     jtab_cuisson.repaint();
                 }

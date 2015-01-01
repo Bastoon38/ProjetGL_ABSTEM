@@ -713,27 +713,16 @@ public class GestionBDD {
 
 	//AJOUT & SUPPR VITRINE ****************************************
 	//Ajout d'un produit cuisson finie en vitrine
-	public void ajouterVitrine (String nom, int quantite) {
+	public void ajouterVitrine (String nom, int quantite, String date) {
 
 		try{
-			//TODO AJOUTER LA DATE ACTUEL + 24 HEURES dans le insert
 			Connection con = connexion();
 			Statement stmt = con.createStatement();
 
-			LocalDate date = LocalDate.now();
-			date.plusDays(1);
-
-			Calendar cal = Calendar.getInstance();
-			SimpleDateFormat sdform = new SimpleDateFormat("HH:mm:ss");
-			String time = sdform.format(cal.getTime());
-
-			String dateFinal = date + " " + time;
-			stmt.executeUpdate("INSERT INTO `vitrine`(`PRODUIT`,`QUANTITE`,`DATE_PEREMPTION`,`PERIME`,`TRAITE`) VALUES ('" + nom + "','" + quantite + "','" + dateFinal + "','" + 0 + "','" + 0 + "')");
+			stmt.executeUpdate("INSERT INTO `vitrine`(`PRODUIT`,`QUANTITE`,`DATE_PEREMPTION`,`PERIME`,`TRAITE`) VALUES ('" + nom + "','" + quantite + "','" + date + "','" + 0 + "','" + 0 + "')");
 
 			stmt.close();
 			con.close();
-
-
 
 		}
 		catch(SQLException sqle){
