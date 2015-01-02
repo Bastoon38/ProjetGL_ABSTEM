@@ -1,60 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="Connexion">
-  <grid id="27dc6" binding="pan_panel1" layout-manager="GridBagLayout">
+  <grid id="27dc6" binding="pan_co" layout-manager="GridLayoutManager" row-count="6" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="566" height="400"/>
+      <xy x="20" y="20" width="724" height="588"/>
     </constraints>
-    <properties/>
+    <properties>
+      <minimumSize width="724" height="441"/>
+      <opaque value="false"/>
+      <preferredSize width="724" height="441"/>
+    </properties>
     <border type="none"/>
     <children>
-      <component id="2e707" class="javax.swing.JButton" binding="btn_vendeur">
-        <constraints>
-          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-          <gridbag weightx="0.0" weighty="0.0"/>
-        </constraints>
-        <properties>
-          <preferredSize width="300" height="150"/>
-          <text value="VENDEUR"/>
-        </properties>
-      </component>
-      <component id="4a833" class="javax.swing.JButton" binding="btn_manager">
-        <constraints>
-          <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-          <gridbag weightx="0.0" weighty="0.0"/>
-        </constraints>
-        <properties>
-          <preferredSize width="300" height="150"/>
-          <text value="MANAGER"/>
-        </properties>
-      </component>
       <component id="a58d5" class="javax.swing.JButton" binding="btn_cuisinier">
         <constraints>
-          <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-          <gridbag weightx="0.0" weighty="0.0"/>
+          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <preferredSize width="300" height="150"/>
           <text value="CUISINIER"/>
         </properties>
       </component>
-      <vspacer id="3b756">
+      <component id="67dbe" class="javax.swing.JLabel" binding="lab_identification">
         <constraints>
-          <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-          <gridbag weightx="0.0" weighty="0.0"/>
+          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
-      </vspacer>
-      <hspacer id="97fb7">
+        <properties>
+          <text value="Veuillez vous identifier"/>
+        </properties>
+      </component>
+      <component id="4a833" class="javax.swing.JButton" binding="btn_manager">
         <constraints>
-          <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-          <gridbag weightx="0.0" weighty="0.0"/>
+          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
-      </hspacer>
-      <hspacer id="562bc">
+        <properties>
+          <preferredSize width="300" height="150"/>
+          <text value="MANAGER"/>
+        </properties>
+      </component>
+      <component id="1a6a0" class="javax.swing.JLabel" binding="lab_boulangerie">
         <constraints>
-          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-          <gridbag weightx="0.0" weighty="0.0"/>
+          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
-      </hspacer>
+        <properties>
+          <text value="Boulangerie Patisserie La Bonne Miche"/>
+        </properties>
+      </component>
+      <component id="2e707" class="javax.swing.JButton" binding="btn_vendeur">
+        <constraints>
+          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <preferredSize width="300" height="150"/>
+          <text value="VENDEUR"/>
+        </properties>
+      </component>
+      <component id="f7609" class="javax.swing.JLabel" binding="lab_photo2">
+        <constraints>
+          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="59468" class="javax.swing.JLabel" binding="lab_photo1">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="d3f9d" class="javax.swing.JLabel" binding="lab_version">
+        <constraints>
+          <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <horizontalAlignment value="2"/>
+          <horizontalTextPosition value="2"/>
+          <iconTextGap value="4"/>
+          <text value="Version 0.0.1"/>
+        </properties>
+      </component>
     </children>
   </grid>
 </form>

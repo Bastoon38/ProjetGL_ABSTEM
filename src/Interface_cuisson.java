@@ -222,9 +222,9 @@ public class Interface_cuisson extends JFrame {
         JButton button = new JButton("Deconnection");
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                setVisible(false);
                 Connexion connexion = new Connexion();
                 connexion.setVisible(true);
+                setVisible(false);
             }
         });
         button.setBounds(1699, 16, 127, 29);

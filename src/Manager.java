@@ -15,7 +15,7 @@ public class Manager {
         this.password  = baseDonnee.getMdp();
 
         JPanel panel = new JPanel();
-        JLabel label = new JLabel("Ecrivez votre Password:");
+        JLabel label = new JLabel("Saisir le mot de passe:");
         JPasswordField pass = new JPasswordField(10);
 
         panel.add(label);

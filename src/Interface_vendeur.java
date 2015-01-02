@@ -505,10 +505,9 @@ public class Interface_vendeur extends JFrame {
         JButton btn_decon = new JButton("Deconnection");
         btn_decon.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
-                setVisible(false);
                 Connexion connexion = new Connexion();
                 connexion.setVisible(true);
+                setVisible(false);
             }
         });
 

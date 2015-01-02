@@ -1,6 +1,8 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 
 /**
  * Created by Thomas on 09/12/2014.
@@ -10,12 +12,18 @@ public class Connexion extends JFrame {
     private JButton btn_vendeur;
     private JButton btn_cuisinier;
     private JButton btn_manager;
-    private JPanel pan_panel1;
+    private JPanel pan_co;
+    private JLabel lab_version;
+    private JLabel lab_identification;
+    private JLabel lab_boulangerie;
+    private JLabel lab_photo1;
+    private JLabel lab_photo2;
 
     public  Connexion()
     {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-        add(pan_panel1);
+        setMinimumSize(new Dimension(1200, 900));
+        add(pan_co);
 
         btn_vendeur.addActionListener(new ActionListener() {
             @Override
@@ -37,6 +45,19 @@ public class Connexion extends JFrame {
                 affichePageManager();
             }
         });
+
+        lab_identification.setFont(new Font("Serif", Font.BOLD, 50));
+        lab_boulangerie.setFont(new Font("Serif", Font.BOLD, 40));
+        lab_version.setFont(new Font("Serif", Font.BOLD, 15));
+
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL file = classLoader.getResource("images/logoABSTEM3.png");
+        Icon icn_abstem = new ImageIcon(file);
+        lab_photo1.setIcon(icn_abstem);
+
+        file = classLoader.getResource("images/logoLBM4.png");
+        Icon icn_lbm = new ImageIcon(file);
+        lab_photo2.setIcon(icn_lbm);
     }
 
     public void  affichePageVendeur(){

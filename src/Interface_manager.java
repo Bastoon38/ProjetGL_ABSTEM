@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import java.util.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -92,42 +93,7 @@ public class Interface_manager extends JFrame {
     private String password = "manager";
 
 
-    public Interface_manager() {
-        /*class JPasswordField2 implements ActionListener {
-
-            JPasswordField passwordField1 = null;
-
-            public void Manager () {
-                JPasswordField2 jpf2 = new JPasswordField2();
-                jpf2.init();
-            }
-
-            public void init() {
-                JFrame f = new JFrame("ma fenetre");
-                f.setSize(300, 100);
-                JPanel pannel = new JPanel();
-
-                passwordField1 = new JPasswordField("");
-                passwordField1.setPreferredSize(new Dimension(100, 20));
-                pannel.add(passwordField1);
-
-                JButton bouton1 = new JButton("Afficher");
-                bouton1.addActionListener(this);
-
-                pannel.add(bouton1);
-                f.getContentPane().add(pannel);
-                f.setVisible(true);
-            }
-
-            public void actionPerformed(ActionEvent e) {
-                int comparaison = String.copyValueOf(passwordField1.getPassword()).compareToIgnoreCase(motDePasse);    // String.valueOf(this.motDePasse)
-                if(comparaison == 0) {	// Si le mot de passe est le bon
-
-                }
-                // System.out.println("texte saisie = " + String.copyValueOf(passwordField1.getPassword()));
-            }
-
-        }*/
+    public Interface_manager()  {
 
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setMinimumSize(new Dimension(1200, 900));
@@ -136,6 +102,7 @@ public class Interface_manager extends JFrame {
 
         ClassLoader classLoader = getClass().getClassLoader();
         URL file = classLoader.getResource("images/param64.png");
+        System.out.println(file);
         Icon icn_param = new ImageIcon(file);
         tbp_prinCat.setIconAt(3, icn_param);
 
@@ -253,9 +220,9 @@ public class Interface_manager extends JFrame {
         btn_managerDeco.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                setVisible(false);
                 Connexion connexion = new Connexion();
                 connexion.setVisible(true);
+                setVisible(false);
             }
         });
 
@@ -314,25 +281,36 @@ public class Interface_manager extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+                int j=0;
                 GestionBDD baseDonnee = new GestionBDD();
+
+                LinkedList<Object> listCmd = new LinkedList<Object>();
+
+                for ( int i=0; i<30 ;i++)
+                    listCmd.add(0);
 
                 for (int i=0; i<15 ; i++)
                 {
                     if (tab_cmd.getValueAt(i,2).equals(true))
                     {
-                        //int j = 0;
                         //System.out.println("tab_cmd.getValueAt(i,1) =========" + tab_cmd.getValueAt(i,1).getClass());
                         //j = Integer.valueOf((String) tab_cmd.getValueAt(i,1));
                         //System.out.println("j =========" + j);
                         //if( j> 1 && j < 5000)
-                            baseDonnee.ajouterCommandeFournisseur(tab_cmd.getValueAt(i,0), tab_cmd.getValueAt(i,1));
+                            //baseDonnee.ajouterCommandeFournisseur(tab_cmd.getValueAt(i,0), tab_cmd.getValueAt(i,1));
+                        listCmd.set(j, tab_cmd.getValueAt(i,0));
+                        j++;
+                        listCmd.set(j, tab_cmd.getValueAt(i,1));
+                        j++;
                         //else
                             //JOptionPane.showMessageDialog(null, "Veuillez saisir un nombre entre 1 et 5000" + "\n" + "Tableau ligne:" + i, "SAISIE INCORRECTE",  JOptionPane.ERROR_MESSAGE);
+
 
                     }
 
                 }
 
+                GenerationDocument doc = new GenerationDocument(listCmd,j);
                 commandeSelect();
             }
         });
@@ -1099,4 +1077,5 @@ public class Interface_manager extends JFrame {
 
     public void setPassword(String mdp) {this.password=mdp;}
     public String getPassword() {return password;}
+
 }
