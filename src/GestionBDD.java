@@ -707,20 +707,19 @@ public class GestionBDD {
 	}
 
 	//mise à jour d'un produit en "attente de cuisson" à "en cuisson"
-	public void majCuisson(String nom, int qte) {
+	public void majCuisson(String nom, String qte) {
 
 		try{
 
 			Connection con = connexion();
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("UPDATE `four` SET `CUISSON`=1 WHERE `PRODUIT`='" + nom + "' AND `QUANTITE`=" + qte + " LIMIT 1");
+			System.out.println(nom);System.out.println(qte);
+			stmt.executeUpdate("UPDATE `four` SET `CUISSON`=1 WHERE `PRODUIT`='" + nom + "' AND `QUANTITE`=" + qte + "");
+
 
 			stmt.close();
 			con.close();
-
-
-
 		}
 		catch(SQLException sqle){
 			sqle.printStackTrace();

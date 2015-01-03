@@ -1,4 +1,5 @@
 import java.util.Hashtable;
+import java.util.Timer;
 
 /**
  * Created by Bastien on 29/11/2014.
@@ -12,8 +13,7 @@ public class Main {
         //ihm.setVisible(true);
         //Interface_vendeur frame = new Interface_vendeur();
         //frame.setVisible(true);
-        Connexion frame1 = new Connexion();
-        frame1.setVisible(true);
+
         //GestionBDD bdd = new GestionBDD();
         //System.out.println(bdd.getTime_cuisson("Tarte citron"));
         //Elio Test Vendeur
@@ -21,5 +21,11 @@ public class Main {
         //billet.setVisible(true);
         //Interface_vendeur frame = new Interface_vendeur();
         //Vendeur vendeur= new Vendeur(frame);
+
+        Connexion frame1 = new Connexion();
+        frame1.setVisible(true);
+
+        //Timer timer = new Timer();
+        //timer.schedule(new TimerMajCuisson(), 0, 150000);
     }
 }
