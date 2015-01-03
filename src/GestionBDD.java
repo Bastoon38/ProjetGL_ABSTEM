@@ -463,20 +463,11 @@ public class GestionBDD {
 		Connection con = connexion();
 
 		String mdp = null;
-		int rows = 0;
 
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM `mot_de_passe`");
-			while (rs.next()) {
-				if (rs.last()) {
-					rows = rs.getRow();
-					// Move to beginning
-					rs.beforeFirst();
-					break;
-				}
-			}
-			int j = 0;
+
 			while (rs.next()) {
 				mdp = rs.getString("Valeur");
 			}
@@ -578,18 +569,9 @@ public class GestionBDD {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT `ID` FROM `commande` WHERE`PRODUIT`='"+nom+"' AND `QUANTITE`='"+qte+"'");
-			while (rs.next()) {
-				if (rs.last()) {
-					rows = rs.getRow();
-					// Move to beginning
-					rs.beforeFirst();
-					break;
-				}
-			}
-			int j = 0;
+
 			while (rs.next()) {
 				id = rs.getInt("ID");
-				j++;
 			}
 
 			rs.close();
