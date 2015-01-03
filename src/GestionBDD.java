@@ -301,20 +301,10 @@ public class GestionBDD {
 
 		Connection con = connexion();
 
-
-		int rows = 0;
-
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM `four`");
-			while (rs.next()) {
-				if (rs.last()) {
-					rows = rs.getRow();
-					// Move to beginning
-					rs.beforeFirst();
-					break;
-				}
-			}
+
 
 			while (rs.next()) {
 				String nom = rs.getString("PRODUIT");
@@ -564,7 +554,6 @@ public class GestionBDD {
 		Connection con = connexion();
 
 		int id = 0;
-		int rows = 0;
 
 		try {
 			Statement stmt = con.createStatement();
