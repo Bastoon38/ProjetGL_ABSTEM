@@ -2,9 +2,15 @@
 
 
 
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -18,6 +24,11 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.Color;
 import java.awt.Font;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -38,6 +49,7 @@ public class Interface_cuisson extends JFrame {
     private JPanel contentPane;
     private JTable jtab_cuisson;
     private JButton btn_fini;
+    private ClassLoader classLoader;
 
     /**
      * Launch the application.
@@ -59,6 +71,7 @@ public class Interface_cuisson extends JFrame {
      * Create the frame.
      */
     public Interface_cuisson() {
+        classLoader = getClass().getClassLoader();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setExtendedState(MAXIMIZED_BOTH);
         setBounds(100, 100, 946, 864);
@@ -73,8 +86,6 @@ public class Interface_cuisson extends JFrame {
         JButton btn_debut = new JButton("DEBUT");
         btn_debut.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-
-
 
                 final int rowSelected = jtab_cuisson.getSelectedRow();
 
@@ -100,6 +111,7 @@ public class Interface_cuisson extends JFrame {
                         }
                         else
                         {
+                            playSound();
                             jtab_cuisson.setValueAt("FIN", rowSelected, 2);
                             cancel();
                         }
@@ -240,5 +252,38 @@ public class Interface_cuisson extends JFrame {
             // model.addRow(new Object[]{cuisson.elementAt(i).getNom(),cuisson.elementAt(i).getQuantite(),base.getTime_cuisson(cuisson.elementAt(i).getNom())});
         }
 
+    }
+
+    public synchronized void playSound() {
+
+        //** add this into your application code as appropriate
+// Open an input stream  to the audio file.
+        classLoader = getClass().getClassLoader();
+        URL file = classLoader.getResource("son/newalert.wav");
+        System.out.println(file);
+        System.out.println(String.valueOf(file));
+        String path = (String.valueOf(file).replace("file:", ""));
+        System.out.println(path);
+        InputStream in = null;
+        try {
+            in = new FileInputStream(path);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+// Create an AudioStream object from the input stream.
+        AudioStream as = null;
+        try {
+            as = new AudioStream(in);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+// Use the static class member "player" from class AudioPlayer to play
+// clip.
+        AudioPlayer.player.start(as);
+
+// Similarly, to stop the audio.
+       // AudioPlayer.player.stop(as);
     }
 }

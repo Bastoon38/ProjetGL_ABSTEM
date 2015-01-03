@@ -422,7 +422,7 @@ public class Interface_vendeur extends JFrame {
         btn_raisin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                gerer_produit_selectione("Raisin");
+                gerer_produit_selectione("RAISIN");
             }
         });
 
@@ -434,7 +434,7 @@ public class Interface_vendeur extends JFrame {
         btn_pomme.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                gerer_produit_selectione("Pomme");
+                gerer_produit_selectione("POMME");
             }
         });
 
@@ -446,7 +446,7 @@ public class Interface_vendeur extends JFrame {
         btn_orange.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                gerer_produit_selectione("Orange");
+                gerer_produit_selectione("ORANGE");
             }
         });
 
@@ -458,7 +458,7 @@ public class Interface_vendeur extends JFrame {
         btn_oasis.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                gerer_produit_selectione("Oasis");
+                gerer_produit_selectione("OASIS");
             }
         });
 
@@ -470,7 +470,7 @@ public class Interface_vendeur extends JFrame {
         btn_sprite.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                gerer_produit_selectione("Sprite");
+                gerer_produit_selectione("SPRITE");
             }
         });
 
@@ -482,7 +482,7 @@ public class Interface_vendeur extends JFrame {
         btn_fanta.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                gerer_produit_selectione("Fanta");
+                gerer_produit_selectione("FANTA");
             }
         });
 
@@ -494,7 +494,7 @@ public class Interface_vendeur extends JFrame {
         btn_coca.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                gerer_produit_selectione("Coca cola");
+                gerer_produit_selectione("COCA COLA");
             }
         });
         this.setExtendedState(MAXIMIZED_BOTH);
@@ -616,7 +616,7 @@ public class Interface_vendeur extends JFrame {
         btn_crois.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                gerer_produit_selectione("Croissant");
+                gerer_produit_selectione("CROISSANT");
             }
         });
 
@@ -628,7 +628,7 @@ public class Interface_vendeur extends JFrame {
         btn_painauchoc.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                gerer_produit_selectione("Pain au chocolat");
+                gerer_produit_selectione("PAIN AU CHOCOLAT");
             }
         });
 
@@ -640,7 +640,7 @@ public class Interface_vendeur extends JFrame {
         btn_sucre.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                gerer_produit_selectione("Brioche sucre");
+                gerer_produit_selectione("BRIOCHE SUCRE");
             }
         });
 
@@ -652,7 +652,7 @@ public class Interface_vendeur extends JFrame {
         btn_painaulait.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                gerer_produit_selectione("Pain au lait");
+                gerer_produit_selectione("PAIN AU LAIT");
             }
         });
 
@@ -664,7 +664,7 @@ public class Interface_vendeur extends JFrame {
         btn_tartecitron.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                gerer_produit_selectione("Tarte citron");
+                gerer_produit_selectione("TARTE CITRON");
             }
         });
 
@@ -676,7 +676,7 @@ public class Interface_vendeur extends JFrame {
         btn_tartepra.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                gerer_produit_selectione("Tarte praline");
+                gerer_produit_selectione("TARTE PRALINE");
             }
         });
 
@@ -854,7 +854,7 @@ public class Interface_vendeur extends JFrame {
        // btn_flute.setIcon(new ImageIcon("images/flute.jpg"));
         btn_flute.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                gerer_produit_selectione("Flute");
+                gerer_produit_selectione("FLUTE");
             }
         });
 
@@ -867,7 +867,7 @@ public class Interface_vendeur extends JFrame {
         btn_baguettes.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                gerer_produit_selectione("Baguette");
+                gerer_produit_selectione("BAGUETTE");
 
             }
         });

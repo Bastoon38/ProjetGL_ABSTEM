@@ -75,6 +75,7 @@ public class Interface_manager extends JFrame {
     private JPanel pan_cuissonGraph;
     private JPanel pan_cuissonGraph1;
     private JPanel pan_cuissonGraph2;
+    private JButton btn_suppLigne;
     private JButton btn_graphVitrine;
     private JTable tab_cmd;
     private JTable tab_att;
@@ -248,8 +249,8 @@ public class Interface_manager extends JFrame {
 
         // Create a couple of columns
         model.addColumn("PRODUIT");
-        model.addColumn("QUANTITE A COMMANDER");
-        model.addColumn("BOOLEAN");
+        model.addColumn("QUANTITE");
+        model.addColumn("COMMANDER ?");
 
         // Append a row
             model.addRow(new Object[]{"BAGUETTE", 0, false});
@@ -281,7 +282,8 @@ public class Interface_manager extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                int j=0;
+                int taille=0;
+                int flag=0;
                 GestionBDD baseDonnee = new GestionBDD();
 
                 LinkedList<Object> listCmd = new LinkedList<Object>();
@@ -289,29 +291,41 @@ public class Interface_manager extends JFrame {
                 for ( int i=0; i<30 ;i++)
                     listCmd.add(0);
 
-                for (int i=0; i<15 ; i++)
-                {
-                    if (tab_cmd.getValueAt(i,2).equals(true))
+                try {
+                    for (int i=0; i<15 ; i++)
                     {
-                        //System.out.println("tab_cmd.getValueAt(i,1) =========" + tab_cmd.getValueAt(i,1).getClass());
-                        //j = Integer.valueOf((String) tab_cmd.getValueAt(i,1));
-                        //System.out.println("j =========" + j);
-                        //if( j> 1 && j < 5000)
-                            //baseDonnee.ajouterCommandeFournisseur(tab_cmd.getValueAt(i,0), tab_cmd.getValueAt(i,1));
-                        listCmd.set(j, tab_cmd.getValueAt(i,0));
-                        j++;
-                        listCmd.set(j, tab_cmd.getValueAt(i,1));
-                        j++;
-                        //else
-                            //JOptionPane.showMessageDialog(null, "Veuillez saisir un nombre entre 1 et 5000" + "\n" + "Tableau ligne:" + i, "SAISIE INCORRECTE",  JOptionPane.ERROR_MESSAGE);
-
+                        if (tab_cmd.getValueAt(i,2).equals(true))
+                        {
+                            int valeurSaisie;
+                            System.out.println("tab_cmd.getValueAt(i,1) =========" + tab_cmd.getValueAt(i,1).getClass());
+                            valeurSaisie = Integer.parseInt(tab_cmd.getValueAt(i, 1).toString());
+                            System.out.println("valeurSaisie =========" + valeurSaisie);
+                            if( valeurSaisie> 1 && valeurSaisie < 5000)
+                            {
+                                flag = 1;
+                                baseDonnee.ajouterCommandeFournisseur(tab_cmd.getValueAt(i,0), tab_cmd.getValueAt(i,1));
+                                listCmd.set(taille, tab_cmd.getValueAt(i,0));
+                                taille++;
+                                listCmd.set(taille, tab_cmd.getValueAt(i,1));
+                                taille++;
+                            }
+                            else
+                                JOptionPane.showMessageDialog(null, "Veuillez saisir un nombre entre 1 et 5000" + "\n" + "Tableau ligne:" + i, "SAISIE INCORRECTE",  JOptionPane.ERROR_MESSAGE);
+                        }
 
                     }
 
+                    if (flag == 1)
+                    {
+                        GenerationDocument doc = new GenerationDocument(listCmd,taille);
+                    }
+                    commandeSelect();
+                }
+                catch (NumberFormatException de)
+                {
+                    JOptionPane.showMessageDialog(null, "Veuillez saisir un nombre entre 1 et 5000", "SAISIE INCORRECTE",  JOptionPane.ERROR_MESSAGE);
                 }
 
-                GenerationDocument doc = new GenerationDocument(listCmd,j);
-                commandeSelect();
             }
         });
 
@@ -331,31 +345,81 @@ public class Interface_manager extends JFrame {
                 }
 
                 tabAttendu = baseDonnee.getCommande();
-
-                for (int i=0; i<tabAttendu.length ; i++)
-                {
-                    if (tabAttendu[i].getFlag() == true)
+                try {
+                    for (int i=0; i<tabAttendu.length ; i++)
                     {
-                        JPanel panel = new JPanel();
-                        JLabel label = new JLabel("date (ex: 2014-12-29 17:10:04) :");
-                        JTextField date = new JTextField(19);
-
-                        panel.add(label);
-                        panel.add(date);
-                        String[] options = new String[]{"OK", "Cancel"};
-                        int option = JOptionPane.showOptionDialog(null, panel, "Date de péremption : "+tabAttendu[i].getNom(),
-                                JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE,
-                                null, options, options[0]);
-                        if(option == 0) // pressing OK button
+                        if (tabAttendu[i].getFlag() == true)
                         {
-                            String dat = date.getText();
-                            baseDonnee.ajouterStock(tabAttendu[i].getNom(), tabAttendu[i].getQuantite(),dat);
-                        }
-                    }
+                            JPanel panel = new JPanel();
+                            JLabel jour = new JLabel("jour : ");
+                            JLabel mois = new JLabel("mois : ");
+                            JLabel annee = new JLabel("annee : ");
+                            JTextField jour1 = new JTextField(2);
+                            JTextField mois1 = new JTextField(2);
+                            JTextField annee1 = new JTextField(4);
 
+                            panel.add(jour);
+                            panel.add(jour1);
+                            panel.add(mois);
+                            panel.add(mois1);
+                            panel.add(annee);
+                            panel.add(annee1);
+                            String[] options = new String[]{"OK", "Cancel"};
+                            int option = JOptionPane.showOptionDialog(null, panel, "Date: "+tabAttendu[i].getNom(),
+                                    JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+                            if(option == 0) // pressing OK button
+                            {
+                                int an =  Integer.parseInt(annee1.getText());
+                                int mo =  Integer.parseInt(mois1.getText());
+                                int jo =  Integer.parseInt(jour1.getText());
+                                String str_annee = annee1.getText();
+                                String str_mois = mois1.getText();
+                                String str_jour = jour1.getText();
+
+                                if(str_mois.length() == 1)
+                                    str_mois = "0"+mois1.getText();
+                                if(str_jour.length() == 1)
+                                    str_jour = "0"+jour1.getText();
+
+                                if (jo>0 && jo<=31 && mo>0 && mo<=12 && an>=2015)
+                                {
+                                    String dat = str_annee+"-"+str_mois+"-"+str_jour+" "+"00:00:00";
+                                    System.out.println("dat === " + dat);
+                                    baseDonnee.ajouterStock(tabAttendu[i].getNom(), tabAttendu[i].getQuantite(),dat);
+                                    baseDonnee.supprimerCommande(tabAttendu[i].getNom(), tabAttendu[i].getQuantite());
+                                }
+                                else
+                                    JOptionPane.showMessageDialog(null, "Mauvaise saisie : 0<jour<31 et 0<mois<12 et 2015<année", "SAISIE INCORRECTE",  JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+
+                    }
+                }
+                catch (NumberFormatException de)
+                {
+                    JOptionPane.showMessageDialog(null, "Mauvaise saisie : 0<jour<31 et 0<mois<12 et 2015<année", "SAISIE INCORRECTE",  JOptionPane.ERROR_MESSAGE);
+                }
+
+                commandeSelect();
+            }
+        });
+
+        btn_suppLigne.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                int dialogResult = JOptionPane.showConfirmDialog(null, "Confirmer la suppression de l'élément selectionné ?", "CONFIRMATION SUPPRESSION",JOptionPane.YES_NO_OPTION);
+                if(dialogResult == JOptionPane.YES_OPTION)
+                {
+                    GestionBDD baseDonnee = new GestionBDD();
+                    int rowSelected = tab_att.getSelectedRow();
+
+                    baseDonnee.supprimerCommande(tab_att.getValueAt(rowSelected, 0), tab_att.getValueAt(rowSelected, 1));
+                    ((DefaultTableModel)tab_att.getModel()).removeRow(rowSelected);
                 }
             }
         });
+
 
         btn_majPrix.addActionListener(new ActionListener() {
             @Override
@@ -623,7 +687,7 @@ public class Interface_manager extends JFrame {
         // Create a couple of columns
         model.addColumn("PRODUIT");
         model.addColumn("QUANTITE");
-        model.addColumn("RECU");
+        model.addColumn("RECU ?");
 
         // Append a row
         for (int i = 0; i < tabAtt.length; i++)
@@ -1023,52 +1087,52 @@ public class Interface_manager extends JFrame {
         tabAffich.add(0);
 
         for (int i = 0; i < taille; i++) {
-            if (tab[i].getNom().equals("Baguette"))
+            if (tab[i].getNom().equals("BAGUETTE"))
             {
                 System.out.println("dans baguette");
                 tabAffich.set(0, tabAffich.get(0) + tab[i].getQuantite());
             }
 
-            else if (tab[i].getNom().equals("Flute"))
+            else if (tab[i].getNom().equals("FLUTE"))
                 tabAffich.set(1, tabAffich.get(1) + tab[i].getQuantite());
 
-            else if (tab[i].getNom().equals("Croissant"))
+            else if (tab[i].getNom().equals("CROISSANT"))
                 tabAffich.set(2, tabAffich.get(2) + tab[i].getQuantite());
 
-            else if (tab[i].getNom().equals("Pain au chocolat"))
+            else if (tab[i].getNom().equals("PAIN AU CHOCOLAT"))
                 tabAffich.set(3, tabAffich.get(3) + tab[i].getQuantite());
 
-            else if (tab[i].getNom().equals("Brioche sucre"))
+            else if (tab[i].getNom().equals("BRIOCHE SUCRE"))
                 tabAffich.set(4, tabAffich.get(4) + tab[i].getQuantite());
 
-            else if (tab[i].getNom().equals("Pain au lait"))
+            else if (tab[i].getNom().equals("PAIN AU LAIT"))
                 tabAffich.set(5, tabAffich.get(5) + tab[i].getQuantite());
 
-            else if (tab[i].getNom().equals("Tarte citron"))
+            else if (tab[i].getNom().equals("TARTE CITRON"))
                 tabAffich.set(6, tabAffich.get(6) + tab[i].getQuantite());
 
-            else if (tab[i].getNom().equals("Tarte praline"))
+            else if (tab[i].getNom().equals("TARTE PRALINE"))
                 tabAffich.set(7, tabAffich.get(7) + tab[i].getQuantite());
 
-            else if (tab[i].getNom().equals("Coca Cola"))
+            else if (tab[i].getNom().equals("COCA COLA"))
                 tabAffich.set(8, tabAffich.get(8) + tab[i].getQuantite());
 
-            else if (tab[i].getNom().equals("Fanta"))
+            else if (tab[i].getNom().equals("FANTA"))
                 tabAffich.set(9, tabAffich.get(9) + tab[i].getQuantite());
 
-            else if (tab[i].getNom().equals("Sprite"))
+            else if (tab[i].getNom().equals("SPRITE"))
                 tabAffich.set(10, tabAffich.get(10) + tab[i].getQuantite());
 
-            else if (tab[i].getNom().equals("Oasis"))
+            else if (tab[i].getNom().equals("OASIS"))
                 tabAffich.set(11, tabAffich.get(11) + tab[i].getQuantite());
 
-            else if (tab[i].getNom().equals("Orange"))
+            else if (tab[i].getNom().equals("ORANGE"))
                 tabAffich.set(12, tabAffich.get(12) + tab[i].getQuantite());
 
-            else if (tab[i].getNom().equals("Pomme"))
+            else if (tab[i].getNom().equals("POMME"))
                 tabAffich.set(13, tabAffich.get(13) + tab[i].getQuantite());
 
-            else if (tab[i].getNom().equals("Raisin"))
+            else if (tab[i].getNom().equals("RAISIN"))
                 tabAffich.set(14, tabAffich.get(14) + tab[i].getQuantite());
         }
         System.out.print(tabAffich);

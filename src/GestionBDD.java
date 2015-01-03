@@ -86,8 +86,6 @@ public class GestionBDD {
 		// lieu = "Stock" ou "Vitrine"  Cuisson n'est pas concerné par la péremption
 	}
 
-
-
 	//GETTER ****************************************
 	//GETTER ****************************************
 	public Vector<Produit> getVitrine(Vector<Produit> vitrine) {
@@ -570,7 +568,54 @@ public class GestionBDD {
 		}
 	}
 
+	public void supprimerCommande(Object nom, Object qte) {
 
+		Connection con = connexion();
+
+		int id = 0;
+		int rows = 0;
+
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT `ID` FROM `commande` WHERE`PRODUIT`='"+nom+"' AND `QUANTITE`='"+qte+"'");
+			while (rs.next()) {
+				if (rs.last()) {
+					rows = rs.getRow();
+					// Move to beginning
+					rs.beforeFirst();
+					break;
+				}
+			}
+			int j = 0;
+			while (rs.next()) {
+				id = rs.getInt("ID");
+				j++;
+			}
+
+			rs.close();
+			stmt.close();
+			//con.close();
+
+		}
+		catch(SQLException sqle){
+			sqle.printStackTrace();
+			System.out.println(sqle.getMessage());
+		}
+
+
+		try{
+			Statement stmt = con.createStatement();
+
+			stmt.executeUpdate("DELETE FROM `commande` WHERE `ID`='" + id + "' AND `PRODUIT`='" + nom + "' AND `QUANTITE`='" + qte + "'");
+
+			stmt.close();
+			con.close();
+
+		}
+		catch(SQLException sqle){
+			sqle.printStackTrace();
+		}
+	}
 	//AJOUT & SUPPR ****************************************
 	//STOCK ****************************************
 	public String ajouterStock(String nom, int quantite, String datePeremption) {	// Ajoute tjrs à la fin de la BDD
@@ -890,7 +935,6 @@ public class GestionBDD {
 	public void majCommande(String nom, int qte, int flag) {
 
 		try{
-
 			Connection con = connexion();
 			Statement stmt = con.createStatement();
 
@@ -898,9 +942,6 @@ public class GestionBDD {
 
 			stmt.close();
 			con.close();
-
-
-
 		}
 		catch(SQLException sqle){
 			sqle.printStackTrace();

@@ -180,8 +180,7 @@
             <properties/>
             <border type="none"/>
             <children>
-              <grid id="aee1e" binding="pan_cmdGeneral1" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                <margin top="0" left="0" bottom="0" right="0"/>
+              <grid id="aee1e" binding="pan_cmdGeneral1" layout-manager="GridBagLayout">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -191,25 +190,35 @@
                   <grid id="e99bd" binding="pan_produitACommander" layout-manager="BorderLayout" hgap="0" vgap="0">
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="1.0" weighty="1.0"/>
                     </constraints>
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <component id="f13e3" class="javax.swing.JButton" binding="btn_cmdProduit">
+                      <grid id="d560" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="0" left="0" bottom="0" right="0"/>
                         <constraints border-constraint="East"/>
-                        <properties>
-                          <maximumSize width="167" height="32"/>
-                          <minimumSize width="167" height="32"/>
-                          <preferredSize width="167" height="32"/>
-                          <text value="COMMANDER"/>
-                        </properties>
-                      </component>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="f13e3" class="javax.swing.JButton" binding="btn_cmdProduit">
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <maximumSize width="167" height="32"/>
+                              <minimumSize width="167" height="32"/>
+                              <preferredSize width="167" height="32"/>
+                              <text value="COMMANDER"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </grid>
                     </children>
                   </grid>
                 </children>
               </grid>
-              <grid id="75862" binding="pan_cmdGeneral2" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                <margin top="0" left="0" bottom="0" right="0"/>
+              <grid id="75862" binding="pan_cmdGeneral2" layout-manager="GridBagLayout">
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -219,16 +228,52 @@
                   <grid id="3f955" binding="pan_produitAttendu" layout-manager="BorderLayout" hgap="0" vgap="0">
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="1.0" weighty="1.0"/>
                     </constraints>
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <component id="37c43" class="javax.swing.JButton" binding="btn_majStock">
+                      <grid id="23c40" layout-manager="GridLayoutManager" row-count="5" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="0" left="0" bottom="0" right="0"/>
                         <constraints border-constraint="East"/>
-                        <properties>
-                          <text value="MISE A JOUR DES STOCKS"/>
-                        </properties>
-                      </component>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="37c43" class="javax.swing.JButton" binding="btn_majStock">
+                            <constraints>
+                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                                <preferred-size width="167" height="82"/>
+                              </grid>
+                            </constraints>
+                            <properties>
+                              <text value="MISE A JOUR DES STOCKS"/>
+                            </properties>
+                          </component>
+                          <component id="22877" class="javax.swing.JButton" binding="btn_suppLigne">
+                            <constraints>
+                              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="SUPPRIMER LIGNE"/>
+                            </properties>
+                          </component>
+                          <vspacer id="496fe">
+                            <constraints>
+                              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                          </vspacer>
+                          <vspacer id="1f3e7">
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                          </vspacer>
+                          <vspacer id="4c50">
+                            <constraints>
+                              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                          </vspacer>
+                        </children>
+                      </grid>
                     </children>
                   </grid>
                 </children>

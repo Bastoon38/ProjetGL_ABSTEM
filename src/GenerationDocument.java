@@ -43,52 +43,59 @@ public class GenerationDocument {
             System.out.println("getSelectedFile() : " + chooser.getSelectedFile());
         } else {
             System.out.println("No Selection ");
+            JOptionPane.showMessageDialog(null, "Création du PDF annulée", "Création PDF",  JOptionPane.ERROR_MESSAGE);
         }
 
         try {
-            PdfWriter.getInstance(document,
-                    new FileOutputStream(chooser.getSelectedFile() + "\\BonDeCommande_" + formatterRef.format(today) +".pdf"));
-                            document.open();
+            PdfWriter.getInstance(document,new FileOutputStream(chooser.getSelectedFile() + "\\BonDeCommande_" + formatterRef.format(today) +".pdf"));
+            document.open();
 
-            ClassLoader classLoader = getClass().getClassLoader();
-            URL file = classLoader.getResource("images/logoLBM.png");
-            Image img_lbm = Image.getInstance(file);
-            img_lbm.setAlignment(Element.ALIGN_CENTER);
+            if (document.isOpen())
+            {
+                ClassLoader classLoader = getClass().getClassLoader();
+                URL file = classLoader.getResource("images/logoLBM.png");
+                Image img_lbm = Image.getInstance(file);
+                img_lbm.setAlignment(Element.ALIGN_CENTER);
 
-            Paragraph par_titre = new Paragraph("***** BON DE COMMANDE *****");
-            Paragraph par_retourLigne = new Paragraph("\n");
+                Paragraph par_titre = new Paragraph("***** BON DE COMMANDE *****");
+                Paragraph par_retourLigne = new Paragraph("\n");
 
-            Paragraph par_date = new Paragraph("date: " + formatterDate.format(today));
-            //par_date.setAlignment(Element.ALIGN_LEFT);
+                Paragraph par_date = new Paragraph("date: " + formatterDate.format(today));
+                //par_date.setAlignment(Element.ALIGN_LEFT);
 
-            Paragraph par_ref = new Paragraph("ref: " + formatterRef.format(today));
+                Paragraph par_ref = new Paragraph("ref: " + formatterRef.format(today));
 
-            Paragraph par_adressePerso = new Paragraph("Adresse de livraison:\nCPE LYON\n43 Boulevard du 11 Novembre 1918\n69616 Villeurbanne");
-            par_titre.setAlignment(Element.ALIGN_CENTER);
-            par_adressePerso.setAlignment(Element.ALIGN_LEFT);
+                Paragraph par_adressePerso = new Paragraph("Adresse de livraison:\nCPE LYON\n43 Boulevard du 11 Novembre 1918\n69616 Villeurbanne");
+                par_titre.setAlignment(Element.ALIGN_CENTER);
+                par_adressePerso.setAlignment(Element.ALIGN_LEFT);
 
-            PdfPTable table = new PdfPTable(2);
-            table.addCell("PRODUIT");
-            table.addCell("QUANTITE COMMANDEE");
+                PdfPTable table = new PdfPTable(2);
+                table.addCell("PRODUIT");
+                table.addCell("QUANTITE COMMANDEE");
 
-            for(int i=0;i<taille ; i++){
-                table.addCell(listCmd.get(i).toString());
+                for(int i=0;i<taille ; i++){
+                    table.addCell(listCmd.get(i).toString());
+                }
+
+                Paragraph par_signature = new Paragraph("Signature:");
+
+                document.add(img_lbm);
+                document.add(par_titre);
+                document.add(par_retourLigne);
+                document.add(par_date);
+                document.add(par_ref);
+                document.add(par_retourLigne);
+                document.add(par_adressePerso);
+                document.add(par_retourLigne);
+                document.add(par_retourLigne);
+                document.add(table);
+                document.add(par_retourLigne);
+                document.add(par_signature);
+                document.close();
+                JOptionPane.showMessageDialog(null, "Création du PDF réussie", "Création PDF",  JOptionPane.INFORMATION_MESSAGE);
             }
-
-            Paragraph par_signature = new Paragraph("Signature:");
-
-            document.add(img_lbm);
-            document.add(par_titre);
-            document.add(par_retourLigne);
-            document.add(par_date);
-            document.add(par_ref);
-            document.add(par_retourLigne);
-            document.add(par_adressePerso);
-            document.add(par_retourLigne);
-            document.add(par_retourLigne);
-            document.add(table);
-            document.add(par_retourLigne);
-            document.add(par_signature);
+            else
+                JOptionPane.showMessageDialog(null, "Création du PDF échouée", "Création PDF",  JOptionPane.ERROR_MESSAGE);
 
         } catch (DocumentException de) {
 
@@ -97,7 +104,6 @@ public class GenerationDocument {
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
-        document.close();
     }
 }
 
