@@ -18,7 +18,6 @@ public class Connexion extends JFrame {
     private JLabel lab_boulangerie;
     private JLabel lab_photo1;
     private JLabel lab_photo2;
-    Interface_cuisson cuisinier = new Interface_cuisson();
 
     public  Connexion()
     {
@@ -29,24 +28,26 @@ public class Connexion extends JFrame {
         btn_vendeur.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                btn_cuisinier.setEnabled(false);
+                btn_manager.setEnabled(false);
                 affichePageVendeur();
-                TimerBDD timer = new TimerBDD();
-                timer.TimerVitrine();  // Lancement vérification péremption stock avec pop-up
             }
         });
 
         btn_cuisinier.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                btn_vendeur.setEnabled(false);
+                btn_manager.setEnabled(false);
                 affichePageCuisinier();
-                TimerBDD timer = new TimerBDD();
-                timer.TimerStock();  // Lancement vérification péremption stock avec pop-up
             }
         });
 
         btn_manager.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                btn_vendeur.setEnabled(false);
+                btn_cuisinier.setEnabled(false);
                 affichePageManager();
             }
         });
@@ -70,7 +71,7 @@ public class Connexion extends JFrame {
     public void  affichePageVendeur(){
         // TODO: mettre les actions à effectuer quand on clique sur le bouton vendeur
        Interface_vendeur vendeur = new Interface_vendeur();
-        Vendeur v=new Vendeur(vendeur);
+        Vendeur v = new Vendeur(vendeur);
         this.setVisible(false);
     }
 
