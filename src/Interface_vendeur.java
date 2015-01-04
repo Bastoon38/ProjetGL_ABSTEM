@@ -370,7 +370,7 @@ public class Interface_vendeur extends JFrame {
      */
     public Interface_vendeur() {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setMinimumSize(new Dimension(1300, 950));
+        setMaximumSize(new Dimension(1300, 950));
         setTitle("Vendeur");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 1446, 879);
