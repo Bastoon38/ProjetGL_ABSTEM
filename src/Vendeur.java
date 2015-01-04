@@ -15,7 +15,6 @@ public class Vendeur {
         this.iv = b;
         iv.setVisible(true);
 
-
     }
 
 
