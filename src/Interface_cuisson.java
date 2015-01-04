@@ -25,6 +25,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -44,12 +45,80 @@ public class Interface_cuisson extends JFrame {
 
     private JPanel contentPane;
     private JTable jtab_cuisson;
+    private JTable tab_jeter_1;
     private JButton btn_fini;
     private ClassLoader classLoader;
+
+    Vector<Produit> stock = new Vector<Produit>();
+    Vector<Produit> jeter= new Vector<Produit>();
 
     /**
      * Launch the application.
      */
+
+    void timer_refresh_produits_jeter()
+    {
+        for(int i=0 ; i<stock.size(); i++)
+        {
+            java.util.Date fechaActual = new java.util.Date();
+
+            if(stock.elementAt(i).getDate().after(fechaActual))
+            {
+                //System.out.println ("PAS PERIME "+vitrine.elementAt(i).getNom()+" "+vitrine.elementAt(i).getQuantite()+" "+vitrine.elementAt(i).getPrix()+" "+vitrine.elementAt(i).getPerime()+ " "+vitrine.elementAt(i).getDate()+" "+vitrine.elementAt(i).getTime());
+            }
+            else
+            {
+                String date_now =new SimpleDateFormat("yyyy-MM-dd").format(fechaActual);
+                String date_produit=stock.elementAt(i).getDate().toString();
+
+                // QUAND LES DATES SONT EGALS == MEME JOUR
+                if(date_now.equals(date_produit))
+                {
+                    //time now
+                    int hours_now=fechaActual.getHours();
+                    int minutes_now=fechaActual.getMinutes();
+                    int seconds_now=fechaActual.getSeconds();
+
+                    Time now= new Time(hours_now,minutes_now,seconds_now);
+
+                    //time produit
+                    int hours=stock.elementAt(i).getTime().getHours();
+                    int minutes=stock.elementAt(i).getTime().getMinutes();
+                    int seconds=stock.elementAt(i).getTime().getSeconds();
+                    Time produit=new Time(hours,minutes,seconds);
+                    //si le produit est perimé
+                    if(now.after(produit))
+                    {
+                        stock.elementAt(i).setPerime(1);
+                    }
+                }
+                else
+                {
+                    stock.elementAt(i).setPerime(1);
+                }
+            }
+        }
+        for(int i=0 ; i<stock.size(); i++)
+        {
+
+            //System.out.println (vitrine.elementAt(i).getNom()+" "+vitrine.elementAt(i).getQuantite()+" "+vitrine.elementAt(i).getPrix()+" "+vitrine.elementAt(i).getPerime()+ " "+vitrine.elementAt(i).getDate()+" "+vitrine.elementAt(i).getTime());
+            if(stock.elementAt(i).getPerime()== 1)
+            {
+                //System.out.println ("VITRINE PERIME "+vitrine.elementAt(i).getNom()+"	"+vitrine.elementAt(i).getQuantite()+"	"+vitrine.elementAt(i).getPrix()+"	"+vitrine.elementAt(i).getPerime()+"	"+vitrine.elementAt(i).getDate()+"	"+vitrine.elementAt(i).getTime());
+
+                JOptionPane.showMessageDialog(null, stock.elementAt(i).getNom()+" périmé", "Périmé "+ stock.elementAt(i).getNom(), JOptionPane.WARNING_MESSAGE);
+                Produit aux = new Produit(stock.elementAt(i).getNom(),stock.elementAt(i).getPrix(),stock.elementAt(i).getQuantite(),stock.elementAt(i).getDate(),stock.elementAt(i).getTime(),stock.elementAt(i).getPerime());
+                stock.remove(i);
+                jeter.add(aux);
+                i--;
+
+                DefaultTableModel model = (DefaultTableModel) tab_jeter_1.getModel();
+                model.addRow(new Object[]{aux.getNom(),Integer.toString(aux.getQuantite())});
+            }
+        }
+    }
+
+
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
