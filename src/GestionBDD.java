@@ -17,7 +17,7 @@ public class GestionBDD {
 	//connexion à la base de données
 	private Connection connexion() {
 		try {
-			String url = "jdbc:mysql://localhost/albm_dev2";
+			String url = "jdbc:mysql://localhost/albm_dev";
 			String login = "root";
 			String password = "";
 			Connection con = DriverManager.getConnection(url,login,password);
