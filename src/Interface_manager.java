@@ -356,7 +356,7 @@ public class Interface_manager extends JFrame {
                             JPanel panel = new JPanel();
                             JLabel jour = new JLabel("jour : ");
                             JLabel mois = new JLabel("mois : ");
-                            JLabel annee = new JLabel("annee : ");
+                            JLabel annee = new JLabel("année : ");
                             JTextField jour1 = new JTextField(2);
                             JTextField mois1 = new JTextField(2);
                             JTextField annee1 = new JTextField(4);
@@ -368,7 +368,7 @@ public class Interface_manager extends JFrame {
                             panel.add(annee);
                             panel.add(annee1);
                             String[] options = new String[]{"OK", "Cancel"};
-                            int option = JOptionPane.showOptionDialog(null, panel, "Date: "+tabAttendu[i].getNom(),
+                            int option = JOptionPane.showOptionDialog(null, panel, "Date péremption: "+tabAttendu[i].getNom(),
                                     JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
                             if(option == 0) // pressing OK button
                             {
@@ -384,7 +384,11 @@ public class Interface_manager extends JFrame {
                                 if(str_jour.length() == 1)
                                     str_jour = "0"+jour1.getText();
 
-                                if (jo>0 && jo<=31 && mo>0 && mo<=12 && an>=2015)
+                                Date DateChrono = new Date();   // Prend la date et l'heure du système
+                                Calendar cal = Calendar.getInstance();
+                                cal.setTime(DateChrono);
+
+                                if (jo>0 && jo<=31 && mo>0 && mo<=12 && an>=2015 && (jo>=cal.get(Calendar.DAY_OF_MONTH) && mo>=cal.get(Calendar.MONTH) && an>=cal.get(Calendar.YEAR)) )
                                 {
                                     String dat = str_annee+"-"+str_mois+"-"+str_jour+" "+"00:00:00";
                                     System.out.println("dat === " + dat);
@@ -392,7 +396,7 @@ public class Interface_manager extends JFrame {
                                     baseDonnee.supprimerCommande(tabAttendu[i].getNom(), tabAttendu[i].getQuantite());
                                 }
                                 else
-                                    JOptionPane.showMessageDialog(null, "Mauvaise saisie : 0<jour<31 et 0<mois<12 et 2015<année", "SAISIE INCORRECTE",  JOptionPane.ERROR_MESSAGE);
+                                    JOptionPane.showMessageDialog(null, "Mauvaise saisie : 0<jour<31 et 0<mois<12 et 2015<année OU date dépassée", "SAISIE INCORRECTE",  JOptionPane.ERROR_MESSAGE);
                             }
                         }
 
