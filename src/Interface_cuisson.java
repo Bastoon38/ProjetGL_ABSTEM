@@ -66,6 +66,7 @@ public class Interface_cuisson extends JFrame {
             {
                 //System.out.println ("PAS PERIME "+vitrine.elementAt(i).getNom()+" "+vitrine.elementAt(i).getQuantite()+" "+vitrine.elementAt(i).getPrix()+" "+vitrine.elementAt(i).getPerime()+ " "+vitrine.elementAt(i).getDate()+" "+vitrine.elementAt(i).getTime());
             }
+
             else
             {
                 String date_now =new SimpleDateFormat("yyyy-MM-dd").format(fechaActual);
@@ -89,31 +90,31 @@ public class Interface_cuisson extends JFrame {
                     //si le produit est perimé
                     if(now.after(produit))
                     {
-                        stock.elementAt(i).setPerime(1);
+                        //GestionBDD gestion = new GestionBDD();
+                        //gestion.supprimerStock(stock.elementAt(i).getNom(), 1);
+                        JOptionPane.showMessageDialog(null, stock.elementAt(i).getNom()+" du Stock périmé(e)", "Périmé "+ stock.elementAt(i).getNom(), JOptionPane.WARNING_MESSAGE);
+                        Produit aux = new Produit(stock.elementAt(i).getNom(),stock.elementAt(i).getPrix(),stock.elementAt(i).getQuantite(),stock.elementAt(i).getDate(),stock.elementAt(i).getTime(),stock.elementAt(i).getPerime());
+                        stock.remove(i);
+                        jeter.add(aux);
+                        i--;
+
+                        DefaultTableModel model = (DefaultTableModel) tab_jeter_1.getModel();
+                        model.addRow(new Object[]{aux.getNom(),Integer.toString(aux.getQuantite())});
                     }
                 }
                 else
                 {
-                    stock.elementAt(i).setPerime(1);
+                    //GestionBDD gestion = new GestionBDD();
+                    //gestion.supprimerStock(stock.elementAt(i).getNom(), 1);
+                    JOptionPane.showMessageDialog(null, stock.elementAt(i).getNom()+" périmé", "Périmé "+ stock.elementAt(i).getNom(), JOptionPane.WARNING_MESSAGE);
+                    Produit aux = new Produit(stock.elementAt(i).getNom(),stock.elementAt(i).getPrix(),stock.elementAt(i).getQuantite(),stock.elementAt(i).getDate(),stock.elementAt(i).getTime(),stock.elementAt(i).getPerime());
+                    stock.remove(i);
+                    jeter.add(aux);
+                    i--;
+
+                    DefaultTableModel model = (DefaultTableModel) tab_jeter_1.getModel();
+                    model.addRow(new Object[]{aux.getNom(),Integer.toString(aux.getQuantite())});
                 }
-            }
-        }
-        for(int i=0 ; i<stock.size(); i++)
-        {
-
-            //System.out.println (vitrine.elementAt(i).getNom()+" "+vitrine.elementAt(i).getQuantite()+" "+vitrine.elementAt(i).getPrix()+" "+vitrine.elementAt(i).getPerime()+ " "+vitrine.elementAt(i).getDate()+" "+vitrine.elementAt(i).getTime());
-            if(stock.elementAt(i).getPerime()== 1)
-            {
-                //System.out.println ("VITRINE PERIME "+vitrine.elementAt(i).getNom()+"	"+vitrine.elementAt(i).getQuantite()+"	"+vitrine.elementAt(i).getPrix()+"	"+vitrine.elementAt(i).getPerime()+"	"+vitrine.elementAt(i).getDate()+"	"+vitrine.elementAt(i).getTime());
-
-                JOptionPane.showMessageDialog(null, stock.elementAt(i).getNom()+" périmé", "Périmé "+ stock.elementAt(i).getNom(), JOptionPane.WARNING_MESSAGE);
-                Produit aux = new Produit(stock.elementAt(i).getNom(),stock.elementAt(i).getPrix(),stock.elementAt(i).getQuantite(),stock.elementAt(i).getDate(),stock.elementAt(i).getTime(),stock.elementAt(i).getPerime());
-                stock.remove(i);
-                jeter.add(aux);
-                i--;
-
-                DefaultTableModel model = (DefaultTableModel) tab_jeter_1.getModel();
-                model.addRow(new Object[]{aux.getNom(),Integer.toString(aux.getQuantite())});
             }
         }
     }

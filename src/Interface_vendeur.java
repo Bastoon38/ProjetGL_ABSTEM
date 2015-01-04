@@ -123,7 +123,7 @@ public class Interface_vendeur extends JFrame {
             {
                 //System.out.println ("VITRINE PERIME "+vitrine.elementAt(i).getNom()+"	"+vitrine.elementAt(i).getQuantite()+"	"+vitrine.elementAt(i).getPrix()+"	"+vitrine.elementAt(i).getPerime()+"	"+vitrine.elementAt(i).getDate()+"	"+vitrine.elementAt(i).getTime());
 
-                JOptionPane.showMessageDialog(null, vitrine.elementAt(i).getNom()+" périmé", "Périmé "+ vitrine.elementAt(i).getNom(), JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, vitrine.elementAt(i).getNom()+" périmé(e)", "Périmé(e) "+ vitrine.elementAt(i).getNom(), JOptionPane.WARNING_MESSAGE);
                 Produit aux = new Produit(vitrine.elementAt(i).getNom(),vitrine.elementAt(i).getPrix(),vitrine.elementAt(i).getQuantite(),vitrine.elementAt(i).getDate(),vitrine.elementAt(i).getTime(),vitrine.elementAt(i).getPerime());
                 vitrine.remove(i);
                 jeter.add(aux);
