@@ -146,7 +146,6 @@ public class Interface_cuisson extends JFrame {
                 TimerTask timerTask = new TimerTask() {
                     int sec=(60*int_temps);
                     public void run() {
-
                         if(sec>=0)
                         {
                             int hor=sec/3600;
@@ -162,7 +161,6 @@ public class Interface_cuisson extends JFrame {
                             jtab_cuisson.setValueAt("FIN", rowSelected, 2);
                             cancel();
                         }
-
                     }
                 };
 
@@ -170,7 +168,7 @@ public class Interface_cuisson extends JFrame {
                 Timer timer = new Timer();
 
                 //timer avec la fonction à executer, le retard et l'interval de repetition
-                timer.scheduleAtFixedRate(timerTask, 0, 1000);
+                timer.schedule(timerTask, 0, 1000);
 
 
 
@@ -331,7 +329,7 @@ public class Interface_cuisson extends JFrame {
         }
 
 
-        TimerTask timerTask = new TimerTask() {
+        TimerTask timerTask2 = new TimerTask() {
             public void run() {
                 timer_refresh_produits_jeter();
                 java.util.Date maDate = new java.util.Date();
@@ -339,8 +337,8 @@ public class Interface_cuisson extends JFrame {
             }
         };
 
-        Timer timer = new Timer();   // creation du timer
-        timer.scheduleAtFixedRate(timerTask, 0, (60000*60)); //timer répétitive toutes les 1h
+        Timer timer2 = new Timer();   // creation du timer
+        timer2.schedule(timerTask2, 0, (60000*60)); //timer répétitive toutes les 1h
         System.out.println("Tâche vérification péremption stock lancée toutes les 1h");
     }
 

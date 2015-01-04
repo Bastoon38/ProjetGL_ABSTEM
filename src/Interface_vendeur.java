@@ -1124,7 +1124,7 @@ public class Interface_vendeur extends JFrame {
         };
 
         Timer timer = new Timer();   // creation du timer
-        timer.scheduleAtFixedRate(timerTask, 0, 120000); //timer répétitive toutes les 2 minutes
+        timer.schedule(timerTask, 0, 120000); //timer répétitive toutes les 2 minutes
         System.out.println("Tâche vérification péremption vitrine lancée toutes les 2 minutes");
     }
 
