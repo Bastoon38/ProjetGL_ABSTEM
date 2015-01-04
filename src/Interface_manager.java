@@ -217,7 +217,7 @@ public class Interface_manager extends JFrame {
         btn_paramDefaut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "bouton param defaut cliqué", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "bouton param défaut cliqué", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
@@ -404,7 +404,7 @@ public class Interface_manager extends JFrame {
                 }
                 catch (NumberFormatException de)
                 {
-                    JOptionPane.showMessageDialog(null, "Mauvaise saisie : 0<jour<31 et 0<mois<12 et 2015<année", "SAISIE INCORRECTE",  JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Mauvaise saisie : 0<jour<31 et 0<mois<12 et 2015<année OU produit déjà périmé", "SAISIE INCORRECTE",  JOptionPane.ERROR_MESSAGE);
                 }
 
                 commandeSelect();
@@ -415,7 +415,7 @@ public class Interface_manager extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                int dialogResult = JOptionPane.showConfirmDialog(null, "Confirmer la suppression de l'élément selectionné ?", "CONFIRMATION SUPPRESSION",JOptionPane.YES_NO_OPTION);
+                int dialogResult = JOptionPane.showConfirmDialog(null, "Confirmer la suppression de l'élément sélectionné ?", "CONFIRMATION SUPPRESSION",JOptionPane.YES_NO_OPTION);
                 if(dialogResult == JOptionPane.YES_OPTION)
                 {
                     GestionBDD baseDonnee = new GestionBDD();
@@ -445,7 +445,7 @@ public class Interface_manager extends JFrame {
                         if(float_prix>0.0 && float_prix < 10.0 )
                             baseDonnee.majPrix(tab_paramPrix.getValueAt(i,0).toString(),tab_paramPrix.getValueAt(i,1).toString());
                         else
-                            JOptionPane.showMessageDialog(null, "Element: "+produit +" non modifié car mauvaise saisie", "Mise à jour des prix",  JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "Elément: "+produit +" non modifié car mauvaise saisie", "Mise à jour des prix",  JOptionPane.ERROR_MESSAGE);
                     }
                     JOptionPane.showMessageDialog(null, "Mise à jour des prix avec une saisie correcte réussie !", "Mise à jour des prix",  JOptionPane.INFORMATION_MESSAGE);
 
@@ -475,10 +475,10 @@ public class Interface_manager extends JFrame {
                     if (nouvMdp.equals(confMdp))
                         JOptionPane.showMessageDialog(null, baseDonnee.setMdp(nouvMdp), "SAISIE REUSSIE", JOptionPane.INFORMATION_MESSAGE);
                     else
-                        JOptionPane.showMessageDialog(null,"Echec de la mide a jour du mot de passe", "SAISIE NON REUSSIE", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null,"Echec de la mise à jour du mot de passe", "SAISIE NON REUSSIE", JOptionPane.ERROR_MESSAGE);
                 }
                 else
-                    JOptionPane.showMessageDialog(null,"Echec de la mide a jour du mot de passe", "SAISIE NON REUSSIE", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"Echec de la mise à jour du mot de passe", "SAISIE NON REUSSIE", JOptionPane.ERROR_MESSAGE);
             }
         });
 
@@ -533,14 +533,14 @@ public class Interface_manager extends JFrame {
                         if(int_seuil>0 && int_seuil < 100 && int_fournee>0 && int_fournee < 100 )
                             baseDonnee.majSeuil(produit,jour ,heureFinal,seuil, fournee);
                         else
-                            JOptionPane.showMessageDialog(null, "Element: "+produit +" non modifié car mauvaise saisie", "Mise à jour des seuils",  JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "Elément: "+produit +" non modifié(e) car mauvaise saisie", "Mise à jour des seuils",  JOptionPane.ERROR_MESSAGE);
                     }
                     JOptionPane.showMessageDialog(null, "Mise à jour des seuils avec une saisie correcte réussie !", "Mise à jour des seuils",  JOptionPane.INFORMATION_MESSAGE);
 
                 }
                 catch (NumberFormatException de)
                 {
-                    JOptionPane.showMessageDialog(null, "Mauvaise saisie : 0<seuil<100 et 0<fournee<100", "Mise à jour des seuils",  JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Mauvaise saisie : 0<seuil<100 et 0<fournée<100", "Mise à jour des seuils",  JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
