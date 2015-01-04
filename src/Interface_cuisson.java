@@ -242,7 +242,7 @@ public class Interface_cuisson extends JFrame {
 
         jtab_cuisson = new JTable(new DefaultTableModel(
                 new Object[][] {},
-                new String[] {"Nom","Quantite","Time"}
+                new String[] {"Nom","Quantité","Time"}
         ) {
             Class[] columnTypes = new Class[] {
                     Object.class, Integer.class,Integer.class
