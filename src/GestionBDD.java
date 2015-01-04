@@ -448,6 +448,44 @@ public class GestionBDD {
 		return produit;
 	}
 
+
+	public float getRecette() {
+
+		Connection con = connexion();
+
+		float total = 0;
+
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM `bilan`");
+
+			while (rs.next()) {
+				String nom = rs.getString("PRODUIT");
+				float vendu = rs.getInt("VENDU");
+				Statement stmt2 = con.createStatement();
+				ResultSet rs2 = stmt2.executeQuery("SELECT PRIX FROM `produit` WHERE PRODUIT='" + nom + "'");
+				float prix=0;
+				while (rs2.next()) {
+					prix = rs2.getFloat("PRIX");
+				}
+				total = total + (vendu*prix);
+			}
+
+
+
+			rs.close();
+			stmt.close();
+			con.close();
+
+		}
+		catch(SQLException sqle){
+			sqle.printStackTrace();
+			System.out.println(sqle.getMessage());
+		}
+		return total;
+	}
+
+
 	public String getMdp() {
 
 		Connection con = connexion();
