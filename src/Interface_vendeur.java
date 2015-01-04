@@ -370,7 +370,7 @@ public class Interface_vendeur extends JFrame {
      */
     public Interface_vendeur() {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setMaximumSize(new Dimension(1300, 950));
+        setMinimumSize(new Dimension(1200, 900));
         setTitle("Vendeur");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 1446, 879);
@@ -558,7 +558,7 @@ public class Interface_vendeur extends JFrame {
 
         JButton btn_payer = new JButton("PAYER");
        // btn_payer.setIcon(new ImageIcon("images/payer.jpg"));
-        file = classLoader.getResource("images/payer.jpg");
+        file = classLoader.getResource("images/payer2.jpg");
         Icon icn_payer = new ImageIcon(file);
         btn_payer.setIcon(icn_payer);
 

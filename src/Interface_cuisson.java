@@ -110,7 +110,7 @@ public class Interface_cuisson extends JFrame {
 
     public Interface_cuisson() {
         this.setExtendedState(MAXIMIZED_BOTH);
-        setMaximumSize(new Dimension(1300, 950));
+        setMinimumSize(new Dimension(1200, 900));
         classLoader = getClass().getClassLoader();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

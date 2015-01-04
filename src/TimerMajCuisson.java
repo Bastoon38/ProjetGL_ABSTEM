@@ -50,18 +50,19 @@ class TimerMajCuisson extends TimerTask {
         LinkedList tab;
         tab = setAfficheTab(tabVitrine,tabVitrine.length);
 
-        for (int i=0 ; i<tabSeuil.length;i++)
-        {
+        for (int i=0 ; i<tabSeuil.length;i++) {
             System.out.println("dans la boucle, nom = " + tabSeuil[i].getNom());
             int seuil = tabSeuil[i].getSeuil();
-            System.out.println("test = " + seuil);
+            System.out.println("seuil = " + seuil);
             int vitrine = (Integer) tab.get(i);
-            System.out.println("test2 = " + vitrine);
-            if(vitrine < seuil)
-                baseDonnee.ajouterCuisson(tabSeuil[i].getNom(),tabSeuil[i].getFournee());
-        }
+            System.out.println("vitrine = " + vitrine);
+            if (vitrine < seuil)
+            {
+                baseDonnee.ajouterCuisson(tabSeuil[i].getNom(), tabSeuil[i].getFournee());
+                baseDonnee.supprimerStock(tabSeuil[i].getNom(), tabSeuil[i].getFournee());
+            }
 
-        //System.out.println("Hello World!");
+        }
     }
 
 

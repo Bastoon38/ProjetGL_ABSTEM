@@ -217,7 +217,7 @@ public class Interface_manager extends JFrame {
         btn_paramDefaut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Bouton param défaut cliqué", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "bouton param defaut cliqué", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
@@ -303,7 +303,7 @@ public class Interface_manager extends JFrame {
                             System.out.println("tab_cmd.getValueAt(i,1) =========" + tab_cmd.getValueAt(i,1).getClass());
                             valeurSaisie = Integer.parseInt(tab_cmd.getValueAt(i, 1).toString());
                             System.out.println("valeurSaisie =========" + valeurSaisie);
-                            if( valeurSaisie>= 1 && valeurSaisie <= 5000)
+                            if( valeurSaisie> 1 && valeurSaisie < 5000)
                             {
                                 flag = 1;
                                 baseDonnee.ajouterCommandeFournisseur(tab_cmd.getValueAt(i,0), tab_cmd.getValueAt(i,1));
@@ -356,7 +356,7 @@ public class Interface_manager extends JFrame {
                             JPanel panel = new JPanel();
                             JLabel jour = new JLabel("jour : ");
                             JLabel mois = new JLabel("mois : ");
-                            JLabel annee = new JLabel("année : ");
+                            JLabel annee = new JLabel("annee : ");
                             JTextField jour1 = new JTextField(2);
                             JTextField mois1 = new JTextField(2);
                             JTextField annee1 = new JTextField(4);
@@ -368,7 +368,7 @@ public class Interface_manager extends JFrame {
                             panel.add(annee);
                             panel.add(annee1);
                             String[] options = new String[]{"OK", "Cancel"};
-                            int option = JOptionPane.showOptionDialog(null, panel, "Date péremption: "+tabAttendu[i].getNom(),
+                            int option = JOptionPane.showOptionDialog(null, panel, "Date: "+tabAttendu[i].getNom(),
                                     JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
                             if(option == 0) // pressing OK button
                             {
@@ -384,11 +384,7 @@ public class Interface_manager extends JFrame {
                                 if(str_jour.length() == 1)
                                     str_jour = "0"+jour1.getText();
 
-                                Date DateChrono = new Date();   // Prend la date et l'heure du système
-                                Calendar cal = Calendar.getInstance();
-                                cal.setTime(DateChrono);
-
-                                if (jo>0 && jo<=31 && mo>0 && mo<=12 && an>=2015 && (jo>=cal.get(Calendar.DAY_OF_MONTH) && mo>=cal.get(Calendar.MONTH) && an>=cal.get(Calendar.YEAR)) )
+                                if (jo>0 && jo<=31 && mo>0 && mo<=12 && an>=2015)
                                 {
                                     String dat = str_annee+"-"+str_mois+"-"+str_jour+" "+"00:00:00";
                                     System.out.println("dat === " + dat);
@@ -396,7 +392,7 @@ public class Interface_manager extends JFrame {
                                     baseDonnee.supprimerCommande(tabAttendu[i].getNom(), tabAttendu[i].getQuantite());
                                 }
                                 else
-                                    JOptionPane.showMessageDialog(null, "Mauvaise saisie : 0<jour<31 et 0<mois<12 et 2015<année OU produit déjà périmé", "SAISIE INCORRECTE",  JOptionPane.ERROR_MESSAGE);
+                                    JOptionPane.showMessageDialog(null, "Mauvaise saisie : 0<jour<31 et 0<mois<12 et 2015<année", "SAISIE INCORRECTE",  JOptionPane.ERROR_MESSAGE);
                             }
                         }
 
@@ -404,7 +400,7 @@ public class Interface_manager extends JFrame {
                 }
                 catch (NumberFormatException de)
                 {
-                    JOptionPane.showMessageDialog(null, "Mauvaise saisie : 0<jour<31 et 0<mois<12 et 2015<année OU produit déjà périmé", "SAISIE INCORRECTE",  JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Mauvaise saisie : 0<jour<31 et 0<mois<12 et 2015<année", "SAISIE INCORRECTE",  JOptionPane.ERROR_MESSAGE);
                 }
 
                 commandeSelect();
@@ -415,7 +411,7 @@ public class Interface_manager extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                int dialogResult = JOptionPane.showConfirmDialog(null, "Confirmer la suppression de l'élément sélectionné ?", "CONFIRMATION SUPPRESSION",JOptionPane.YES_NO_OPTION);
+                int dialogResult = JOptionPane.showConfirmDialog(null, "Confirmer la suppression de l'élément selectionné ?", "CONFIRMATION SUPPRESSION",JOptionPane.YES_NO_OPTION);
                 if(dialogResult == JOptionPane.YES_OPTION)
                 {
                     GestionBDD baseDonnee = new GestionBDD();
@@ -445,7 +441,7 @@ public class Interface_manager extends JFrame {
                         if(float_prix>0.0 && float_prix < 10.0 )
                             baseDonnee.majPrix(tab_paramPrix.getValueAt(i,0).toString(),tab_paramPrix.getValueAt(i,1).toString());
                         else
-                            JOptionPane.showMessageDialog(null, "Elément: "+produit +" non modifié car mauvaise saisie", "Mise à jour des prix",  JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "Element: "+produit +" non modifié car mauvaise saisie", "Mise à jour des prix",  JOptionPane.ERROR_MESSAGE);
                     }
                     JOptionPane.showMessageDialog(null, "Mise à jour des prix avec une saisie correcte réussie !", "Mise à jour des prix",  JOptionPane.INFORMATION_MESSAGE);
 
@@ -475,10 +471,10 @@ public class Interface_manager extends JFrame {
                     if (nouvMdp.equals(confMdp))
                         JOptionPane.showMessageDialog(null, baseDonnee.setMdp(nouvMdp), "SAISIE REUSSIE", JOptionPane.INFORMATION_MESSAGE);
                     else
-                        JOptionPane.showMessageDialog(null,"Echec de la mise à jour du mot de passe", "SAISIE NON REUSSIE", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null,"Echec de la mise a jour du mot de passe", "SAISIE NON REUSSIE", JOptionPane.ERROR_MESSAGE);
                 }
                 else
-                    JOptionPane.showMessageDialog(null,"Echec de la mise à jour du mot de passe", "SAISIE NON REUSSIE", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"Echec de la mise a jour du mot de passe", "SAISIE NON REUSSIE", JOptionPane.ERROR_MESSAGE);
             }
         });
 
@@ -533,14 +529,14 @@ public class Interface_manager extends JFrame {
                         if(int_seuil>0 && int_seuil < 100 && int_fournee>0 && int_fournee < 100 )
                             baseDonnee.majSeuil(produit,jour ,heureFinal,seuil, fournee);
                         else
-                            JOptionPane.showMessageDialog(null, "Elément: "+produit +" non modifié car mauvaise saisie", "Mise à jour des seuils",  JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "Element: "+produit +" non modifié car mauvaise saisie", "Mise à jour des seuils",  JOptionPane.ERROR_MESSAGE);
                     }
-                    JOptionPane.showMessageDialog(null, "Mise à jour des seuils dont la saisie est correcte réussie !", "Mise à jour des seuils",  JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Mise à jour des seuils avec une saisie correcte réussie !", "Mise à jour des seuils",  JOptionPane.INFORMATION_MESSAGE);
 
                 }
                 catch (NumberFormatException de)
                 {
-                    JOptionPane.showMessageDialog(null, "Mauvaise saisie : 0<seuil<100 et 0<fournée<100", "Mise à jour des seuils",  JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Mauvaise saisie : 0<seuil<100 et 0<fournee<100", "Mise à jour des seuils",  JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -679,8 +675,9 @@ public class Interface_manager extends JFrame {
         pan_bilanGraph.removeAll();
         pan_bilanGraph.add(cPanel, BorderLayout.CENTER);
 
+        float recette = baseDonnee.getRecette();
 
-        lab_recette.setText("RECETTE = 13976 €");
+        lab_recette.setText("RECETTE = "+ recette+" €");
         lab_recette.setFont(new Font("Serif", Font.BOLD, 23));
         pan_bilanTab.add(lab_recette, BorderLayout.SOUTH);
     }

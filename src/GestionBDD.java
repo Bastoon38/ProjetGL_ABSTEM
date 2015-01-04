@@ -680,7 +680,7 @@ public class GestionBDD {
 			Connection con = connexion();
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("INSERT INTO `four`(`PRODUIT`,`QUANTITE`,`CUISSON`) VALUES ('" + nom +"'," + String.valueOf(quantite) + ",0)");
+			stmt.executeUpdate("INSERT INTO `four`(`PRODUIT`,`QUANTITE`,`CUISSON`,`TIME_LANCEMENT`) VALUES ('" + nom +"'," + String.valueOf(quantite) + ",0,NULL)");
 
 			stmt.close();
 			con.close();

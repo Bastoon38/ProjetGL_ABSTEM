@@ -25,7 +25,7 @@ public class Main {
         Connexion frame1 = new Connexion();
         frame1.setVisible(true);
 
-        //Timer timer = new Timer();
-        //timer.schedule(new TimerMajCuisson(), 0, 150000);
+        Timer timer = new Timer();
+        timer.schedule(new TimerMajCuisson(), 0, 1800000);
     }
 }
