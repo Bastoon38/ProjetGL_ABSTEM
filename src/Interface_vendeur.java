@@ -34,10 +34,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.Vector;
+import java.util.*;
 
 import javax.swing.JList;
 import javax.swing.JSplitPane;
@@ -121,8 +118,8 @@ public class Interface_vendeur extends JFrame {
             //System.out.println (vitrine.elementAt(i).getNom()+" "+vitrine.elementAt(i).getQuantite()+" "+vitrine.elementAt(i).getPrix()+" "+vitrine.elementAt(i).getPerime()+ " "+vitrine.elementAt(i).getDate()+" "+vitrine.elementAt(i).getTime());
             if(vitrine.elementAt(i).getPerime()== 1)
             {
-                //System.out.println ("VITRINE PERIME "+vitrine.elementAt(i).getNom()+"	"+vitrine.elementAt(i).getQuantite()+"	"+vitrine.elementAt(i).getPrix()+"	"+vitrine.elementAt(i).getPerime()+"	"+vitrine.elementAt(i).getDate()+"	"+vitrine.elementAt(i).getTime());
-                //if(){} // Si on est sur l'interface vendeur
+                System.out.println ("VITRINE PERIME "+vitrine.elementAt(i).getNom()+"	"+vitrine.elementAt(i).getQuantite()+"	"+vitrine.elementAt(i).getPrix()+"	"+vitrine.elementAt(i).getPerime()+"	"+vitrine.elementAt(i).getDate()+"	"+vitrine.elementAt(i).getTime());
+
                 JOptionPane.showMessageDialog(null, vitrine.elementAt(i).getNom()+" périmé(e)", "Périmé(e) "+ vitrine.elementAt(i).getNom(), JOptionPane.WARNING_MESSAGE);
                 Produit aux = new Produit(vitrine.elementAt(i).getNom(),vitrine.elementAt(i).getPrix(),vitrine.elementAt(i).getQuantite(),vitrine.elementAt(i).getDate(),vitrine.elementAt(i).getTime(),vitrine.elementAt(i).getPerime());
                 vitrine.remove(i);
@@ -1120,8 +1117,25 @@ public class Interface_vendeur extends JFrame {
         this.setExtendedState(MAXIMIZED_BOTH);
 
         //TODO faire le timer de jeter
-        //timer_refresh_produits_jeter();
+        try {
+            Thread.sleep(3000);                 //1000 milliseconds is one second.
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+
+        TimerTask timerTask = new TimerTask() {
+            public void run() {
+                timer_refresh_produits_jeter();
+                java.util.Date maDate = new java.util.Date();
+                System.out.println("Tâche vérification péremption vitrine lancée le " + maDate.toString());
+            }
+        };
+
+        Timer timer = new Timer();   // creation du timer
+        timer.scheduleAtFixedRate(timerTask, 0, 120000); //timer répétitive toutes les 2 minutes
+        System.out.println("Tâche vérification péremption vitrine lancée toutes les 2 minutes");
     }
+
 
 }
 

@@ -334,6 +334,18 @@ public class Interface_cuisson extends JFrame {
             //model.addRow(new Object[]{cuisson.elementAt(i).getNom(),cuisson.elementAt(i).getQuantite(),base.getTime_cuisson(cuisson.elementAt(i).getNom())});
         }
 
+
+        TimerTask timerTask = new TimerTask() {
+            public void run() {
+                timer_refresh_produits_jeter();
+                java.util.Date maDate = new java.util.Date();
+                System.out.println("Tâche vérification péremption stock lancée le " + maDate.toString());
+            }
+        };
+
+        Timer timer = new Timer();   // creation du timer
+        timer.scheduleAtFixedRate(timerTask, 0, (60000*60)); //timer répétitive toutes les 1h
+        System.out.println("Tâche vérification péremption stock lancée toutes les 1h");
     }
 
     public synchronized void playSound() {
