@@ -236,9 +236,12 @@ public class GestionBDD {
 				tps_cuisson = rs.getInt("TEMPS CUISSON");
 			}
 
+
 			rs = stmt.executeQuery("SELECT * from `four` where `PRODUIT`= '"+ nom +"' AND CUISSON=1 AND ID=" + id + " LIMIT 1");
-			while (rs.next()) {
+			if (rs.next()) {
 				time = rs.getTime("TIME_LANCEMENT");
+			} else {
+				return tps_cuisson;
 			}
 
 
@@ -246,6 +249,7 @@ public class GestionBDD {
 			long now = d.getTime();
 			Time t2 = new Time(now - time.getTime());
 			temps=tps_cuisson-t2.getMinutes();
+			temps=temps*60-t2.getSeconds();//retourne les secs
 
 			rs.close();
 			stmt.close();
@@ -709,7 +713,7 @@ public class GestionBDD {
 	}
 
 	//mise à jour d'un produit en "attente de cuisson" à "en cuisson"
-	public void majCuisson(String nom, String qte) {
+	public void majCuisson(String nom, String qte, int id) {
 
 		try{
 
@@ -719,7 +723,7 @@ public class GestionBDD {
 			System.out.println(nom);System.out.println(qte);
 			java.util.Date date = new java.util.Date();
 			Time time = new Time(date.getTime());
-			stmt.executeUpdate("UPDATE `four` SET `CUISSON`=1,TIME_LANCEMENT='" + time + "' WHERE `PRODUIT`='" + nom + "' AND `QUANTITE`=" + qte + " LIMIT 1");
+			stmt.executeUpdate("UPDATE `four` SET `CUISSON`=1,TIME_LANCEMENT='" + time + "' WHERE `PRODUIT`='" + nom + "' AND `QUANTITE`=" + qte + " AND ID=" + id + " LIMIT 1");
 
 
 			stmt.close();

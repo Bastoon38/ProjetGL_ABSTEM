@@ -135,10 +135,12 @@ public class Interface_cuisson extends JFrame {
                 String nom=jtab_cuisson.getModel().getValueAt(rowSelected, 0).toString();
                 String quan=jtab_cuisson.getModel().getValueAt(rowSelected, 1).toString();
                 String time=jtab_cuisson.getModel().getValueAt(rowSelected, 2).toString();
+                String ids=jtab_cuisson.getModel().getValueAt(rowSelected, 3).toString();
                 final int int_temps=Integer.parseInt(time);
+                final int id3=Integer.parseInt(ids);
 
                 GestionBDD baseDonnee = new GestionBDD();
-                baseDonnee.majCuisson(nom, quan);
+                baseDonnee.majCuisson(nom, quan,id3);
 
 
                 TimerTask timerTask = new TimerTask() {

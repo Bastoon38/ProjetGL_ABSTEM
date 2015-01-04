@@ -490,7 +490,7 @@ public class Interface_vendeur extends JFrame {
         JPanel pan_commande = new JPanel();
         pan_commande.setBounds(1344, 28, 495, 924);
 
-        JButton btn_decon = new JButton("Deconnection");
+        JButton btn_decon = new JButton("Déconnexion");
         btn_decon.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Connexion connexion = new Connexion();
