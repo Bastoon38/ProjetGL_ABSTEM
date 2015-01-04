@@ -18,6 +18,7 @@ public class Connexion extends JFrame {
     private JLabel lab_boulangerie;
     private JLabel lab_photo1;
     private JLabel lab_photo2;
+    Interface_cuisson cuisinier = new Interface_cuisson();
 
     public  Connexion()
     {
@@ -62,6 +63,8 @@ public class Connexion extends JFrame {
         file = classLoader.getResource("images/logoLBM4.png");
         Icon icn_lbm = new ImageIcon(file);
         lab_photo2.setIcon(icn_lbm);
+
+
     }
 
     public void  affichePageVendeur(){

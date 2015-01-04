@@ -40,7 +40,7 @@ public class Produit {
         //  this.time=time;
     }
 
-    public Produit(String obj_name, int quant, int cuisson, int ID) {
+    public Produit(String obj_name, int quant, int cuisson, int id) {
 
         this.nom = obj_name;
         this.cuisson= cuisson;
@@ -135,6 +135,11 @@ public class Produit {
     public int getSeuil() {return this.seuil;}
     public int getFourneeIni() {return this.fournee_ini;}
     public int getFournee() {return this.fournee;}
+    public int gettpsCuisson() {return this.tpsCuisson;}
+    public int gettailleFournee() {return this.tailleFournee;}
+    public int getid() {return this.id;}
+    public int getcuisson() {return this.cuisson;}
+
 
     // set Methods
     public void setNom(String nom)
@@ -188,6 +193,14 @@ public class Produit {
     public void setFournee(int fournee)
     {
         this.fournee=fournee;
+    }
+    public void settpsCuisson(int tpsCuisson)
+    {
+        this.tpsCuisson=tpsCuisson;
+    }
+    public void settailleFournee(int tailleFournee)
+    {
+        this.tailleFournee=tailleFournee;
     }
 
 }

@@ -25,7 +25,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -45,97 +44,10 @@ public class Interface_cuisson extends JFrame {
 
     private JPanel contentPane;
     private JTable jtab_cuisson;
-    private JTable tab_jeter_1;
     private JButton btn_fini;
     private ClassLoader classLoader;
 
-    Vector<Produit> stock = new Vector<Produit>();
-    Vector<Produit> jeter= new Vector<Produit>();
 
-    /**
-     * Launch the application.
-     */
-
-    void timer_refresh_produits_jeter()
-    {
-        for(int i=0 ; i<stock.size(); i++)
-        {
-            java.util.Date fechaActual = new java.util.Date();
-
-            if(stock.elementAt(i).getDate().after(fechaActual))
-            {
-                //System.out.println ("PAS PERIME "+vitrine.elementAt(i).getNom()+" "+vitrine.elementAt(i).getQuantite()+" "+vitrine.elementAt(i).getPrix()+" "+vitrine.elementAt(i).getPerime()+ " "+vitrine.elementAt(i).getDate()+" "+vitrine.elementAt(i).getTime());
-            }
-
-            else
-            {
-                String date_now =new SimpleDateFormat("yyyy-MM-dd").format(fechaActual);
-                String date_produit=stock.elementAt(i).getDate().toString();
-
-                // QUAND LES DATES SONT EGALES == MEME JOUR
-                if(date_now.equals(date_produit))
-                {
-                    //time now
-                    int hours_now=fechaActual.getHours();
-                    int minutes_now=fechaActual.getMinutes();
-                    int seconds_now=fechaActual.getSeconds();
-
-                    Time now= new Time(hours_now,minutes_now,seconds_now);
-
-                    //time produit
-                    int hours=stock.elementAt(i).getTime().getHours();
-                    int minutes=stock.elementAt(i).getTime().getMinutes();
-                    int seconds=stock.elementAt(i).getTime().getSeconds();
-                    Time produit=new Time(hours,minutes,seconds);
-                    //si le produit est perimé
-                    if(now.after(produit))
-                    {
-                        //GestionBDD gestion = new GestionBDD();
-                        //gestion.supprimerStock(stock.elementAt(i).getNom(), 1);
-                        JOptionPane.showMessageDialog(null, stock.elementAt(i).getNom()+" du Stock périmé(e)", "Périmé "+ stock.elementAt(i).getNom(), JOptionPane.WARNING_MESSAGE);
-                        Produit aux = new Produit(stock.elementAt(i).getNom(),stock.elementAt(i).getPrix(),stock.elementAt(i).getQuantite(),stock.elementAt(i).getDate(),stock.elementAt(i).getTime(),stock.elementAt(i).getPerime());
-                        stock.remove(i);
-                        jeter.add(aux);
-                        i--;
-
-                        DefaultTableModel model = (DefaultTableModel) tab_jeter_1.getModel();
-                        model.addRow(new Object[]{aux.getNom(),Integer.toString(aux.getQuantite())});
-                    }
-                }
-                else
-                {
-                    //GestionBDD gestion = new GestionBDD();
-                    //gestion.supprimerStock(stock.elementAt(i).getNom(), 1);
-                    JOptionPane.showMessageDialog(null, stock.elementAt(i).getNom()+" périmé", "Périmé "+ stock.elementAt(i).getNom(), JOptionPane.WARNING_MESSAGE);
-                    Produit aux = new Produit(stock.elementAt(i).getNom(),stock.elementAt(i).getPrix(),stock.elementAt(i).getQuantite(),stock.elementAt(i).getDate(),stock.elementAt(i).getTime(),stock.elementAt(i).getPerime());
-                    stock.remove(i);
-                    jeter.add(aux);
-                    i--;
-
-                    DefaultTableModel model = (DefaultTableModel) tab_jeter_1.getModel();
-                    model.addRow(new Object[]{aux.getNom(),Integer.toString(aux.getQuantite())});
-                }
-            }
-        }
-    }
-
-
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    Interface_cuisson frame = new Interface_cuisson();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
-     * Create the frame.
-     */
     public Interface_cuisson() {
 
         classLoader = getClass().getClassLoader();
@@ -148,7 +60,7 @@ public class Interface_cuisson extends JFrame {
         contentPane.setLayout(null);
 
         final GestionBDD base=new GestionBDD();
-        Vector<Produit> cuisson= new Vector<Produit>();
+         Vector<Produit> cuisson= new Vector<Produit>();
 
         JButton btn_debut = new JButton("DEBUT");
         btn_debut.addActionListener(new ActionListener() {
@@ -167,11 +79,12 @@ public class Interface_cuisson extends JFrame {
                 GestionBDD baseDonnee = new GestionBDD();
                 baseDonnee.majCuisson(nom, quan);
 
+
                 TimerTask timerTask = new TimerTask() {
                     int sec=(60*int_temps);
                     public void run() {
 
-                        if(sec!=-1)
+                        if(sec>=0)
                         {
                             int hor=sec/3600;
                             int min=(sec-(3600*hor))/60;
@@ -283,8 +196,8 @@ public class Interface_cuisson extends JFrame {
             }
         });
         jtab_cuisson.setFont(new java.awt.Font("Arial", 0, 20));
-        jtab_cuisson.setRowHeight(80);
-        jtab_cuisson.setBounds(187, 161, 1146, 682);
+        jtab_cuisson.setRowHeight(100);
+        jtab_cuisson.setBounds(187, 161, 1020, 682);
         //JScrollPane tbc_cuisson = new JScrollPane(jtab_cuisson);
         //contentPane.removeAll();
 
@@ -317,6 +230,33 @@ public class Interface_cuisson extends JFrame {
         button.setBounds(1699, 16, 127, 29);
         contentPane.add(button);
 
+        JButton btnRefresh = new JButton("REFRESH");
+        btnRefresh.setFont(new Font("Tahoma", Font.PLAIN, 34));
+        btnRefresh.setBackground(Color.GRAY);
+
+        btnRefresh.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                DefaultTableModel model = (DefaultTableModel)jtab_cuisson.getModel();
+                int rows = model.getRowCount();
+                for(int i = rows - 1; i >=0; i--)
+                {
+                    model.removeRow(i);
+                }
+                Vector<Produit> cuisson= new Vector<Produit>();
+                cuisson= base.getFour(cuisson);
+
+                for (int i=0; i<cuisson.size();i++)
+                {
+                    //if(cuisson.elementAt(i).getcuisson()==0)
+                    model.addRow(new Object[]{cuisson.elementAt(i).getNom(),cuisson.elementAt(i).getQuantite(),base.getTime_cuisson(cuisson.elementAt(i).getNom(),cuisson.elementAt(i).getid())});
+
+
+                }
+            }
+        });
+        btnRefresh.setBounds(1486, 700, 250, 122);
+        contentPane.add(btnRefresh);
+
         cuisson=base.getFour(cuisson);
 
         DefaultTableModel model = (DefaultTableModel) jtab_cuisson.getModel();
@@ -324,7 +264,7 @@ public class Interface_cuisson extends JFrame {
         {
             model.addRow(new Object[]{cuisson.elementAt(i).getNom(),cuisson.elementAt(i).getQuantite(),1});
 
-            // model.addRow(new Object[]{cuisson.elementAt(i).getNom(),cuisson.elementAt(i).getQuantite(),base.getTime_cuisson(cuisson.elementAt(i).getNom())});
+            //model.addRow(new Object[]{cuisson.elementAt(i).getNom(),cuisson.elementAt(i).getQuantite(),base.getTime_cuisson(cuisson.elementAt(i).getNom())});
         }
 
     }
@@ -359,6 +299,6 @@ public class Interface_cuisson extends JFrame {
         AudioPlayer.player.start(as);
 
 // Similarly, to stop the audio.
-       // AudioPlayer.player.stop(as);
+        // AudioPlayer.player.stop(as);
     }
 }
