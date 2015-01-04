@@ -277,7 +277,6 @@ public class Interface_cuisson extends JFrame {
         lab_time.setBounds(1006, 94, 200, 50);
         contentPane.add(lab_time);
 
-        JButton button = new JButton("Deconnexion");
         final TimerTask timerTask2 = new TimerTask() {
             public void run() {
                 timer_refresh_produits_jeter();
