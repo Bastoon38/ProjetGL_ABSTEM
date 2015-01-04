@@ -15,7 +15,7 @@ public class Main {
         //frame.setVisible(true);
 
         GestionBDD bdd = new GestionBDD();
-        System.out.println(bdd.getTime_cuisson("Baguette"));
+        System.out.println(bdd.getTime_cuisson("Baguette",14));
         //Elio Test Vendeur
         // ihm_billet billet = new ihm_billet();
         //billet.setVisible(true);

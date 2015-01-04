@@ -19,6 +19,8 @@ public class Produit {
     private int perime;
     private int vendu;
     private int jete;
+    private int id;
+    private int cuisson;
     private boolean flag;
     private int tpsCuisson;
     private int tailleFournee;
@@ -37,6 +39,15 @@ public class Produit {
         this.date=date;
         //  this.time=time;
     }
+
+    public Produit(String obj_name, int quant, int cuisson, int ID) {
+
+        this.nom = obj_name;
+        this.cuisson= cuisson;
+        this.quantite =quant;
+        this.id=id;
+    }
+
     public Produit(String obj_name,  float credit, int quant, Date date,Time time, int perime) {
 
         this.nom = obj_name;

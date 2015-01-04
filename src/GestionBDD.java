@@ -271,7 +271,7 @@ public class GestionBDD {
 	}
 	//GETTER ****************************************
 	//TODO verifier la requete du gettime_cuisson
-	public int getTime_cuisson(String nom) {
+	public int getTime_cuisson(String nom, int id) {
 
 		int temps=0;
 		int tps_cuisson=0;
@@ -285,7 +285,7 @@ public class GestionBDD {
 				tps_cuisson = rs.getInt("TEMPS CUISSON");
 			}
 
-			rs = stmt.executeQuery("SELECT * from `four` where `PRODUIT`= '"+ nom +"' AND CUISSON=1 LIMIT 1");
+			rs = stmt.executeQuery("SELECT * from `four` where `PRODUIT`= '"+ nom +"' AND CUISSON=1 AND ID=" + id + " LIMIT 1");
 			while (rs.next()) {
 				time = rs.getTime("TIME_LANCEMENT");
 			}
@@ -322,7 +322,8 @@ public class GestionBDD {
 				String nom = rs.getString("PRODUIT");
 				int quant = rs.getInt("QUANTITE");
 				int cuisson = rs.getInt("CUISSON");
-				four.add( new Produit(nom,0,quant,null,null,cuisson));
+				int id = rs.getInt("ID");
+				four.add( new Produit(nom,quant,cuisson,id));
 
 			}
 
