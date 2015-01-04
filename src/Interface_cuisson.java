@@ -201,13 +201,16 @@ public class Interface_cuisson extends JFrame {
                 String quant=jtab_cuisson.getModel().getValueAt(rowSelected, 1).toString();
                 int int_quan=Integer.parseInt(quant);
                 String time=jtab_cuisson.getModel().getValueAt(rowSelected, 2).toString();
-
+                String ids=jtab_cuisson.getModel().getValueAt(rowSelected, 3).toString();
+                final int id4=Integer.parseInt(ids);
 
                 //Si le temps de cuisson est fini
                 if(time.equals("FIN"))
                 {
                     //TODO
-                    //AJouter le produit dans vitrine
+                    //AJouter le produit dans vitrine et supprimer le produit dans four
+                    base.supprimerCuisson(id4);
+
 
                     if ( nom.toUpperCase().equals("BAGUETTE"))
                     {
@@ -242,10 +245,10 @@ public class Interface_cuisson extends JFrame {
 
         jtab_cuisson = new JTable(new DefaultTableModel(
                 new Object[][] {},
-                new String[] {"Nom","Quantité","Time"}
+                new String[] {"Nom","Quantite","Time","ID"}
         ) {
             Class[] columnTypes = new Class[] {
-                    Object.class, Integer.class,Integer.class
+                    Object.class, Integer.class,Integer.class,Integer.class
             };
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -270,7 +273,7 @@ public class Interface_cuisson extends JFrame {
         lblNom.setBounds(197, 94, 200, 50);
         contentPane.add(lblNom);
 
-        JLabel labQuantite = new JLabel("Quantite");
+        JLabel labQuantite = new JLabel("Quantité");
         labQuantite.setFont(new Font("Tahoma", Font.PLAIN, 24));
         labQuantite.setBounds(654, 94, 200, 50);
         contentPane.add(labQuantite);
@@ -280,7 +283,7 @@ public class Interface_cuisson extends JFrame {
         lab_time.setBounds(1006, 94, 200, 50);
         contentPane.add(lab_time);
 
-        JButton button = new JButton("Deconnection");
+        JButton button = new JButton("Deconnexion");
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Connexion connexion = new Connexion();
@@ -308,10 +311,51 @@ public class Interface_cuisson extends JFrame {
 
                 for (int i=0; i<cuisson.size();i++)
                 {
-                    //if(cuisson.elementAt(i).getcuisson()==0)
-                    model.addRow(new Object[]{cuisson.elementAt(i).getNom(),cuisson.elementAt(i).getQuantite(),base.getTime_cuisson(cuisson.elementAt(i).getNom(),cuisson.elementAt(i).getid())});
+                   // model.addRow(new Object[]{cuisson.elementAt(i).getNom(),cuisson.elementAt(i).getQuantite(),1,cuisson.elementAt(i).getid()});
 
+                    model.addRow(new Object[]{cuisson.elementAt(i).getNom(),cuisson.elementAt(i).getQuantite(),base.getTime_cuisson(cuisson.elementAt(i).getNom(),cuisson.elementAt(i).getid()),cuisson.elementAt(i).getid()});
+                }
+                for (int i=0; i<cuisson.size();i++)
+                {
+                    if(cuisson.elementAt(i).getcuisson()==1)
+                    {
+                        int j=0;
+                        while(cuisson.elementAt(i).getid()!=Integer.parseInt(jtab_cuisson.getModel().getValueAt(j, 3).toString()))
+                        {
+                            j++;
+                        }
+                        final int p=j;
+                        TimerTask timerTask = new TimerTask() {
+                            int sec=Integer.parseInt(jtab_cuisson.getModel().getValueAt(p, 2).toString());
+                            public void run() {
 
+                                if(sec>=0)
+                                {
+                                    int hor=sec/3600;
+                                    int min=(sec-(3600*hor))/60;
+                                    int seg=sec-((hor*3600)+(min*60));
+
+                                    jtab_cuisson.setValueAt(min + "m " + seg + "s",p, 2);
+                                    sec--;
+                                }
+                                else
+                                {
+                                    playSound();
+                                    System.out.println("finnnnnnn");
+                                    jtab_cuisson.setValueAt("FIN", p, 2);
+                                    cancel();
+                                }
+
+                            }
+                        };
+
+                        // creation du timer
+                        Timer timer = new Timer();
+
+                        //timer avec la fonction à executer, le retard et l'interval de repetition
+                        timer.scheduleAtFixedRate(timerTask, 0, 1000);
+
+                    }
                 }
             }
         });
@@ -323,13 +367,57 @@ public class Interface_cuisson extends JFrame {
         DefaultTableModel model = (DefaultTableModel) jtab_cuisson.getModel();
         for (int i=0; i<cuisson.size();i++)
         {
-            model.addRow(new Object[]{cuisson.elementAt(i).getNom(),cuisson.elementAt(i).getQuantite(),1});
+            //model.addRow(new Object[]{cuisson.elementAt(i).getNom(),cuisson.elementAt(i).getQuantite(),1,cuisson.elementAt(i).getid()});
 
-            //model.addRow(new Object[]{cuisson.elementAt(i).getNom(),cuisson.elementAt(i).getQuantite(),base.getTime_cuisson(cuisson.elementAt(i).getNom())});
+             model.addRow(new Object[]{cuisson.elementAt(i).getNom(),cuisson.elementAt(i).getQuantite(),base.getTime_cuisson(cuisson.elementAt(i).getNom(),cuisson.elementAt(i).getid()),cuisson.elementAt(i).getid()});
+        }
+        for (int i=0; i<cuisson.size();i++)
+        {
+            if(cuisson.elementAt(i).getcuisson()==1)
+            {
+                int j=0;
+                while(cuisson.elementAt(i).getid()!=Integer.parseInt(jtab_cuisson.getModel().getValueAt(j, 3).toString()))
+                {
+                    j++;
+                }
+               final int p=j;
+                TimerTask timerTask = new TimerTask() {
+                    int sec=Integer.parseInt(jtab_cuisson.getModel().getValueAt(p, 2).toString());
+                    public void run() {
+
+                        if(sec>=0)
+                        {
+                            int hor=sec/3600;
+                            int min=(sec-(3600*hor))/60;
+                            int seg=sec-((hor*3600)+(min*60));
+
+                            jtab_cuisson.setValueAt(min + "m " + seg + "s",p, 2);
+                            sec--;
+                        }
+                        else
+                        {
+                            playSound();
+                            System.out.println("finnnnnnn");
+                            jtab_cuisson.setValueAt("FIN", p, 2);
+                            cancel();
+                        }
+
+                    }
+                };
+
+                // creation du timer
+                Timer timer = new Timer();
+
+                //timer avec la fonction à executer, le retard et l'interval de repetition
+                timer.scheduleAtFixedRate(timerTask, 0, 1000);
+
+            }
         }
 
 
-        TimerTask timerTask2 = new TimerTask() {
+        jtab_cuisson.removeColumn(jtab_cuisson.getColumnModel().getColumn(3));
+
+        TimerTask timerTask = new TimerTask() {
             public void run() {
                 timer_refresh_produits_jeter();
                 java.util.Date maDate = new java.util.Date();
@@ -338,7 +426,7 @@ public class Interface_cuisson extends JFrame {
         };
 
         Timer timer2 = new Timer();   // creation du timer
-        timer2.schedule(timerTask2, 0, (60000*60)); //timer répétitive toutes les 1h
+        timer2.schedule(timerTask, 0, (60000 * 60)); //timer répétitive toutes les 1h
         System.out.println("Tâche vérification péremption stock lancée toutes les 1h");
     }
 

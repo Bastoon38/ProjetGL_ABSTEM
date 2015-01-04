@@ -695,13 +695,13 @@ public class GestionBDD {
 	}
 
 	//pour le psg en vitrine
-	public void supprimerCuisson(String nom, int qte) {
+	public void supprimerCuisson(int id) {
 		try{
 
 			Connection con = connexion();
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("DELETE FROM `four` WHERE `PRODUIT`='" + nom + "' AND `QUANTITE`=" + qte + "AND `CUISSON`=1 LIMIT 1");
+			stmt.executeUpdate("DELETE FROM `four` WHERE `ID`='" + id + "' LIMIT 1");
 
 			stmt.close();
 			con.close();
