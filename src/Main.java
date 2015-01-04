@@ -14,16 +14,16 @@ public class Main {
         //Interface_vendeur frame = new Interface_vendeur();
         //frame.setVisible(true);
 
-        //GestionBDD bdd = new GestionBDD();
-        //System.out.println(bdd.getTime_cuisson("Tarte citron"));
+        GestionBDD bdd = new GestionBDD();
+        System.out.println(bdd.getTime_cuisson("Baguette",14));
         //Elio Test Vendeur
         // ihm_billet billet = new ihm_billet();
         //billet.setVisible(true);
         //Interface_vendeur frame = new Interface_vendeur();
         //Vendeur vendeur= new Vendeur(frame);
 
-        Connexion frame1 = new Connexion();
-        frame1.setVisible(true);
+        //Connexion frame1 = new Connexion();
+        //frame1.setVisible(true);
 
         TimerBDD timerbdd = new TimerBDD(); // Vérif de péremption du stock et de la vitrine
 

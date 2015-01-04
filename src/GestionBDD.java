@@ -218,18 +218,30 @@ public class GestionBDD {
 	}
 	//GETTER ****************************************
 	//TODO verifier la requete du gettime_cuisson
-	public int getTime_cuisson(String nom) {
+	public int getTime_cuisson(String nom, int id) {
 
-		int time=0;
+		int temps=0;
+		int tps_cuisson=0;
+		Time time = null;
 		Connection con = connexion();
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT `TEMPS CUISSON` from `produit` where `PRODUIT`= '"+ nom +"'");
 
 			while (rs.next()) {
-				time = rs.getInt(1);
+				tps_cuisson = rs.getInt("TEMPS CUISSON");
 			}
 
+			rs = stmt.executeQuery("SELECT * from `four` where `PRODUIT`= '"+ nom +"' AND CUISSON=1 AND ID=" + id + " LIMIT 1");
+			while (rs.next()) {
+				time = rs.getTime("TIME_LANCEMENT");
+			}
+
+
+			java.util.Date d = new java.util.Date();
+			long now = d.getTime();
+			Time t2 = new Time(now - time.getTime());
+			temps=tps_cuisson-t2.getMinutes();
 
 			rs.close();
 			stmt.close();
@@ -241,7 +253,7 @@ public class GestionBDD {
 			System.out.println(sqle.getMessage());
 		}
 
-		return time;
+		return temps;
 	}
 
 	public Vector<Produit> getFour(Vector<Produit>four) {
@@ -257,7 +269,8 @@ public class GestionBDD {
 				String nom = rs.getString("PRODUIT");
 				int quant = rs.getInt("QUANTITE");
 				int cuisson = rs.getInt("CUISSON");
-				four.add( new Produit(nom,0,quant,null,null,cuisson));
+				int id = rs.getInt("ID");
+				four.add( new Produit(nom,quant,cuisson,id));
 
 			}
 
@@ -700,7 +713,9 @@ public class GestionBDD {
 			Statement stmt = con.createStatement();
 
 			System.out.println(nom);System.out.println(qte);
-			stmt.executeUpdate("UPDATE `four` SET `CUISSON`=1 WHERE `PRODUIT`='" + nom + "' AND `QUANTITE`=" + qte + " LIMIT 1");
+			java.util.Date date = new java.util.Date();
+			Time time = new Time(date.getTime());
+			stmt.executeUpdate("UPDATE `four` SET `CUISSON`=1,TIME_LANCEMENT='" + time + "' WHERE `PRODUIT`='" + nom + "' AND `QUANTITE`=" + qte + " LIMIT 1");
 
 
 			stmt.close();
