@@ -278,7 +278,7 @@ public class Interface_vendeur extends JFrame {
         }
         if(prod_baguette==null)
         {
-            JOptionPane.showMessageDialog(null, "Il n'a pas "+nom+" en vitrine", "Warning "+ nom, JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Il n'a pas de "+nom+" en vitrine", "Warning "+ nom, JOptionPane.WARNING_MESSAGE);
         }
         else
         {
