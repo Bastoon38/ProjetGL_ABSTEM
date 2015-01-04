@@ -9,7 +9,11 @@ import java.time.LocalDate;
 import java.util.Vector;
 import java.util.*;
 
+
+
 public class GestionBDD {
+
+	Vector<Produit> stock  = new Vector<Produit>();
 
 	//connexion à la base de données
 	private Connection connexion() {
@@ -41,12 +45,13 @@ public class GestionBDD {
 
 			if(lieu == "Vitrine"){
 				java.util.Date DateChrono = new java.util.Date();
+
 				stmt.executeUpdate("UPDATE `vitrine` SET 'PERIME'='1' WHERE `DATE_PEREMPTION`<='"+ DateChrono +"'");
 			}
 			else {
 				if(lieu == "Stock"){
 					java.util.Date DateChrono2 = new java.util.Date();
-					stmt.executeUpdate("UPDATE `vitrine` SET 'PERIME'='1' WHERE `DATE_PEREMPTION`<='"+ DateChrono2 +"'");
+					//stmt.executeUpdate("UPDATE `vitrine` SET 'PERIME'='1' WHERE `DATE_PEREMPTION`<='"+ DateChrono2 +"'");
 					//Il faut faire +1 dans la BDD du manager (produits jetés)
 					//supprimerStock(nom, 1)
 					// Pop-up vendeuse?

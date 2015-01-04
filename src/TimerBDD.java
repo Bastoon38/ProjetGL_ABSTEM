@@ -41,20 +41,20 @@ public class TimerBDD {
             public void run() {
                 Date maDate = new Date();
                 System.out.println("Tâche vérification péremption stock lancée le " + maDate.toString());
-                //GestionBDD bdd = new GestionBDD();
-                //bdd.verifPerime(lieu);
+                GestionBDD bdd = new GestionBDD();
+                bdd.verifPerime("Stock");
             }
         }, (long) 0, (long) ((1 * 60) * 60000));    // Lance une tâche répétitive
         // 0 est le délai avant de commencer, le deuxième est la durée en millisecondes (ici 1h)
 
-        timer2.schedule(new TimerTask() {
+        /*timer2.schedule(new TimerTask() {
             public void run() {
                 Date maDate = new Date();
                 System.out.println("Tâche vérification péremption vitrine lancée le " + maDate.toString());
                 //GestionBDD bdd = new GestionBDD();
                 //bdd.verifPerime(lieu);
             }
-        }, (long) 0, (long) (2 * 60000) );
+        }, (long) 0, (long) (2 * 60000) );*/
         // 0 est le délai avant de commencer, le deuxième est la durée en millisecondes (ici 2 min)
     }
 }
