@@ -116,10 +116,10 @@ public class Interface_cuisson extends JFrame {
     }
 
     public Interface_cuisson() {
-
+        this.setExtendedState(MAXIMIZED_BOTH);
         classLoader = getClass().getClassLoader();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setExtendedState(MAXIMIZED_BOTH);
+
         setBounds(100, 100, 946, 864);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

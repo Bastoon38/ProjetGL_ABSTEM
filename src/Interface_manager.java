@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import java.awt.geom.Arc2D;
 import java.util.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -97,6 +98,7 @@ public class Interface_manager extends JFrame {
     public Interface_manager()  {
 
         setExtendedState(JFrame.MAXIMIZED_BOTH);
+        System.out.println("JFrame.MAXIMIZED_BOTH = " + JFrame.MAXIMIZED_BOTH);
         setMinimumSize(new Dimension(1200, 900));
 
         add(pan_panel1);
@@ -424,24 +426,32 @@ public class Interface_manager extends JFrame {
         btn_majPrix.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 GestionBDD baseDonnee = new GestionBDD();
-                baseDonnee.majPrix(tab_paramPrix.getValueAt(0,0), tab_paramPrix.getValueAt(0,1));
-                baseDonnee.majPrix(tab_paramPrix.getValueAt(1,0), tab_paramPrix.getValueAt(1,1));
-                baseDonnee.majPrix(tab_paramPrix.getValueAt(2,0), tab_paramPrix.getValueAt(2,1));
-                baseDonnee.majPrix(tab_paramPrix.getValueAt(3,0), tab_paramPrix.getValueAt(3,1));
-                baseDonnee.majPrix(tab_paramPrix.getValueAt(4,0), tab_paramPrix.getValueAt(4,1));
-                baseDonnee.majPrix(tab_paramPrix.getValueAt(5,0), tab_paramPrix.getValueAt(5,1));
-                baseDonnee.majPrix(tab_paramPrix.getValueAt(6,0), tab_paramPrix.getValueAt(6,1));
-                baseDonnee.majPrix(tab_paramPrix.getValueAt(7,0), tab_paramPrix.getValueAt(7,1));
-                baseDonnee.majPrix(tab_paramPrix.getValueAt(8,0), tab_paramPrix.getValueAt(8,1));
-                baseDonnee.majPrix(tab_paramPrix.getValueAt(9,0), tab_paramPrix.getValueAt(9,1));
-                baseDonnee.majPrix(tab_paramPrix.getValueAt(10,0), tab_paramPrix.getValueAt(10,1));
-                baseDonnee.majPrix(tab_paramPrix.getValueAt(11,0), tab_paramPrix.getValueAt(11,1));
-                baseDonnee.majPrix(tab_paramPrix.getValueAt(12,0), tab_paramPrix.getValueAt(12,1));
-                baseDonnee.majPrix(tab_paramPrix.getValueAt(13,0), tab_paramPrix.getValueAt(13,1));
-                baseDonnee.majPrix(tab_paramPrix.getValueAt(14,0), tab_paramPrix.getValueAt(14,1));
+
+                try
+                {
+                    for (int i=0; i<15 ; i++)
+                    {
+                        String produit = tab_paramPrix.getValueAt(i,0).toString();
+                        String prix = tab_paramPrix.getValueAt(i,1).toString();
+                        float float_prix = Float.parseFloat(prix);
+                        System.out.println("float_prix = " + float_prix);
+                        if(float_prix>0.0 && float_prix < 10.0 )
+                            baseDonnee.majPrix(tab_paramPrix.getValueAt(i,0).toString(),tab_paramPrix.getValueAt(i,1).toString());
+                        else
+                            JOptionPane.showMessageDialog(null, "Element: "+produit +" non modifié car mauvaise saisie", "Mise à jour des prix",  JOptionPane.ERROR_MESSAGE);
+                    }
+                    JOptionPane.showMessageDialog(null, "Mise à jour des prix avec une saisie correcte réussie !", "Mise à jour des prix",  JOptionPane.INFORMATION_MESSAGE);
+
+                }
+                catch (NumberFormatException de)
+                {
+                    JOptionPane.showMessageDialog(null, "Mauvaise saisie : 0<prix<10", "Mise à jour des prix",  JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
+
 
         btn_majMdp.addActionListener(new ActionListener() {
             @Override
