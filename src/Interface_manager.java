@@ -303,7 +303,7 @@ public class Interface_manager extends JFrame {
                             System.out.println("tab_cmd.getValueAt(i,1) =========" + tab_cmd.getValueAt(i,1).getClass());
                             valeurSaisie = Integer.parseInt(tab_cmd.getValueAt(i, 1).toString());
                             System.out.println("valeurSaisie =========" + valeurSaisie);
-                            if( valeurSaisie> 1 && valeurSaisie < 5000)
+                            if( valeurSaisie>= 1 && valeurSaisie <= 5000)
                             {
                                 flag = 1;
                                 baseDonnee.ajouterCommandeFournisseur(tab_cmd.getValueAt(i,0), tab_cmd.getValueAt(i,1));
