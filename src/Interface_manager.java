@@ -396,7 +396,7 @@ public class Interface_manager extends JFrame {
                                     baseDonnee.supprimerCommande(tabAttendu[i].getNom(), tabAttendu[i].getQuantite());
                                 }
                                 else
-                                    JOptionPane.showMessageDialog(null, "Mauvaise saisie : 0<jour<31 et 0<mois<12 et 2015<année OU date dépassée", "SAISIE INCORRECTE",  JOptionPane.ERROR_MESSAGE);
+                                    JOptionPane.showMessageDialog(null, "Mauvaise saisie : 0<jour<31 et 0<mois<12 et 2015<année OU produit déjà périmé", "SAISIE INCORRECTE",  JOptionPane.ERROR_MESSAGE);
                             }
                         }
 
