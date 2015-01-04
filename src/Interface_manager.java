@@ -217,7 +217,7 @@ public class Interface_manager extends JFrame {
         btn_paramDefaut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "bouton param défaut cliqué", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Bouton param défaut cliqué", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
@@ -533,9 +533,9 @@ public class Interface_manager extends JFrame {
                         if(int_seuil>0 && int_seuil < 100 && int_fournee>0 && int_fournee < 100 )
                             baseDonnee.majSeuil(produit,jour ,heureFinal,seuil, fournee);
                         else
-                            JOptionPane.showMessageDialog(null, "Elément: "+produit +" non modifié(e) car mauvaise saisie", "Mise à jour des seuils",  JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "Elément: "+produit +" non modifié car mauvaise saisie", "Mise à jour des seuils",  JOptionPane.ERROR_MESSAGE);
                     }
-                    JOptionPane.showMessageDialog(null, "Mise à jour des seuils avec une saisie correcte réussie !", "Mise à jour des seuils",  JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Mise à jour des seuils dont la saisie est correcte réussie !", "Mise à jour des seuils",  JOptionPane.INFORMATION_MESSAGE);
 
                 }
                 catch (NumberFormatException de)
