@@ -11,12 +11,8 @@ import java.awt.EventQueue;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JTable;
-import javax.swing.JButton;
 
 import java.awt.GridLayout;
 import java.awt.GridBagLayout;
@@ -41,7 +37,7 @@ import javax.swing.table.TableModel;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JLabel;
+import java.util.Timer;
 
 
 public class Interface_cuisson extends JFrame {
@@ -71,6 +67,7 @@ public class Interface_cuisson extends JFrame {
      * Create the frame.
      */
     public Interface_cuisson() {
+
         classLoader = getClass().getClassLoader();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setExtendedState(MAXIMIZED_BOTH);
@@ -93,11 +90,15 @@ public class Interface_cuisson extends JFrame {
                 model_1 = (DefaultTableModel) jtab_cuisson.getModel();
 
                 String nom=jtab_cuisson.getModel().getValueAt(rowSelected, 0).toString();
-                String quant=jtab_cuisson.getModel().getValueAt(rowSelected, 2).toString();
-                final int int_quan=Integer.parseInt(quant);
+                String quan=jtab_cuisson.getModel().getValueAt(rowSelected, 1).toString();
+                String time=jtab_cuisson.getModel().getValueAt(rowSelected, 2).toString();
+                final int int_temps=Integer.parseInt(time);
+
+                GestionBDD baseDonnee = new GestionBDD();
+                baseDonnee.majCuisson(nom, quan);
 
                 TimerTask timerTask = new TimerTask() {
-                    int sec=(60*int_quan);
+                    int sec=(60*int_temps);
                     public void run() {
 
                         if(sec!=-1)
@@ -214,6 +215,10 @@ public class Interface_cuisson extends JFrame {
         jtab_cuisson.setFont(new java.awt.Font("Arial", 0, 20));
         jtab_cuisson.setRowHeight(80);
         jtab_cuisson.setBounds(187, 161, 1146, 682);
+        //JScrollPane tbc_cuisson = new JScrollPane(jtab_cuisson);
+        //contentPane.removeAll();
+
+        //contentPane.add(tbc_cuisson, BorderLayout.CENTER).
         contentPane.add(jtab_cuisson);
 
         JLabel lblNom = new JLabel("Nom");
