@@ -25,8 +25,6 @@ public class Main {
         //Connexion frame1 = new Connexion();
         //frame1.setVisible(true);
 
-        TimerBDD timerbdd = new TimerBDD(); // Vérif de péremption du stock et de la vitrine
-
         //Timer timer = new Timer();
         //timer.schedule(new TimerMajCuisson(), 0, 150000);
     }

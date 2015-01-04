@@ -6,10 +6,10 @@ public class TimerBDD {
     private int heure, minutes;
 
 
-        public TimerBDD () {
+    public void TimerStock () {
         // Vérification des dates de péremption
         Timer timer2 = new Timer();   // crée timer
-        System.out.println("Lancement de la vérification péremption toutes les 1h pour le stock et toutes les 2 min pour la vitrine");
+        System.out.println("Lancement de la vérification péremption du stock toutes les 1h");
 
         timer2.schedule(new TimerTask() {   // Lance une tâche répétitive
             public void run() {     // Lance une tâche répétitive
@@ -19,6 +19,13 @@ public class TimerBDD {
                 intCuisson.timer_refresh_produits_jeter();  // Vérifie la péremption de la BDD stock
             }
         }, (long) 0, (long) ((1 * 60) * 60000)); // 0 est le délai avant de commencer, le deuxième est la durée en millisecondes (ici 1h)
+    }
+
+
+    public void TimerVitrine () {
+        // Vérification des dates de péremption
+        Timer timer2 = new Timer();   // crée timer
+        System.out.println("Lancement de la vérification péremption de la vitrine toutes les 2 min");
 
         timer2.schedule(new TimerTask() {
             public void run() {

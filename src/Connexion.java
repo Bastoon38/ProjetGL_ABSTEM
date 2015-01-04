@@ -29,6 +29,8 @@ public class Connexion extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 affichePageVendeur();
+                TimerBDD timer = new TimerBDD();
+                timer.TimerVitrine();  // Lancement vérification péremption stock avec pop-up
             }
         });
 
@@ -36,6 +38,8 @@ public class Connexion extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 affichePageCuisinier();
+                TimerBDD timer = new TimerBDD();
+                timer.TimerStock();  // Lancement vérification péremption stock avec pop-up
             }
         });
 

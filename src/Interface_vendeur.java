@@ -122,7 +122,7 @@ public class Interface_vendeur extends JFrame {
             if(vitrine.elementAt(i).getPerime()== 1)
             {
                 //System.out.println ("VITRINE PERIME "+vitrine.elementAt(i).getNom()+"	"+vitrine.elementAt(i).getQuantite()+"	"+vitrine.elementAt(i).getPrix()+"	"+vitrine.elementAt(i).getPerime()+"	"+vitrine.elementAt(i).getDate()+"	"+vitrine.elementAt(i).getTime());
-
+                //if(){} // Si on est sur l'interface vendeur
                 JOptionPane.showMessageDialog(null, vitrine.elementAt(i).getNom()+" périmé(e)", "Périmé(e) "+ vitrine.elementAt(i).getNom(), JOptionPane.WARNING_MESSAGE);
                 Produit aux = new Produit(vitrine.elementAt(i).getNom(),vitrine.elementAt(i).getPrix(),vitrine.elementAt(i).getQuantite(),vitrine.elementAt(i).getDate(),vitrine.elementAt(i).getTime(),vitrine.elementAt(i).getPerime());
                 vitrine.remove(i);
@@ -375,7 +375,6 @@ public class Interface_vendeur extends JFrame {
         //	System.out.printf("num is %.2f\n", total);
         total_prix=total;
         //	System.out.printf("num is %.2f\n", total_prix);
-
     }
 
     /**
@@ -1120,9 +1119,8 @@ public class Interface_vendeur extends JFrame {
         pan_commande.setLayout(gl_pan_commande);
         this.setExtendedState(MAXIMIZED_BOTH);
 
-
         //TODO faire le timer de jeter
-        timer_refresh_produits_jeter();
+        //timer_refresh_produits_jeter();
     }
 
 }
