@@ -1,11 +1,15 @@
 
+import com.mysql.jdbc.CommunicationsException;
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
+import javax.swing.*;
 import javax.swing.plaf.nimbus.State;
+import java.net.ConnectException;
 import java.sql.*;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Timer;
 import java.util.Vector;
 import java.util.*;
 
@@ -466,25 +470,25 @@ public class GestionBDD {
 		}
 		catch(SQLException sqle){
 			sqle.printStackTrace();
-			System.out.println(sqle.getMessage());
 		}
 		return mdp;
 	}
 
-	public void setMdp(String nom) {
+	public String setMdp(String nom) {
 
 		try{
-
 			Connection con = connexion();
 			Statement stmt = con.createStatement();
 
 			stmt.executeUpdate("UPDATE `mot_de_passe` SET `Valeur`='"+nom+"' WHERE 1");
 			stmt.close();
 			con.close();
+			//JOptionPane.showMessageDialog(null, "Mot de passe modifié avec succès !", "SAISIE REUSSIE", JOptionPane.INFORMATION_MESSAGE);
 		}
 		catch(SQLException sqle){
-			sqle.printStackTrace();
+			return sqle.getMessage();
 		}
+		return "Mot de passe modifié avec succès !";
 	}
 
 	public Produit[] getSeuil(String jour, String heure) {
