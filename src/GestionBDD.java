@@ -742,7 +742,7 @@ public class GestionBDD {
 			Statement stmt = con.createStatement();
 
 			System.out.println(nom);System.out.println(qte);
-			stmt.executeUpdate("UPDATE `four` SET `CUISSON`=1 WHERE `PRODUIT`='" + nom + "' AND `QUANTITE`=" + qte + "");
+			stmt.executeUpdate("UPDATE `four` SET `CUISSON`=1 WHERE `PRODUIT`='" + nom + "' AND `QUANTITE`=" + qte + " LIMIT 1");
 
 
 			stmt.close();
