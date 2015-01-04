@@ -9,10 +9,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
-import java.awt.Font;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
+import java.awt.*;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -27,7 +24,6 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import java.awt.GridLayout;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.Date;
@@ -40,11 +36,6 @@ import javax.swing.JList;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.JTable;
-
-import java.awt.FlowLayout;
-
-
-
 
 
 public class Interface_vendeur extends JFrame {
@@ -379,6 +370,7 @@ public class Interface_vendeur extends JFrame {
      */
     public Interface_vendeur() {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setMinimumSize(new Dimension(1300, 950));
         setTitle("Vendeur");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 1446, 879);

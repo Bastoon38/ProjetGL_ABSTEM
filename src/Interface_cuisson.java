@@ -5,8 +5,7 @@
 import sun.audio.AudioPlayer;
 import sun.audio.AudioStream;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import java.awt.*;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -14,12 +13,6 @@ import javax.sound.sampled.Clip;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import java.awt.GridLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.Color;
-import java.awt.Font;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -117,6 +110,7 @@ public class Interface_cuisson extends JFrame {
 
     public Interface_cuisson() {
         this.setExtendedState(MAXIMIZED_BOTH);
+        setMinimumSize(new Dimension(1300, 950));
         classLoader = getClass().getClassLoader();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

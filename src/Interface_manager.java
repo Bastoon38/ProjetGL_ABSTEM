@@ -100,6 +100,7 @@ public class Interface_manager extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         System.out.println("JFrame.MAXIMIZED_BOTH = " + JFrame.MAXIMIZED_BOTH);
         setMinimumSize(new Dimension(1200, 900));
+        setMinimumSize(new Dimension(1300, 950));
 
         add(pan_panel1);
 
