@@ -490,12 +490,21 @@ public class Interface_vendeur extends JFrame {
         JPanel pan_commande = new JPanel();
         pan_commande.setBounds(1344, 28, 495, 924);
 
+        final TimerTask timerTask = new TimerTask() {
+            public void run() {
+                timer_refresh_produits_jeter();
+                java.util.Date maDate = new java.util.Date();
+                System.out.println("Tâche vérification péremption vitrine lancée le " + maDate.toString());
+            }
+        };
+
         JButton btn_decon = new JButton("Déconnexion");
         btn_decon.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Connexion connexion = new Connexion();
                 connexion.setVisible(true);
                 setVisible(false);
+                timerTask.cancel();
             }
         });
 
@@ -1115,17 +1124,10 @@ public class Interface_vendeur extends JFrame {
             Thread.currentThread().interrupt();
         }
 
-        TimerTask timerTask = new TimerTask() {
-            public void run() {
-                timer_refresh_produits_jeter();
-                java.util.Date maDate = new java.util.Date();
-                System.out.println("Tâche vérification péremption vitrine lancée le " + maDate.toString());
-            }
-        };
-
         Timer timer = new Timer();   // creation du timer
         timer.schedule(timerTask, 0, 120000); //timer répétitive toutes les 2 minutes
         System.out.println("Tâche vérification péremption vitrine lancée toutes les 2 minutes");
+
     }
 
 

@@ -166,12 +166,8 @@ public class Interface_cuisson extends JFrame {
 
                 // creation du timer
                 Timer timer = new Timer();
-
                 //timer avec la fonction à executer, le retard et l'interval de repetition
                 timer.schedule(timerTask, 0, 1000);
-
-
-
             }
         });
 
@@ -234,8 +230,6 @@ public class Interface_cuisson extends JFrame {
                     model_1.removeRow(jtab_cuisson.getSelectedRow());
                     jtab_cuisson.repaint();
                 }
-
-
             }
         });
         btn_fini.setFont(new Font("Tahoma", Font.PLAIN, 34));
@@ -284,11 +278,21 @@ public class Interface_cuisson extends JFrame {
         contentPane.add(lab_time);
 
         JButton button = new JButton("Deconnexion");
+        final TimerTask timerTask2 = new TimerTask() {
+            public void run() {
+                timer_refresh_produits_jeter();
+                java.util.Date maDate = new java.util.Date();
+                System.out.println("Tâche vérification péremption stock lancée le " + maDate.toString());
+            }
+        };
+
+        JButton button = new JButton("Déconnection");
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Connexion connexion = new Connexion();
                 connexion.setVisible(true);
                 setVisible(false);
+                timerTask2.cancel();
             }
         });
         button.setBounds(1699, 16, 127, 29);
