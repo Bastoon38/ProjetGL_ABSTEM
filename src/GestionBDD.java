@@ -13,12 +13,11 @@ import java.util.*;
 
 public class GestionBDD {
 
-	Vector<Produit> stock  = new Vector<Produit>();
 
 	//connexion à la base de données
 	private Connection connexion() {
 		try {
-			String url = "jdbc:mysql://localhost/albm_dev";
+			String url = "jdbc:mysql://localhost/albm_dev2";
 			String login = "root";
 			String password = "";
 			Connection con = DriverManager.getConnection(url,login,password);
@@ -33,52 +32,6 @@ public class GestionBDD {
 
 
 
-	//GESTION PERIME VITRINE ****************************************
-	//verif les produits périmés en vitrine
-	public boolean verifPerime(String lieu) {
-		Connection con = connexion();
-		boolean perime = false;
-
-		try {
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT PERIME FROM `vitrine`");
-
-			if(lieu == "Vitrine"){
-				java.util.Date DateChrono = new java.util.Date();
-
-				stmt.executeUpdate("UPDATE `vitrine` SET 'PERIME'='1' WHERE `DATE_PEREMPTION`<='"+ DateChrono +"'");
-			}
-			else {
-				if(lieu == "Stock"){
-					java.util.Date DateChrono2 = new java.util.Date();
-					//stmt.executeUpdate("UPDATE `vitrine` SET 'PERIME'='1' WHERE `DATE_PEREMPTION`<='"+ DateChrono2 +"'");
-					//Il faut faire +1 dans la BDD du manager (produits jetés)
-					//supprimerStock(nom, 1)
-					// Pop-up vendeuse?
-				}
-				else{
-					// Donner une valeur erreur à rs ou sortir de la fonction
-				}
-			}
-
-
-			rs.next();
-			int res = rs.getInt(1);
-			if (res==1) {
-				perime=true;
-			}
-			rs.close();
-			stmt.close();
-			con.close();
-
-		}
-		catch(SQLException sqle){
-			sqle.printStackTrace();
-			System.out.println(sqle.getMessage());
-		}
-
-		return perime;
-	}
 
 	//GETTER ****************************************
 	//GETTER ****************************************

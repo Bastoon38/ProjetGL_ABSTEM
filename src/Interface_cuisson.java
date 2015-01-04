@@ -71,7 +71,7 @@ public class Interface_cuisson extends JFrame {
                 String date_now =new SimpleDateFormat("yyyy-MM-dd").format(fechaActual);
                 String date_produit=stock.elementAt(i).getDate().toString();
 
-                // QUAND LES DATES SONT EGALS == MEME JOUR
+                // QUAND LES DATES SONT EGALES == MEME JOUR
                 if(date_now.equals(date_produit))
                 {
                     //time now
