@@ -888,9 +888,6 @@ public class GestionBDD {
 		}
 	}
 
-	public void majProduction () {	// Valeurs des fournées modifiées
-
-	}
 
 	public void ajouterCommandeFournisseur(Object nom, Object quantite) {
 		//int quantite = getQuantiteParametree(nom);
@@ -926,8 +923,19 @@ public class GestionBDD {
 			sqle.printStackTrace();
 		}
 	}
-	private int getQuantiteParametree(String nom) {
-		return 0;
+
+	public void resetBilan() {
+		Connection con = connexion();
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("UPDATE `bilan` SET `VENDU`=0, `JETE`=0");
+
+			stmt.close();
+			con.close();
+		}
+		catch(SQLException sqle){
+			sqle.printStackTrace();
+		}
 	}
 
 }
