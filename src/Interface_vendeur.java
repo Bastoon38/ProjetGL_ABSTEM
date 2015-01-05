@@ -94,11 +94,16 @@ public class Interface_vendeur extends JFrame {
                     if(now.after(produit))
                     {
                         vitrine.elementAt(i).setPerime(1);
+                        //TODO
+                        final GestionBDD base1= new GestionBDD();
+                        base1.majPerime(vitrine.elementAt(i).getid());
                     }
                 }
                 else
                 {
                     vitrine.elementAt(i).setPerime(1);
+                    final GestionBDD base1= new GestionBDD();
+                    base1.majPerime(vitrine.elementAt(i).getid());
                 }
             }
 
@@ -906,8 +911,7 @@ public class Interface_vendeur extends JFrame {
                         jeter.remove(u);
                         tab_jeter_1.repaint();
                         base.ajouterPerime(nom, int_quanty);
-                        String mensaje = base.supprimerVitrine(nom, int_quanty);
-                        JOptionPane.showMessageDialog(null, mensaje, "Jeter " + nom, JOptionPane.WARNING_MESSAGE);
+                        base.supprimerPerime(nom, int_quanty);
 
                     }
                 }
