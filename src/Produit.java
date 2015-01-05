@@ -140,6 +140,7 @@ public class Produit {
     public int gettailleFournee() {return this.tailleFournee;}
     public int getid() {return this.id;}
     public int getcuisson() {return this.cuisson;}
+    public Timestamp getTimestamp() {return this.timestamp;}
 
 
     // set Methods
