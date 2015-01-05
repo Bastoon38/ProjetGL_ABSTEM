@@ -111,19 +111,29 @@ public class Interface_vendeur extends JFrame {
         for(int i=0 ; i<vitrine.size(); i++)
         {
 
-            //System.out.println (vitrine.elementAt(i).getNom()+" "+vitrine.elementAt(i).getQuantite()+" "+vitrine.elementAt(i).getPrix()+" "+vitrine.elementAt(i).getPerime()+ " "+vitrine.elementAt(i).getDate()+" "+vitrine.elementAt(i).getTime());
             if(vitrine.elementAt(i).getPerime()== 1)
             {
-                System.out.println ("VITRINE PERIME "+vitrine.elementAt(i).getNom()+"	"+vitrine.elementAt(i).getQuantite()+"	"+vitrine.elementAt(i).getPrix()+"	"+vitrine.elementAt(i).getPerime()+"	"+vitrine.elementAt(i).getDate()+"	"+vitrine.elementAt(i).getTime());
+                int j;
+                boolean bool=true;
+                for (j=0 ; j<jeter.size() ; j++) {
+                    if (vitrine.elementAt(i).getNom().equals(jeter.elementAt(j).getNom())) {
+                        if (vitrine.elementAt(i).getQuantite() == jeter.elementAt(j).getQuantite()) {
+                            bool=false;
+                        }
+                    }
+                }
+                if (bool) {
+                    Produit aux = vitrine.elementAt(i);
+                    jeter.add(aux);
+                    DefaultTableModel model = (DefaultTableModel) tab_jeter_1.getModel();
+                    model.addRow(new Object[]{aux.getNom(), Integer.toString(aux.getQuantite())});
+                }
+                            //break;
+                        //}
+                    //}
+                //}
 
-                JOptionPane.showMessageDialog(null, vitrine.elementAt(i).getNom()+" périmé(e)", "Périmé(e) "+ vitrine.elementAt(i).getNom(), JOptionPane.WARNING_MESSAGE);
-                Produit aux = new Produit(vitrine.elementAt(i).getNom(),vitrine.elementAt(i).getPrix(),vitrine.elementAt(i).getQuantite(),vitrine.elementAt(i).getDate(),vitrine.elementAt(i).getTime(),vitrine.elementAt(i).getPerime());
-                vitrine.remove(i);
-                jeter.add(aux);
-                i--;
 
-                DefaultTableModel model = (DefaultTableModel) tab_jeter_1.getModel();
-                model.addRow(new Object[]{aux.getNom(),Integer.toString(aux.getQuantite())});
             }
         }
 
@@ -497,6 +507,8 @@ public class Interface_vendeur extends JFrame {
 
         final TimerTask timerTask = new TimerTask() {
             public void run() {
+                vitrine.clear();
+                vitrine=base.getVitrine(vitrine);
                 timer_refresh_produits_jeter();
                 java.util.Date maDate = new java.util.Date();
                 System.out.println("Tâche vérification péremption vitrine lancée le " + maDate.toString());
@@ -1117,7 +1129,7 @@ public class Interface_vendeur extends JFrame {
         }
 
         Timer timer = new Timer();   // creation du timer
-        timer.schedule(timerTask, 0, 120000); //timer répétitive toutes les 2 minutes
+        timer.schedule(timerTask, 0, 10000); //timer répétitive toutes les 2 minutes
         System.out.println("Tâche vérification péremption vitrine lancée toutes les 2 minutes");
 
     }
