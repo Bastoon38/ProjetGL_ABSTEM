@@ -43,6 +43,7 @@ class TimerMajCuisson extends TimerTask {
 
         Produit[] tabSeuil = null;
         Produit[] tabVitrine = null;
+        Produit[] tabCuisson = null;
 
         tabSeuil = baseDonnee.getSeuil(jour,heureFinal);
         tabVitrine = baseDonnee.getVitrine();
@@ -50,7 +51,12 @@ class TimerMajCuisson extends TimerTask {
         LinkedList tab;
         tab = setAfficheTab(tabVitrine,tabVitrine.length);
 
+        tabCuisson = baseDonnee.getFour();
+
+        boolean flag;
+
         for (int i=0 ; i<tabSeuil.length;i++) {
+            flag = false;
             System.out.println("dans la boucle, nom = " + tabSeuil[i].getNom());
             int seuil = tabSeuil[i].getSeuil();
             System.out.println("seuil = " + seuil);
@@ -58,8 +64,17 @@ class TimerMajCuisson extends TimerTask {
             System.out.println("vitrine = " + vitrine);
             if (vitrine < seuil)
             {
-                baseDonnee.ajouterCuisson(tabSeuil[i].getNom(), tabSeuil[i].getFournee());
-                baseDonnee.supprimerStock(tabSeuil[i].getNom(), tabSeuil[i].getFournee());
+                for (int k=0; k<tabCuisson.length;k++)
+                {
+                    if ( tabCuisson[k].getNom().equals(tabSeuil[i].getNom()))
+                        flag = true;
+                }
+
+                if(flag ==false)
+                {
+                    baseDonnee.ajouterCuisson(tabSeuil[i].getNom(), tabSeuil[i].getFournee());
+                    baseDonnee.supprimerStock(tabSeuil[i].getNom(), tabSeuil[i].getFournee());
+                }
             }
         }
 
