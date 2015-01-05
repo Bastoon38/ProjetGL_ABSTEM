@@ -28,6 +28,7 @@ public class Connexion extends JFrame {
         btn_vendeur.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                btn_vendeur.setEnabled(false);
                 btn_cuisinier.setEnabled(false);
                 btn_manager.setEnabled(false);
                 affichePageVendeur();
@@ -38,6 +39,7 @@ public class Connexion extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 btn_vendeur.setEnabled(false);
+                btn_cuisinier.setEnabled(false);
                 btn_manager.setEnabled(false);
                 affichePageCuisinier();
             }
@@ -48,6 +50,7 @@ public class Connexion extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 btn_vendeur.setEnabled(false);
                 btn_cuisinier.setEnabled(false);
+                btn_manager.setEnabled(false);
                 affichePageManager();
             }
         });
