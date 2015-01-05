@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -207,7 +208,6 @@ public class Interface_cuisson extends JFrame {
                     //AJouter le produit dans vitrine et supprimer le produit dans four
                     base.supprimerCuisson(id4);
 
-
                     if ( nom.toUpperCase().equals("BAGUETTE"))
                     {
                         LocalDateTime datePerime = today.plusHours(12);
@@ -222,10 +222,14 @@ public class Interface_cuisson extends JFrame {
                     }
                     else if (nom.toUpperCase().equals("CROISSANT") ||nom.toUpperCase().equals("PAIN AU CHOCOLAT") ||nom.toUpperCase().equals("BRIOCHE SUCRE") ||nom.toUpperCase().equals("PAIN AU LAIT"))
                     {
-                        System.out.println("dans croissant");
                         LocalDateTime datePerime = today.plusHours(6);
                         String date = formatter.format(datePerime);
                         base.ajouterVitrine(nom,int_quan,date);
+                    }
+                    else if (nom.toUpperCase().equals("COCA COLA") ||nom.toUpperCase().equals("SPRITE") ||nom.toUpperCase().equals("FANTA") ||nom.toUpperCase().equals("OASIS") ||nom.toUpperCase().equals("ORANGE") ||nom.toUpperCase().equals("RAISIN") || nom.toUpperCase().equals("POMME"))
+                    {
+                        String dateBoisson = base.getDatePerimeBoisson(nom.toUpperCase());
+                        base.ajouterVitrine(nom,int_quan,dateBoisson);
                     }
                     model_1.removeRow(jtab_cuisson.getSelectedRow());
                     jtab_cuisson.repaint();

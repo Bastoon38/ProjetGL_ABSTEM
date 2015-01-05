@@ -9,6 +9,7 @@ import java.sql.*;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Timer;
 import java.util.Vector;
 import java.util.*;
@@ -174,6 +175,42 @@ public class GestionBDD {
 		}
 
 		return stock;
+	}
+
+	public String getDatePerimeBoisson(String nom) {
+		Connection con = connexion();
+
+		String timestamp = null;
+		int rows = 0;
+
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT `DATE_PEREMPTION` FROM `stock` WHERE `PRODUIT` = '"+ nom +"' ORDER BY `DATE_PEREMPTION` ASC LIMIT 1");
+			while (rs.next()) {
+				if (rs.last()) {
+					rows = rs.getRow();
+					// Move to beginning
+					rs.beforeFirst();
+					break;
+				}
+			}
+			while (rs.next()) {
+				timestamp = rs.getString("DATE_PEREMPTION");
+				Statement stmt2 = con.createStatement();
+				stmt2.close();
+			}
+
+			rs.close();
+			stmt.close();
+			con.close();
+
+		}
+		catch(SQLException sqle){
+			sqle.printStackTrace();
+			System.out.println(sqle.getMessage());
+		}
+
+		return timestamp;
 	}
 
 	public Produit[] getBilan() {
