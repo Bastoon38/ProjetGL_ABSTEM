@@ -599,7 +599,7 @@
           </grid>
         </constraints>
         <properties>
-          <text value="DECONNEXION"/>
+          <text value="Déconnexion"/>
         </properties>
       </component>
     </children>

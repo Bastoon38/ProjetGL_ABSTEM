@@ -61,8 +61,10 @@ class TimerMajCuisson extends TimerTask {
                 baseDonnee.ajouterCuisson(tabSeuil[i].getNom(), tabSeuil[i].getFournee());
                 baseDonnee.supprimerStock(tabSeuil[i].getNom(), tabSeuil[i].getFournee());
             }
-
         }
+
+        if ( int_heure == 0 && int_minute == 0)
+            baseDonnee.resetBilan();
     }
 
 

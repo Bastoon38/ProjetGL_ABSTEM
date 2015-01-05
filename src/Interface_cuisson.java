@@ -272,7 +272,7 @@ public class Interface_cuisson extends JFrame {
         labQuantite.setBounds(654, 94, 200, 50);
         contentPane.add(labQuantite);
 
-        JLabel lab_time = new JLabel("Time");
+        JLabel lab_time = new JLabel("Timer");
         lab_time.setFont(new Font("Tahoma", Font.PLAIN, 24));
         lab_time.setBounds(1006, 94, 200, 50);
         contentPane.add(lab_time);
@@ -285,7 +285,7 @@ public class Interface_cuisson extends JFrame {
             }
         };
 
-        JButton button = new JButton("Déconnection");
+        JButton button = new JButton("Déconnexion");
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Connexion connexion = new Connexion();
