@@ -157,7 +157,7 @@ public class Interface_cuisson extends JFrame {
                         }
                         else
                         {
-                            playSound();
+                            //playSound();
                             jtab_cuisson.setValueAt("FIN", rowSelected, 2);
                             cancel();
                         }
@@ -343,7 +343,7 @@ public class Interface_cuisson extends JFrame {
                                 }
                                 else
                                 {
-                                    playSound();
+                                    //playSound();
                                     System.out.println("finnnnnnn");
                                     jtab_cuisson.setValueAt("FIN", p, 2);
                                     cancel();
@@ -399,7 +399,7 @@ public class Interface_cuisson extends JFrame {
                         }
                         else
                         {
-                            playSound();
+                            //playSound();
                             System.out.println("finnnnnnn");
                             jtab_cuisson.setValueAt("FIN", p, 2);
                             cancel();
