@@ -119,7 +119,7 @@ public class Interface_paiement extends JFrame {
             }
         });
 
-        JButton btnPayer = new JButton("payer");
+        JButton btnPayer = new JButton("PAYER");
         btnPayer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -182,7 +182,7 @@ public class Interface_paiement extends JFrame {
             }
         });
 
-        JButton btnAnnuler = new JButton("annuler");
+        JButton btnAnnuler = new JButton("ANNULER");
         btnAnnuler.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 dispose();
@@ -226,9 +226,6 @@ public class Interface_paiement extends JFrame {
             }
         });
 
-        JLabel label = new JLabel();
-        label.setFont(new Font("Tahoma", Font.PLAIN, 44));
-
         textField = new JTextField(100);
         textField.setHorizontalAlignment(SwingConstants.LEFT);
         textField.setFont(new Font("Tahoma", Font.PLAIN, 40));
@@ -237,7 +234,7 @@ public class Interface_paiement extends JFrame {
         textField.setEditable(false);
 
 
-        JLabel lab_payer = new JLabel("TOTAL PAYER");
+        JLabel lab_payer = new JLabel("TOTAL A PAYER");
         lab_payer.setFont(new Font("Tahoma", Font.PLAIN, 28));
 
         GroupLayout gl_pan_pain = new GroupLayout(pan_pain);
@@ -252,7 +249,6 @@ public class Interface_paiement extends JFrame {
                                                         .addComponent(lab_payer, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                         .addComponent(textField, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE))
                                                 .addGap(28)
-                                                .addComponent(label, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)
                                                 .addGap(48)))
                                 .addContainerGap(52, Short.MAX_VALUE))
         );
@@ -269,7 +265,6 @@ public class Interface_paiement extends JFrame {
                                                 .addComponent(textField, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
                                                 .addContainerGap())
                                         .addGroup(gl_pan_pain.createSequentialGroup()
-                                                .addComponent(label, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE)
                                                 .addGap(209))))
         );
         pan_pain.setLayout(gl_pan_pain);
