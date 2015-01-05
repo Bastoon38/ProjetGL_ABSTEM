@@ -776,7 +776,7 @@ public class GestionBDD {
 			Connection con = connexion();
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("INSERT INTO `vitrine`(`PRODUIT`,`QUANTITE`,`DATE_PEREMPTION`,`PERIME`) VALUES ('" + nom + "','" + quantite + "','" + date + "','" + 0 + "','" + 0 + "')");
+			stmt.executeUpdate("INSERT INTO `vitrine`(`PRODUIT`,`QUANTITE`,`DATE_PEREMPTION`,`PERIME`) VALUES ('" + nom + "','" + quantite + "','" + date + "','" + 0 + "')");
 
 			stmt.close();
 			con.close();

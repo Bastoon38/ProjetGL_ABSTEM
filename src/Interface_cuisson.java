@@ -229,6 +229,9 @@ public class Interface_cuisson extends JFrame {
                     else if (nom.toUpperCase().equals("COCA COLA") ||nom.toUpperCase().equals("SPRITE") ||nom.toUpperCase().equals("FANTA") ||nom.toUpperCase().equals("OASIS") ||nom.toUpperCase().equals("ORANGE") ||nom.toUpperCase().equals("RAISIN") || nom.toUpperCase().equals("POMME"))
                     {
                         String dateBoisson = base.getDatePerimeBoisson(nom.toUpperCase());
+                        System.out.println(nom);
+                        System.out.println(int_quan);
+                        System.out.println(dateBoisson);
                         base.ajouterVitrine(nom,int_quan,dateBoisson);
                     }
                     model_1.removeRow(jtab_cuisson.getSelectedRow());
