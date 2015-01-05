@@ -55,8 +55,9 @@ public class GestionBDD {
 				Time time =rs.getTime("DATE_PEREMPTION");
 				int perime = rs.getInt("PERIME");
 				float prix = rs.getFloat("PRIX");
+				int id = rs.getInt("ID");
 
-				Produit aux=new Produit(nom,prix,quantite,date,time,perime);
+				Produit aux=new Produit(id,nom,prix,quantite,date,time,perime);
 				vitrine.add(aux);
 
 			}
@@ -760,7 +761,7 @@ public class GestionBDD {
 
 			Connection con = connexion();
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT `QUANTITE` FROM `vitrine` WHERE `PRODUIT`='" + nom + "' AND `TRAITE`=0");
+			ResultSet rs = stmt.executeQuery("SELECT `QUANTITE` FROM `vitrine` WHERE `PRODUIT`='" + nom + "' AND `PERIME`=0 ORDER BY `DATE_PEREMPTION` LIMIT 1");
 
 			if (rs.next()) {
 				int qteVit = rs.getInt("QUANTITE");
@@ -768,13 +769,13 @@ public class GestionBDD {
 				if (qteVit > quantite) {
 
 					int val = qteVit - quantite;
-					stmt.executeUpdate("UPDATE `vitrine` SET `QUANTITE`=" + val + " WHERE `PRODUIT`='" + nom + "' AND `TRAITE`=0 LIMIT 1");
+					stmt.executeUpdate("UPDATE `vitrine` SET `QUANTITE`=" + val + " WHERE `PRODUIT`='" + nom + "' AND `PERIME`=0 ORDER BY `DATE_PEREMPTION` LIMIT 1");
 
 				} else if (qteVit == quantite) {
-					stmt.executeUpdate("DELETE FROM `vitrine` WHERE `PRODUIT`='" + nom + "' AND `TRAITE`=0 LIMIT 1");
+					stmt.executeUpdate("DELETE FROM `vitrine` WHERE `PRODUIT`='" + nom + "' AND `PERIME`=0 ORDER BY `DATE_PEREMPTION` LIMIT 1");
 				} else { // qteStock < quantite
 					Statement stmt2 = con.createStatement();
-					stmt2.executeUpdate("DELETE FROM `vitrine` WHERE `PRODUIT`='" + nom + "' AND `QUANTITE`=" + qteVit + " LIMIT 1");
+					stmt2.executeUpdate("DELETE FROM `vitrine` WHERE `PRODUIT`='" + nom + "' AND `QUANTITE`=" + qteVit + " AND `PERIME`=0 ORDER BY `DATE_PEREMPTION` LIMIT 1");
 					int qteDiff = quantite - qteVit; //on récupère la différence, en positif, du reste à enlever
 					stmt2.close();
 					ret=supprimerVitrine(nom, qteDiff);
@@ -796,6 +797,48 @@ public class GestionBDD {
 		}
 		return ret;
 	}
+
+
+	public void supprimerPerime(String nom, int quantite) {
+
+		try{
+
+			//Class.forName("com.mysql.jdbc.Driver");
+
+			Connection con = connexion();
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT `QUANTITE` FROM `vitrine` WHERE `PRODUIT`='" + nom + "' AND `PERIME`=1 ORDER BY `DATE_PEREMPTION` LIMIT 1");
+
+			if (rs.next()) {
+				int qteVit = rs.getInt("QUANTITE");
+
+				if (qteVit > quantite) {
+
+					int val = qteVit - quantite;
+					stmt.executeUpdate("UPDATE `vitrine` SET `QUANTITE`=" + val + " WHERE `PRODUIT`='" + nom + "' AND `PERIME`=1 ORDER BY `DATE_PEREMPTION` LIMIT 1");
+
+				} else if (qteVit == quantite) {
+					stmt.executeUpdate("DELETE FROM `vitrine` WHERE `PRODUIT`='" + nom + "' AND `PERIME`=1 ORDER BY `DATE_PEREMPTION` LIMIT 1");
+				} else { // qteStock < quantite
+					Statement stmt2 = con.createStatement();
+					stmt2.executeUpdate("DELETE FROM `vitrine` WHERE `PRODUIT`='" + nom + "' AND `QUANTITE`=" + qteVit + " AND `PERIME`=1 ORDER BY `DATE_PEREMPTION` LIMIT 1");
+					int qteDiff = quantite - qteVit; //on récupère la différence, en positif, du reste à enlever
+					stmt2.close();
+					supprimerVitrine(nom, qteDiff);
+				}
+			}
+
+			rs.close();
+			stmt.close();
+			con.close();
+
+
+		}
+		catch(SQLException sqle){
+			sqle.printStackTrace();
+		}
+	}
+
 
 	// Ajouter un produit vendu dans le bilan du manager
 	public void ajouterBilan(String nom, int quantite) {

@@ -58,6 +58,18 @@ public class Produit {
         this.time=time;
         this.perime=perime;
     }
+
+    public Produit(int id, String obj_name,  float credit, int quant, Date date,Time time, int perime) {
+
+        this.id=id;
+        this.nom = obj_name;
+        this.prix= credit;
+        this.quantite =quant;
+        this.date=date;
+        this.time=time;
+        this.perime=perime;
+    }
+
     public Produit(String obj_name, int vendu, int jete) {
 
         this.nom = obj_name;
