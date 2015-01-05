@@ -537,7 +537,7 @@ public class Interface_vendeur extends JFrame {
                     vitrine.add(commandes.get(i));
                 }
 
-                System.out.println("VIder commandes");
+                System.out.println("Vider commandes");
                 commandes.clear();
 
                 System.out.println("\n");
@@ -575,12 +575,9 @@ public class Interface_vendeur extends JFrame {
 
         btn_payer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
                 if(total_prix>0)
                 {
                     //recuperer les nouveaux produits ajoutés à la BDD vitrine
-
-
                     for(int i=0 ; i<vitrine.size(); i++)
                     {
                         String nul="null";
@@ -590,9 +587,7 @@ public class Interface_vendeur extends JFrame {
                             vitrine.remove(i);
                         }
                         System.out.println (vitrine.elementAt(i).getNom()+" "+vitrine.elementAt(i).getQuantite()+" "+vitrine.elementAt(i).getPrix()+" "+vitrine.elementAt(i).getPerime()+ " "+vitrine.elementAt(i).getDate()+" "+vitrine.elementAt(i).getTime());
-
                     }
-
 
                     Interface_paiement paiement=new Interface_paiement(vitrine,commandes,tab_commande,total_prix, lab_prix);
                     paiement.setVisible(true);

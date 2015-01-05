@@ -335,7 +335,6 @@ public class Interface_cuisson extends JFrame {
                         TimerTask timerTask = new TimerTask() {
                             int sec=Integer.parseInt(jtab_cuisson.getModel().getValueAt(p, 2).toString());
                             public void run() {
-
                                 if(sec>=0)
                                 {
                                     int hor=sec/3600;
@@ -352,7 +351,6 @@ public class Interface_cuisson extends JFrame {
                                     jtab_cuisson.setValueAt("FIN", p, 2);
                                     cancel();
                                 }
-
                             }
                         };
 
