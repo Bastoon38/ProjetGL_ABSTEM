@@ -46,7 +46,7 @@ public class GestionBDD {
 
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM vitrine,produit WHERE vitrine.produit = produit.produit");// AND vitrine.traite = '0'");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM vitrine,produit WHERE vitrine.produit = produit.produit");
 
 			while (rs.next()) {
 				String nom = rs.getString("PRODUIT");
@@ -62,8 +62,6 @@ public class GestionBDD {
 
 			}
 
-			//TODO IL FAUT ENLEVER LE COMMENTAIRE DU TRAITE =1
-			//stmt.executeUpdate("UPDATE `vitrine` SET `traite`='1'");
 
 
 
@@ -741,7 +739,7 @@ public class GestionBDD {
 			Connection con = connexion();
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("INSERT INTO `vitrine`(`PRODUIT`,`QUANTITE`,`DATE_PEREMPTION`,`PERIME`,`TRAITE`) VALUES ('" + nom + "','" + quantite + "','" + date + "','" + 0 + "','" + 0 + "')");
+			stmt.executeUpdate("INSERT INTO `vitrine`(`PRODUIT`,`QUANTITE`,`DATE_PEREMPTION`,`PERIME`) VALUES ('" + nom + "','" + quantite + "','" + date + "','" + 0 + "','" + 0 + "')");
 
 			stmt.close();
 			con.close();
@@ -798,6 +796,20 @@ public class GestionBDD {
 		return ret;
 	}
 
+
+	public void majPerime(int id) {
+		Connection con = connexion();
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("UPDATE `vitrine` SET `PERIME`=1 WHERE `ID`=" + id);
+
+			stmt.close();
+			con.close();
+		}
+		catch (SQLException sqle) {
+			sqle.printStackTrace();
+		}
+	}
 
 	public void supprimerPerime(String nom, int quantite) {
 
