@@ -90,8 +90,8 @@ public class Interface_billet extends JFrame {
 
                     //Supprimer les produits de la commande dans la base de donnès
                     commandes.clear();
-                    JOptionPane.showMessageDialog(null, "Paiement accepté", "Paiement accepté", JOptionPane.WARNING_MESSAGE);
-
+                    //JOptionPane.showMessageDialog(null, "Paiement accepté", "Paiement accepté", JOptionPane.WARNING_MESSAGE);
+                   // commandes=base.getVitrine(commandes);
                     dispose();
                 }
 

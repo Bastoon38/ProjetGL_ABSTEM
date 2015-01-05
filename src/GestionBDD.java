@@ -763,7 +763,7 @@ public class GestionBDD {
 
 			Connection con = connexion();
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT `QUANTITE` FROM `vitrine` WHERE `PRODUIT`='" + nom + "' AND `TRAITE`=1");
+			ResultSet rs = stmt.executeQuery("SELECT `QUANTITE` FROM `vitrine` WHERE `PRODUIT`='" + nom + "' AND `TRAITE`=0");
 
 			if (rs.next()) {
 				int qteVit = rs.getInt("QUANTITE");
@@ -771,10 +771,10 @@ public class GestionBDD {
 				if (qteVit > quantite) {
 
 					int val = qteVit - quantite;
-					stmt.executeUpdate("UPDATE `vitrine` SET `QUANTITE`=" + val + " WHERE `PRODUIT`='" + nom + "' AND `TRAITE`=1 LIMIT 1");
+					stmt.executeUpdate("UPDATE `vitrine` SET `QUANTITE`=" + val + " WHERE `PRODUIT`='" + nom + "' AND `TRAITE`=0 LIMIT 1");
 
 				} else if (qteVit == quantite) {
-					stmt.executeUpdate("DELETE FROM `vitrine` WHERE `PRODUIT`='" + nom + "' AND `TRAITE`=1 LIMIT 1");
+					stmt.executeUpdate("DELETE FROM `vitrine` WHERE `PRODUIT`='" + nom + "' AND `TRAITE`=0 LIMIT 1");
 				} else { // qteStock < quantite
 					Statement stmt2 = con.createStatement();
 					stmt2.executeUpdate("DELETE FROM `vitrine` WHERE `PRODUIT`='" + nom + "' AND `QUANTITE`=" + qteVit + " LIMIT 1");

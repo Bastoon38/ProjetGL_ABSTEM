@@ -574,7 +574,7 @@ public class Interface_vendeur extends JFrame {
                 if(total_prix>0)
                 {
                     //recuperer les nouveaux produits ajoutés à la BDD vitrine
-                    vitrine=base.getVitrine(vitrine);
+
 
                     for(int i=0 ; i<vitrine.size(); i++)
                     {
@@ -592,6 +592,7 @@ public class Interface_vendeur extends JFrame {
                     Interface_paiement paiement=new Interface_paiement(vitrine,commandes,tab_commande,total_prix, lab_prix);
                     paiement.setVisible(true);
                     paiement.setLocationRelativeTo(null);
+                    vitrine=base.getVitrine(vitrine);
                 }
                 else
                 {
@@ -758,34 +759,31 @@ public class Interface_vendeur extends JFrame {
                 int i;
                 int rowSelected = tab_commande.getSelectedRow();
                 //System.out.println(rowSelected);
-                String nom=tab_commande.getModel().getValueAt(rowSelected, 0).toString();
-                String ex=tab_commande.getModel().getValueAt(rowSelected, 1).toString();
-                int quant=Integer.parseInt(ex);
+                String nom = tab_commande.getModel().getValueAt(rowSelected, 0).toString();
+                String ex = tab_commande.getModel().getValueAt(rowSelected, 1).toString();
+                int quant = Integer.parseInt(ex);
                 //	System.out.println(quant);
 
                 //on garde en la variable i la position du premièr produit avec le même nom
-                for(i=0 ; i<vitrine.size(); i++)
-                {
-                    if(nom.equals(commandes.elementAt(i).getNom()))
-                    {
+                for (i = 0; i < vitrine.size(); i++) {
+                    if (nom.equals(commandes.elementAt(i).getNom())) {
                         System.out.println(i);
                         break;
                     }
                 }
 
-                if(quant>1)
-                {
-                    Produit aux = new Produit(commandes.elementAt(i).getNom(),commandes.elementAt(i).getPrix(),commandes.elementAt(i).getQuantite(),commandes.elementAt(i).getDate(),commandes.elementAt(i).getTime(),commandes.elementAt(i).getPerime());
+                if (quant > 1) {
+                    Produit aux = new Produit(commandes.elementAt(i).getNom(), commandes.elementAt(i).getPrix(), commandes.elementAt(i).getQuantite(), commandes.elementAt(i).getDate(), commandes.elementAt(i).getTime(), commandes.elementAt(i).getPerime());
                     vitrine.add(aux);
                     commandes.remove(i);
                     quant--;
                     int rowSelectedless = tab_commande.getSelectedRow();
-                    String prix_unit=tab_commande.getModel().getValueAt(rowSelectedless, 3).toString();
-                    float prix_unitaire=Float.parseFloat(prix_unit);
-                    float prix_total=prix_unitaire*quant;
+                    String prix_unit = tab_commande.getModel().getValueAt(rowSelectedless, 3).toString();
+                    float prix_unitaire = Float.parseFloat(prix_unit);
+                    float prix_total = prix_unitaire * quant;
                     //prix_total = (float)(Math.floor(prix_total * 100) / 100);
-                    round(prix_total,1);
-                    prix_total = (float)(Math.floor(prix_total * 10) / 10);
+                    round(prix_total, 1);
+                    prix_total = (float) (Math.floor(prix_total * 10) / 10);
                     //Increment of the price
                     tab_commande.setValueAt(String.valueOf(prix_total), rowSelectedless, 2);
                     //refresh
@@ -793,10 +791,8 @@ public class Interface_vendeur extends JFrame {
                     mis_a_jour_total();
                     lab_prix.setText(String.valueOf(total_prix));
 
-                }
-                else
-                {
-                    Produit aux = new Produit(commandes.elementAt(i).getNom(),commandes.elementAt(i).getPrix(),commandes.elementAt(i).getQuantite(),commandes.elementAt(i).getDate(),commandes.elementAt(i).getTime(),commandes.elementAt(i).getPerime());
+                } else {
+                    Produit aux = new Produit(commandes.elementAt(i).getNom(), commandes.elementAt(i).getPrix(), commandes.elementAt(i).getQuantite(), commandes.elementAt(i).getDate(), commandes.elementAt(i).getTime(), commandes.elementAt(i).getPerime());
                     vitrine.add(aux);
                     commandes.remove(i);
                     //System.out.println(rowSelected);
@@ -816,18 +812,16 @@ public class Interface_vendeur extends JFrame {
 
                 System.out.println("\n");
                 System.out.println("VITRINE");
-                for(int j=0 ; j<vitrine.size(); j++)
-                {
+                for (int j = 0; j < vitrine.size(); j++) {
 
-                    System.out.println (vitrine.elementAt(j).getNom()+" "+vitrine.elementAt(j).getQuantite()+" "+vitrine.elementAt(j).getPrix()+" "+vitrine.elementAt(j).getPerime()+ " "+vitrine.elementAt(j).getDate()+" "+vitrine.elementAt(j).getTime());
+                    System.out.println(vitrine.elementAt(j).getNom() + " " + vitrine.elementAt(j).getQuantite() + " " + vitrine.elementAt(j).getPrix() + " " + vitrine.elementAt(j).getPerime() + " " + vitrine.elementAt(j).getDate() + " " + vitrine.elementAt(j).getTime());
 
                 }
                 System.out.println("\n");
                 System.out.println("COMMANDES");
-                for(int l=0 ; l<commandes.size(); l++)
-                {
+                for (int l = 0; l < commandes.size(); l++) {
 
-                    System.out.println (commandes.elementAt(l).getNom()+" "+commandes.elementAt(l).getQuantite()+" "+commandes.elementAt(l).getPrix()+" "+commandes.elementAt(l).getPerime()+ " "+commandes.elementAt(l).getDate()+" "+commandes.elementAt(l).getTime());
+                    System.out.println(commandes.elementAt(l).getNom() + " " + commandes.elementAt(l).getQuantite() + " " + commandes.elementAt(l).getPrix() + " " + commandes.elementAt(l).getPerime() + " " + commandes.elementAt(l).getDate() + " " + commandes.elementAt(l).getTime());
 
                 }
 
@@ -905,7 +899,6 @@ public class Interface_vendeur extends JFrame {
                 int int_quan = Integer.parseInt(quant);
 
 
-
                 for (int u = 0; u < jeter.size(); u++) {
                     int int_quanty = jeter.elementAt(u).getQuantite();
                     if (jeter.elementAt(u).getNom().equals(nom) && int_quan == int_quanty) {
@@ -913,7 +906,7 @@ public class Interface_vendeur extends JFrame {
                         jeter.remove(u);
                         tab_jeter_1.repaint();
                         base.ajouterPerime(nom, int_quanty);
-                        String mensaje = base.supprimerVitrine(nom,int_quanty);
+                        String mensaje = base.supprimerVitrine(nom, int_quanty);
                         JOptionPane.showMessageDialog(null, mensaje, "Jeter " + nom, JOptionPane.WARNING_MESSAGE);
 
                     }

@@ -164,7 +164,7 @@ public class Interface_paiement extends JFrame {
                             //Supprimer les produits de la commande dans le vecteur commandes
                             commandes.clear();
 
-                            JOptionPane.showMessageDialog(null, "Paiement accepté", "Paiement accepté", JOptionPane.WARNING_MESSAGE);
+                           // JOptionPane.showMessageDialog(null, "Paiement accepté", "Paiement accepté", JOptionPane.WARNING_MESSAGE);
                             //Aller à la page principal du vendeur
                             dispose();
 
