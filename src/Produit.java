@@ -3,6 +3,7 @@
  */
 import com.sun.org.apache.xpath.internal.operations.Bool;
 
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import  java.sql.Date;
 import java.sql.Time;
@@ -14,6 +15,7 @@ public class Produit {
     private String nom;
     private float prix=0;
     private int quantite=0; //utile pour le panier
+    private Timestamp timestamp;
     private Date date;
     private Time time;
     private int perime;
@@ -31,13 +33,12 @@ public class Produit {
     private int fournee_ini;
     private int fournee;
 
-    public Produit(String obj_name,  float credit, int quant, Date date) {
+    public Produit(String obj_name,  float credit, int quant, Timestamp timestamp) {
 
         this.nom = obj_name;
         this.prix= credit;
         this.quantite =quant;
-        this.date=date;
-        //  this.time=time;
+        this.timestamp=timestamp;
     }
 
     public Produit(String obj_name, int quant, int cuisson, int id) {

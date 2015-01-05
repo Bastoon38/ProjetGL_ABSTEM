@@ -151,17 +151,14 @@ public class GestionBDD {
 			while (rs.next()) {
 				String nom = rs.getString("PRODUIT");
 				int quantite = rs.getInt("QUANTITE");
-				//Timestamp timestamp = rs.getTimestamp("DATE_PEREMPTION");
-				//String date = String.format("%1$TD %1$TT", timestamp);
-				Date date = rs.getDate("DATE_PEREMPTION");
-				Time time =rs.getTime("DATE_PEREMPTION");
+				Timestamp timestamp = rs.getTimestamp("DATE_PEREMPTION");
 				Statement stmt2 = con.createStatement();
 				ResultSet rs2 = stmt2.executeQuery("SELECT `PRIX` FROM `produit`");
 				if (rs2.next()) {
 					prix = rs2.getFloat("PRIX");
 				}
 
-				stock[j] = new Produit(nom,prix,quantite,date);
+				stock[j] = new Produit(nom,prix,quantite,timestamp);
 				j++;
 				rs2.close();
 				stmt2.close();
