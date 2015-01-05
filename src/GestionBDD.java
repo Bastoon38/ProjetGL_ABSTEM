@@ -221,7 +221,8 @@ public class GestionBDD {
 		return bilan;
 	}
 	//GETTER ****************************************
-	//TODO verifier la requete du gettime_cuisson
+
+	//récupère le temps de cuisson pour un tel produit + le temps de cuisson restant si une cuisson est déjà lancée
 	public int getTime_cuisson(String nom, int id) {
 
 		int temps=0;
